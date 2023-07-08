@@ -117,6 +117,27 @@
     border: 1px solid skyblue
 }
 
+.outer-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inner-container{
+    width: 70%;
+    border: 1px solid skyblue;
+    padding: 30px 20px;
+}
+
+
+.child-container{
+    margin-top: 60px;
+}
+
+.margin-bottom{
+    margin-bottom: 20px;
+}
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */
 /* font-family: 'PT Sans', sans-serif; */
