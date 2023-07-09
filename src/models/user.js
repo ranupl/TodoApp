@@ -41,6 +41,6 @@ const userSchema = new mongoose.Schema(
 );
 
 // we will create a new collection
-const User = new mongoose.model("User", userSchema);
+const UserDB = new mongoose.model("User", userSchema);
 
-module.exports = User;
+module.exports = { UserDB };

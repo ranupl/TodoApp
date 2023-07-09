@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const bodyparser = require("body-parser");
 const router = require("./src/routers/router");
 require("./db/connection");
-// const userController = require("./src/controllers/userController");
+
 
 dotenv.config({ path: "config.env" });
 const PORT = process.env.PORT || 8000;
@@ -31,18 +31,12 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-// app.get("/signup", userController.createUser);
-app.get("/signup", (req, res) => {
-  res.render("signup");
-});
 
 app.get("/admin", (req, res) => {
   res.render("admin");
 });
 
-app.get("/userDashboard", (req, res) => {
-  res.render("userDashboard");
-});
+
 
 app.get("/todo", (req, res) => {
   res.render("todo");

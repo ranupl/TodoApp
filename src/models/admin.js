@@ -27,6 +27,6 @@ const adminSchema = new mongoose.Schema(
 );
 
 // we will create a new collection
-const User = new mongoose.model("User", userSchema);
+const User = new mongoose.model("User", adminSchema);
 
 module.exports = User;
