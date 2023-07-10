@@ -25,7 +25,7 @@ exports.createUser = (req, res) => {
     .then((data) => {
       // res.send(data);
       // localStorage.setItem("user", data);
-      res.redirect("/userDashboard",{tasks:[]});
+      res.redirect("/userDashboard");
     })
     .catch((err) => {
       res.status(500).send({
