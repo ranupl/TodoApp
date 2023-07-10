@@ -47,34 +47,19 @@
           <tbody>
             <% tasks.forEach((task) => { %>
             <tr>
-              <td><%= task.id %></td>
+              <td><%= task._id %></td>
               <td><%= task.title %></td>
               <td><%= task.desc %></td>
               <td><%= task.priority %></td>
               <td><%= task.status %></td>
               <td>
                 <div>
-                  <ion-icon name="pencil" class="color-pencil"></ion-icon
-                  ><ion-icon name="trash" class="color-trash"></ion-icon>
+                  <a href="/todo/edit/<%= task.id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+                  <a href="/todo/delete/<%= task.id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
                 </div>
               </td>
-              <!-- <td><a href="/editItem/<%= user.id %>"><i class="fa-solid fa-pen icon"></i></a>&nbsp;&nbsp; &nbsp;
-                  <a href="/delete/<%= user.id %>"><i class="fa-solid fa-trash icon"></i></a></td> -->
             </tr>
             <% }); %>
-            <!-- <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td>
-                <div>
-                  <ion-icon name="pencil" class="color-pencil"></ion-icon
-                  ><ion-icon name="trash" class="color-trash"></ion-icon>
-                </div>
-              </td>
-            </tr> -->
           </tbody>
         </table>
       </div>

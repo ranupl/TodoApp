@@ -44,18 +44,43 @@ exports.getAllTasks = (req, res) => {
     });
 };
 
+// get task by id
+exports.getTaskById = (req, res) => {
+  TodoDB.findById()
+    .then((tasks) => {
+      res.render("userDashboard", { tasks }); // Render the EJS file with the users data
+    })
+    .catch((error) => {
+      res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
+    });
+};
+
+// edit task
+exports.editTask = (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  TodoDB.findById(id)
+    .then(updatedTask => {
+      res.render('updateTodo', { updatedTask });
+    })
+    .catch(error => {
+      // Handle the error
+      console.error(error);
+      res.redirect('/');
+    });
+};
+
 //update tasks
 exports.updateTask =  (req, res) => {
-  const { _id } = req.params;
+  const { id } = req.body;
   const { title, discription, priority, status} = req.body;
-
-  TodoDB.findByIdAndUpdate(_id, {title, discription, priority, status}, { new: true })
+  console.log(id);
+  TodoDB.findByIdAndUpdate(id, {title, discription, priority, status}, { new: true })
     .then((updatedTask) => {
       if (!updatedTask) {
         return res.status(404).send('Task not found');
       }
-
-      res.send(updatedTask);
+      res.redirect("/userDashboard");
     })
     .catch((error) => {
       res.status(500).send('Error updating Task');
@@ -66,13 +91,13 @@ exports.updateTask =  (req, res) => {
 exports.deleteTask = (req, res) => {
   const { id } = req.params;
 
-  User.findByIdAndDelete(id)
+  TodoDB.findByIdAndDelete(id)
     .then((deletedTask) => {
       if (!deletedTask) {
         return res.status(404).send('Task not found');
       }
 
-      res.send(deletedTask);
+      res.redirect("/userDashboard");
     })
     .catch((error) => {
       res.status(500).send('Error deleting task');

@@ -1,45 +1,5 @@
 const { UserDB } = require("../../models/user");
 
-// home page
-exports.home = (req, res) => {
-  res.render("home");
-};
-
-// welcome page
-exports.welcome = (req, res) => {
-  res.render("welcome");
-};
-
-// signup page
-exports.signup = (req, res) => {
-  res.render("signup");
-};
-
-// login page
-exports.login = (req, res) => {
-  res.render("login");
-};
-
-// admin login page
-exports.admin = (req, res) => {
-  res.render("admin");
-};
-
-// create todo page
-exports.todo = (req, res) => {
-  res.render("todo");
-};
-
-// admin dashboard
-exports.adminDashboard = (req, res) => {
-  res.render("adminDashboard");
-};
-
-// userdashboard
-exports.userDashboard = (req, res) => {
-  res.render("userDashboard");
-};
-
 // user CURD operation
 // create and save new user
 exports.createUser = (req, res) => {
@@ -65,7 +25,7 @@ exports.createUser = (req, res) => {
     .then((data) => {
       // res.send(data);
       // localStorage.setItem("user", data);
-      res.redirect("/userDashboard");
+      res.redirect("/userDashboard",{tasks:[]});
     })
     .catch((err) => {
       res.status(500).send({
@@ -75,7 +35,7 @@ exports.createUser = (req, res) => {
     });
 };
 
-// get users
+// get all users
 exports.getAllUsers = (req, res) => {
   UserDB.find()
     .then((users) => {
@@ -86,12 +46,27 @@ exports.getAllUsers = (req, res) => {
     });
 };
 
+// get user by id
+exports.getUserByID = (req, res) => {
+  const userId = req.params.id;
+
+  UserDB.findById(userId)
+    .then(user => {
+      res.send(user); // Send the user data as a JSON response
+    })
+    .catch(error => {
+      // Handle the error
+      console.error(error);
+      res.status(500).send('Error retrieving user');
+    });
+};
+
 // update user
 exports.updateUser =  (req, res) => {
-  const { _id } = req.params;
+  const { id } = req.body;
   const { username} = req.body;
 
-  UserDB.findByIdAndUpdate(_id, { username }, { new: true })
+  UserDB.findByIdAndUpdate(id, { username }, { new: true })
     .then((updatedUser) => {
       if (!updatedUser) {
         return res.status(404).send('User not found');
