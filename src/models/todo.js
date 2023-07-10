@@ -26,6 +26,6 @@ const todoSchema = new mongoose.Schema(
 
 // creating a collection for todos
 
-const Todo = new mongoose.model("Todo", todoSchema);
+const TodoDB = new mongoose.model("Todo", todoSchema);
 
-module.exports = Todo;
+module.exports = { TodoDB };

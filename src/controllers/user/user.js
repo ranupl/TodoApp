@@ -64,7 +64,7 @@ exports.createUser = (req, res) => {
     .save()
     .then((data) => {
       // res.send(data);
-      localStorage.setItem("user", data);
+      // localStorage.setItem("user", data);
       res.redirect("/userDashboard");
     })
     .catch((err) => {
@@ -88,10 +88,10 @@ exports.getAllUsers = (req, res) => {
 
 // update user
 exports.updateUser =  (req, res) => {
-  const { id } = req.params;
-  const { name, age } = req.body;
+  const { _id } = req.params;
+  const { username} = req.body;
 
-  UserDB.findByIdAndUpdate(id, { name, age }, { new: true })
+  UserDB.findByIdAndUpdate(_id, { username }, { new: true })
     .then((updatedUser) => {
       if (!updatedUser) {
         return res.status(404).send('User not found');
