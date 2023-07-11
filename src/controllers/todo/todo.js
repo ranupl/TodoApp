@@ -74,7 +74,7 @@ exports.editTask = (req, res) => {
 exports.updateTask =  (req, res) => {
   const { id } = req.body;
   const { title, discription, priority, status} = req.body;
-  console.log(id);
+  // console.log(id);
   TodoDB.findByIdAndUpdate(id, {title, discription, priority, status}, { new: true })
     .then((updatedTask) => {
       if (!updatedTask) {

@@ -28,7 +28,6 @@ app.get("/", (req, res) => {
 app.get("/welcome", (req, res) => {
   res.render("welcome");
 });
-  
 
 // signup page
 app.get("/signup", (req, res) => {
@@ -55,16 +54,20 @@ app.get("/adminDashboard", (req, res) => {
   res.render("adminDashboard");
 });
 
-//todo update 
+//todo update
 app.get("/updateTodo", (req, res) => {
   res.render("updateTodo");
-})
+});
 
 // user update
 app.get("/editUser", (req, res) => {
   res.render("editUser");
-})
+});
 
+// edit admin 
+app.get("/editAdmin", (req, res) => {
+  res.render("editAdmin");
+});
 
 // all routes
 const userCon = require("./src/controllers/user/user");
@@ -93,6 +96,8 @@ const adminCon = require("./src/controllers/admin/admin");
 
 // admin routes
 app.post("/admin/login", adminCon.adminLogin);
+app.post("/admin/update", adminCon.adminUpdate);
+
 
 app.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);

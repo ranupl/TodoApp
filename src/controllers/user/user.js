@@ -11,8 +11,8 @@ exports.createUser = (req, res) => {
 
   // new user
   const newUser = new UserDB({
-    firstname: req.body.fname,
-    lastname: req.body.lname,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
     email: req.body.email,
     username: req.body.username,
     password: req.body.password,
@@ -52,7 +52,7 @@ exports.getUserByID = (req, res) => {
 
   UserDB.findById(userId)
     .then((user) => {
-      res.render("editUser", { user }); // Send the user data as a JSON response
+      res.render("editUser", { user }); 
     })
     .catch((error) => {
       // Handle the error
@@ -62,20 +62,18 @@ exports.getUserByID = (req, res) => {
 };
 
 // update user
-exports.updateUser = (req, res) => {
-  const { id } = req.body;
-  const { firstname, lastname, email, username, password } = req.body;
-
+exports.updateUser = async (req, res) => {
+  const { id } = req.params;
+  
   UserDB.findByIdAndUpdate(
     id,
-    { firstname, lastname, email, username, password },
+    req.body,
     { new: true }
   )
     .then((updatedUser) => {
       if (!updatedUser) {
         return res.status(404).send("User not found");
       }
-
       res.redirect("/users");
     })
     .catch((error) => {

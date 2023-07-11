@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SignUp</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <title>Edit Admin</title>
+    <link rel="stylesheet" href="../css/style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Barlow&family=Caprasimo&family=PT+Sans:ital@1&display=swap"
       rel="stylesheet"
@@ -22,33 +22,16 @@
   </head>
   <body>
     <div class="container">
-      <h1 class="text-center text-primary heading">Sign Up</h1>
-      <div class="box1">
-        <div class="row">
-          <div class="col-6 padding border">
-            <form action="/users" method="POST">
-              <div class="form-group">
-                <label for="exampleInputPassword1">First Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="exampleInputPassword1"
-                  value=""
-                  name="firstname"
-                  placeholder="First Name"
-                />
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Last Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="exampleInputPassword1"
-                  value=""
-                  name="lastname"
-                  placeholder="Last Name"
-                />
-              </div>
+        <div class="text-center">
+            <h1 class="text-primary heading" >Edit Password</h1>
+            <span><img src="../images/hand-g5b8e3c03e_1280.png" width="50px"></span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="outer-box">
+          <div class="inner-box">
+            <form action="/admin/update" method="POST">
+              <input type="hidden" name="id" value="">
               <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
                 <input
@@ -76,14 +59,36 @@
                 />
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
+                <label for="exampleInputPassword1"> Old Password</label>
                 <input
                   type="password"
                   class="form-control"
                   id="exampleInputPassword1"
                   value=""
                   name="password"
-                  placeholder="Password"
+                  placeholder=" Old Password"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1"> New Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="exampleInputPassword1"
+                  value=""
+                  name="newpassword"
+                  placeholder="New Password"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1"> Confirm Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="exampleInputPassword1"
+                  value=""
+                  name="confirmpassword"
+                  placeholder="Confirm Password"
                 />
               </div>
               <div class="form-check">
@@ -97,15 +102,9 @@
                 >
               </div>
               <button type="submit" class="btn btn-primary mg-top">
-                Sign Up
+                Reset Password
               </button>
             </form>
-          </div>
-          <div class="col-6 border">
-            <img src="./images/draw2.webp" class="sign-img" />
-          </div>
-        </div>
-      </div>
-    </div>
+            </div>
   </body>
 </html>
