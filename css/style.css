@@ -157,6 +157,20 @@
     align-items: center;
     justify-content: center;
 }
+
+.outer-box{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inner-box{
+    width: 50%;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: rgb(238, 250, 251);
+}
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */
 /* font-family: 'PT Sans', sans-serif; */

@@ -47,31 +47,23 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-                <td>1343535</td>
-                <td scope="col">Ashika</td>
-                <td scope="col">Panchal</td>
-                <td scope="col">ashika34@gmail.com</td>
-                <td scope="col">ashi155</td>
-                <td scope="col">37589</td>
-                <td scope="col">Active</td>
-                <td scope="col">Action</td>
-              </tr>
-            <!-- <% tasks.forEach((task) => { %>
-            <<tr>
-              <td><%= task._id %></td>
-              <td><%= task.title %></td>
-              <td><%= task.desc %></td>
-              <td><%= task.priority %></td>
-              <td><%= task.status %></td>
-              <td>
-                <div>
-                  <a href="/todo/edit/<%= task.id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
-                  <a href="/todo/delete/<%= task.id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
-                </div>
-              </td>
-            </tr>
-            <% }); %> --> 
+              <% users.forEach((user) => { %>
+                <tr>
+                  <td><%= user._id %></td>
+                  <td><%= user.firstname %></td>
+                  <td><%= user.lastname %></td>
+                  <td><%= user.email %></td>
+                  <td><%= user.username %></td>
+                  <td><%= user.password %></td>
+                  <td><%= user.status %></td>
+                  <td>
+                    <div>
+                      <a href="/users/<%= user.id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+                      <a href="/users/delete/<%= user.id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
+                    </div>
+                  </td>
+                </tr>
+                <% }); %>
           </tbody>
         </table>
       </div>

@@ -55,10 +55,15 @@ app.get("/adminDashboard", (req, res) => {
   res.render("adminDashboard");
 });
 
+//todo update 
 app.get("/updateTodo", (req, res) => {
   res.render("updateTodo");
 })
 
+// user update
+app.get("/editUser", (req, res) => {
+  res.render("editUser");
+})
 
 
 // all routes
@@ -70,8 +75,8 @@ app.get("/userDashboard", todoCon.getAllTasks);
 app.post("/users", userCon.createUser);
 app.get("/users", userCon.getAllUsers);
 app.get("/users/:id", userCon.getUserByID);
-app.put("/users/:id", userCon.updateUser);
-app.delete("/users/:id", userCon.deleteUser);
+app.post("/users/update/:id", userCon.updateUser);
+app.get("/users/delete/:id", userCon.deleteUser);
 
 // user login
 app.post("/users/login", userCon.userLogin);

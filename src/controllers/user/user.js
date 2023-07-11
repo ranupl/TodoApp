@@ -51,31 +51,35 @@ exports.getUserByID = (req, res) => {
   const userId = req.params.id;
 
   UserDB.findById(userId)
-    .then(user => {
-      res.send(user); // Send the user data as a JSON response
+    .then((user) => {
+      res.render("editUser", { user }); // Send the user data as a JSON response
     })
-    .catch(error => {
+    .catch((error) => {
       // Handle the error
       console.error(error);
-      res.status(500).send('Error retrieving user');
+      res.status(500).send("Error retrieving user");
     });
 };
 
 // update user
-exports.updateUser =  (req, res) => {
+exports.updateUser = (req, res) => {
   const { id } = req.body;
-  const { username} = req.body;
+  const { firstname, lastname, email, username, password } = req.body;
 
-  UserDB.findByIdAndUpdate(id, { username }, { new: true })
+  UserDB.findByIdAndUpdate(
+    id,
+    { firstname, lastname, email, username, password },
+    { new: true }
+  )
     .then((updatedUser) => {
       if (!updatedUser) {
-        return res.status(404).send('User not found');
+        return res.status(404).send("User not found");
       }
 
-      res.send(updatedUser);
+      res.redirect("/users");
     })
     .catch((error) => {
-      res.status(500).send('Error updating user');
+      res.status(500).send("Error updating user");
     });
 };
 
@@ -86,35 +90,32 @@ exports.deleteUser = (req, res) => {
   UserDB.findByIdAndDelete(id)
     .then((deletedUser) => {
       if (!deletedUser) {
-        return res.status(404).send('User not found');
+        return res.status(404).send("User not found");
       }
-
-      res.send(deletedUser);
+      res.redirect("/users");
     })
     .catch((error) => {
-      res.status(500).send('Error deleting user');
+      res.status(500).send("Error deleting user");
     });
 };
 
 // user login
-
 exports.userLogin = async (req, res) => {
   // Process the login form submission
   const { username, password } = req.body;
 
-    // Find the user by username
-    const user = await UserDB.findOne({ username });
+  // Find the user by username
+  const user = await UserDB.findOne({ username });
 
-    if (!user) {
-      res.redirect("/login");
-      return;
-    }
+  if (!user) {
+    res.redirect("/login");
+    return;
+  }
 
-    if (password == user.password) {
-      res.redirect("/userDashboard");
-    } else {
-      res.redirect("/login");
-      return;
-    }
-  
+  if (password == user.password) {
+    res.redirect("/userDashboard");
+  } else {
+    res.redirect("/login");
+    return;
+  }
 };
