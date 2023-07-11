@@ -58,7 +58,7 @@ exports.getTaskById = (req, res) => {
 // edit task
 exports.editTask = (req, res) => {
   const id = req.params.id;
-  console.log(id);
+  // console.log(id);
   TodoDB.findById(id)
     .then(updatedTask => {
       res.render('updateTodo', { updatedTask });

@@ -83,7 +83,7 @@ exports.updateUser =  (req, res) => {
 exports.deleteUser = (req, res) => {
   const { id } = req.params;
 
-  User.findByIdAndDelete(id)
+  UserDB.findByIdAndDelete(id)
     .then((deletedUser) => {
       if (!deletedUser) {
         return res.status(404).send('User not found');
@@ -94,4 +94,27 @@ exports.deleteUser = (req, res) => {
     .catch((error) => {
       res.status(500).send('Error deleting user');
     });
+};
+
+// user login
+
+exports.userLogin = async (req, res) => {
+  // Process the login form submission
+  const { username, password } = req.body;
+
+    // Find the user by username
+    const user = await UserDB.findOne({ username });
+
+    if (!user) {
+      res.redirect("/login");
+      return;
+    }
+
+    if (password == user.password) {
+      res.redirect("/userDashboard");
+    } else {
+      res.redirect("/login");
+      return;
+    }
+  
 };

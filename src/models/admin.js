@@ -3,6 +3,16 @@ const validator = require("validator");
 
 const adminSchema = new mongoose.Schema(
   {
+    firstname: {
+      type: String,
+      required: true,
+      minlength: 3,
+    },
+    lastname: {
+      type: String,
+      required: true,
+      minlength: 3,
+    },
     email: {
       type: String,
       required: true,
@@ -22,11 +32,15 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
 // we will create a new collection
-const User = new mongoose.model("User", adminSchema);
+const AdminDB = new mongoose.model("Admin", adminSchema);
 
-module.exports = User;
+module.exports = { AdminDB };

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Dashboard</title>
+    <title>Users</title>
     <link rel="stylesheet" href="./css/style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Barlow&family=Caprasimo&family=PT+Sans:ital@1&display=swap"
@@ -23,33 +23,45 @@
   <body>
     <div class="container">
       <div class="text-center">
-        <h1 class="text-primary heading">Todo Activities</h1>
+        <h1 class="text-primary heading">All Users</h1>
       </div>
     </div>
     <div class="container">
       <div class="child-container">
         <div class="text-left">
           <button type="button" class="btn btn-primary margin-bottom">
-            <a href="/todo" class="text-white" id="text-deco">Create Task</a>
+            <a href="#" class="text-white" id="text-deco">Add User</a>
           </button>
         </div>
         <table class="table table-striped">
           <thead>
             <tr>
               <th scope="col">Id</th>
-              <th scope="col">Title</th>
-              <th scope="col">Discription</th>
-              <th scope="col">Priority</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Username</th>
+              <th scope="col">Password</th>
               <th scope="col">Status</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
-            <% tasks.forEach((task) => { %>
             <tr>
+                <td>1343535</td>
+                <td scope="col">Ashika</td>
+                <td scope="col">Panchal</td>
+                <td scope="col">ashika34@gmail.com</td>
+                <td scope="col">ashi155</td>
+                <td scope="col">37589</td>
+                <td scope="col">Active</td>
+                <td scope="col">Action</td>
+              </tr>
+            <!-- <% tasks.forEach((task) => { %>
+            <<tr>
               <td><%= task._id %></td>
               <td><%= task.title %></td>
-              <td><%= task.discription %></td>
+              <td><%= task.desc %></td>
               <td><%= task.priority %></td>
               <td><%= task.status %></td>
               <td>
@@ -59,7 +71,7 @@
                 </div>
               </td>
             </tr>
-            <% }); %>
+            <% }); %> --> 
           </tbody>
         </table>
       </div>

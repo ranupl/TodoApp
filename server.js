@@ -73,6 +73,9 @@ app.get("/users/:id", userCon.getUserByID);
 app.put("/users/:id", userCon.updateUser);
 app.delete("/users/:id", userCon.deleteUser);
 
+// user login
+app.post("/users/login", userCon.userLogin);
+
 // all about todo
 app.post("/todo", todoCon.createTask);
 app.get("/todo", todoCon.getAllTasks);
@@ -80,6 +83,11 @@ app.get("/todo/:id", todoCon.getTaskById);
 app.get("/todo/edit/:id", todoCon.editTask);
 app.post("/todo/update/:id", todoCon.updateTask);
 app.get("/todo/delete/:id", todoCon.deleteTask);
+
+const adminCon = require("./src/controllers/admin/admin");
+
+// admin routes
+app.post("/admin/login", adminCon.adminLogin);
 
 app.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);
