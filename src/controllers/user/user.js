@@ -52,7 +52,7 @@ exports.getUserByID = (req, res) => {
 
   UserDB.findById(userId)
     .then((user) => {
-      res.render("editUser", { user }); 
+      res.render("editUser", { user });
     })
     .catch((error) => {
       // Handle the error
@@ -64,12 +64,8 @@ exports.getUserByID = (req, res) => {
 // update user
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
-  
-  UserDB.findByIdAndUpdate(
-    id,
-    req.body,
-    { new: true }
-  )
+
+  UserDB.findByIdAndUpdate(id, req.body, { new: true })
     .then((updatedUser) => {
       if (!updatedUser) {
         return res.status(404).send("User not found");
@@ -100,17 +96,20 @@ exports.deleteUser = (req, res) => {
 // user login
 exports.userLogin = async (req, res) => {
   // Process the login form submission
-  const { username, password } = req.body;
+  const { text, password } = req.body;
+  // console.log(text);
 
   // Find the user by username
-  const user = await UserDB.findOne({ username });
+  const user = await UserDB.find({
+    $or: [{ email: text }, { username: text }],
+  });
+  // console.log(user[0].password);
 
   if (!user) {
     res.redirect("/login");
     return;
   }
-
-  if (password == user.password) {
+  if (password == user[0].password) {
     res.redirect("/userDashboard");
   } else {
     res.redirect("/login");

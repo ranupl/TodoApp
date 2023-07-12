@@ -141,21 +141,29 @@
 
 #text-deco {
     text-decoration: none;
-    padding: 0px 12px;
+    padding: 5px 10px;
+    border: 1px solid #0d6efd;
+    border-radius: 50px;
+    font-size: .8em;
+    margin-right: 20px;
+    color: #0d6efd;
+    box-shadow: 10px 10px 8px #888888;
+}
+#text-deco:hover{
+    background-color: #0d6efd;
+    color: white;
 }
 
 .bg-back{
     width: 100%;
-    height: 100px;
     display: flex;
-    align-items: center;
 }
 
 .wel-row{
     width: 100%;
     display:flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: right;
+    margin-top: 20px;
 }
 
 .outer-box{
@@ -170,6 +178,10 @@
     border-radius: 5px;
     padding: 20px;
     background-color: rgb(238, 250, 251);
+}
+
+#outline{
+    text-decoration: none;
 }
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */
