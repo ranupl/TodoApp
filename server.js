@@ -73,6 +73,7 @@ app.get("/editAdmin", (req, res) => {
 const userCon = require("./src/controllers/user/user");
 const todoCon = require("./src/controllers/todo/todo");
 app.get("/userDashboard", todoCon.getAllTasks);
+app.get("/allTodos", todoCon.getAllTasks);
 
 // all about user
 app.post("/users", userCon.createUser);
@@ -80,6 +81,7 @@ app.get("/users", userCon.getAllUsers);
 app.get("/users/:id", userCon.getUserByID);
 app.post("/users/update/:id", userCon.updateUser);
 app.get("/users/delete/:id", userCon.deleteUser);
+// app.get("/users/todo/:id", userCon.getUserByID);
 
 // user login
 app.post("/users/login", userCon.userLogin);

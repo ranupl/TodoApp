@@ -93,6 +93,21 @@ exports.deleteUser = (req, res) => {
     });
 };
 
+// get userId for todo
+exports.getUserByID = (req, res) => {
+  const userId = req.params.id;
+
+  UserDB.findById(userId)
+    .then((user) => {
+      res.render("allTodos", { user });
+    })
+    .catch((error) => {
+      // Handle the error
+      console.error(error);
+      res.status(500).send("Error retrieving user");
+    });
+};
+
 // user login
 exports.userLogin = async (req, res) => {
   // Process the login form submission

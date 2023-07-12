@@ -29,14 +29,21 @@ exports.adminLogin = async (req, res) => {
 
 // admin update
 exports.adminUpdate = async (req, res) => {
-  const { email, username, password, newpassword, confirmpassword } = req.body;
+  const {password, newpassword, confirmpassword } = req.body;
 
   // Find the user by username
-  const admin = await AdminDB.findOne({ username });
+  const admin = await AdminDB.findOne({ password : password });
+  console.log(admin.password);
 
-  if (admin.email == email) {
+  if (admin.password == password) {
     AdminDB.findByIdAndUpdate(admin.id, { $set: { password: newpassword } });
-    res.redirect("/adminDashboard");
+    if(newpassword == confirmpassword)
+    {
+      res.redirect("/adminDashboard");
+    }
+    else{
+      res.send(400).json({message:"Invalid password"});
+    }
   } else {
     res.render("admin", { error: "Invalid email" });
   }
