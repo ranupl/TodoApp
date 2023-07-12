@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../css/style.css" />
     <link
@@ -19,33 +19,76 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="text-center">
-            <h1 class="heading text-primary">Todo Activities</h1>
-        </div>
+      <div class="f-right">
+        <a href="/welcome" id="text-deco" class="logout">Logout</a>
+      </div>
     </div>
     <div class="container">
-    <div class="row">
+      <div class="text-center">
+        <h1 class="heading text-primary">Todo Activities</h1>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
         <div class="col-sm-3 border-blue">
-            <h1 class="font-fly">Dashboard</h1>
-            <ul class="nav margin-top d-block">
-                <li class="nav-item">
-                  <a class="nav-link f-size" href="./users">Users</a>
+          <h1 class="font-fly text-center">Dashboard</h1>
+          <ul class="nav margin-top d-block">
+            <li class="nav-item">
+              <a class="nav-link f-size" href="./users">Users</a>
+            </li>
+            <li class="nav-item f-size">
+              <a class="nav-link" href="./userDashboard">Todos</a>
+            </li>
+            <li class="nav-item f-size">
+              <a class="nav-link" href="./editAdmin">Reset Password</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-9">
+          <div class="border-blue">
+            <div class="row">
+              <div class="col">
+            <div class="admin-about">
+              <ul class="nav margin-top d-block">
+                <li class="nav-item f-size">
+                  First name : Vikas
                 </li>
                 <li class="nav-item f-size">
-                  <a class="nav-link" href="./userDashboard">Todos</a>
+                  Last name : Panchal
                 </li>
                 <li class="nav-item f-size">
-                  <a class="nav-link" href="./editAdmin">Reset Password</a>
+                  Email : vikas542011@gmail.com
+                </li>
+                <li class="nav-item f-size">
+                  Username : vicky54
+                </li>
+                <li class="nav-item f-size">
+                  Phone : 7828789845
                 </li>
               </ul>
+            </div>
+            <div class="col">
+              <div class="text-center">
+                <img src="../images/5272.jpg" id="admin-img">
+              </div>
+            
+            </div>
+            </div>
+          </div>
+          </div>
         </div>
-        <div class="col-sm-9"><img src="./images/checklist-g5aa343332_1280.png" class="img-fluid max-width" id="img-wh-1"></div>
+      </div>
     </div>
-</div>
-</body>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  </body>
+  <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
 </html>
