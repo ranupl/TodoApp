@@ -36,6 +36,13 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    privilege:{
+      type : String
+    },
+    lastlogin: {
+      type : Date,
+      default : Date.now()
+    }
   },
   { timestamps: true }
 );
