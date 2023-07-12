@@ -48,6 +48,7 @@ exports.getAllTasks = (req, res) => {
 exports.getTaskById = (req, res) => {
   TodoDB.findById()
     .then((tasks) => {
+      // console.log(tasks);
       res.render("userDashboard", { tasks }); // Render the EJS file with the users data
     })
     .catch((error) => {

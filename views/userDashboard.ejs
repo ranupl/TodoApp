@@ -22,6 +22,9 @@
   </head>
   <body>
     <div class="container">
+      <div class="float-right"><a href="/welcome">Logout</a></div>
+    </div>
+    <div class="container">
       <div class="text-center">
         <h1 class="text-primary heading">Todo Activities</h1>
       </div>
@@ -36,7 +39,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th scope="col">Id</th>
+              <th scope="col">S.No.</th>
               <th scope="col">Title</th>
               <th scope="col">Discription</th>
               <th scope="col">Priority</th>
@@ -45,21 +48,21 @@
             </tr>
           </thead>
           <tbody>
-            <% tasks.forEach((task) => { %>
+            <% for(let i=0; i<tasks.length; i++) { %>
             <tr>
-              <td><%= task._id %></td>
-              <td><%= task.title %></td>
-              <td><%= task.discription %></td>
-              <td><%= task.priority %></td>
-              <td><%= task.status %></td>
+              <td scope="col"><%= i+1 %></td>
+              <td scope="col"><%= tasks[i].title %></td>
+              <td scope="col"><%= tasks[i].discription %></td>
+              <td scope="col"><%= tasks[i].priority %></td>
+              <td scope="col"><%= tasks[i].status %></td>
               <td>
                 <div>
-                  <a href="/todo/edit/<%= task.id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
-                  <a href="/todo/delete/<%= task.id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
+                  <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+                  <a href="/todo/delete/<%= tasks[i].id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
                 </div>
               </td>
             </tr>
-            <% }); %>
+            <% }; %>
           </tbody>
         </table>
       </div>

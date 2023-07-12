@@ -106,13 +106,15 @@ exports.userLogin = async (req, res) => {
   // console.log(user[0].password);
 
   if (!user) {
-    res.redirect("/login");
+    // res.redirect("/login");
+    res.status(400).json({message : "User not found"});
     return;
   }
   if (password == user[0].password) {
     res.redirect("/userDashboard");
   } else {
-    res.redirect("/login");
+    // res.redirect("/login");
+    res.status(400).json({message : "Invalid username or email"});
     return;
   }
 };

@@ -1,0 +1,54 @@
+Database designing
+
+Admin:-
+id 
+firstname
+lastname
+email
+username
+password
+status
+privilege
+lastlogin
+created
+modified
+
+User:-
+id
+firstname-
+lastname-
+email-
+username-
+password-
+status-
+privilege
+lastlogin
+created
+modified
+
+Todos:-
+id
+uid
+title-
+discription-
+priority(high, medium, low)-
+status(pending, progress, done)-
+created
+modified
+
+ <% tasks.forEach((task) => { %>
+            <tr>
+              <td scope="col"><%= task._id %></td>
+              <td scope="col"><%= task._id %></td>
+              <td scope="col"><%= task.title %></td>
+              <td scope="col"><%= task.discription %></td>
+              <td scope="col"><%= task.priority %></td>
+              <td scope="col"><%= task.status %></td>
+              <td>
+                <div>
+                  <a href="/todo/edit/<%= task.id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+                  <a href="/todo/delete/<%= task.id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
+                </div>
+              </td>
+            </tr>
+            <% }); %>

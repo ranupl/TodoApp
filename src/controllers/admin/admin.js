@@ -3,20 +3,26 @@ const { AdminDB } = require("../../models/admin");
 // adming login
 exports.adminLogin = async (req, res) => {
   // Process the login form submission
-  const { username, password } = req.body;
+  const { text, password } = req.body;
+  // console.log(text);
 
   // Find the user by username
-  const admin = await AdminDB.findOne({ username });
+  const user = await AdminDB.find({
+    $or: [{ email: text }, { username: text }],
+  });
+  // console.log(user[0].password);
 
-  if (!admin) {
-    res.render("admin", { error: "Username not found" });
+  if (!user) {
+    // res.redirect("/admin");
+    res.status(400).json({message: "User not found"});
+    
     return;
   }
-
-  if (password == admin.password) {
+  if (password == user[0].password) {
     res.redirect("/adminDashboard");
   } else {
-    res.render("admin", { error: "Incorrect password or username" });
+      // res.redirect("/admin");
+    res.status(400).json({message: "Invalid username or email"});
     return;
   }
 };

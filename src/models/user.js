@@ -36,13 +36,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    privilege:{
-      type : String
+    privilege: {
+      type: String,
     },
     lastlogin: {
-      type : Date,
-      default : Date.now()
-    }
+      type: Date,
+      default: Date.now(),
+    },
   },
   { timestamps: true }
 );
