@@ -110,7 +110,7 @@
 }
 
 .f-size {
-    font-size: 1.3em;
+    font-size: 1em;
 }
 
 .border-blue {
@@ -226,6 +226,14 @@
 
 .mg-btm{
     padding-bottom: 40px;
+}
+
+.font-inherit{
+    font-size: inherit;
+}
+
+.f-fly{
+    font-family: 'Barlow', sans-serif;
 }
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */

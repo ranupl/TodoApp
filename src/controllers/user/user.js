@@ -49,10 +49,9 @@ exports.getAllUsers = (req, res) => {
 // get user by id
 exports.getUserByID = (req, res) => {
   const userId = req.params.id;
-
   UserDB.findById(userId)
     .then((user) => {
-      res.render("users", { user });
+      res.render("users", { user }); 
     })
     .catch((error) => {
       // Handle the error

@@ -35,6 +35,7 @@ exports.createTask = (req, res) => {
 
 //get all tasks
 exports.getAllTasks = (req, res) => {
+  
   TodoDB.find()
     .then((tasks) => {
       // console.log(tasks);
@@ -47,8 +48,7 @@ exports.getAllTasks = (req, res) => {
 
 // get task by id
 exports.getTaskById = (req, res) => {
-  const id = req.params.id;
-  TodoDB.findById(id)
+  TodoDB.findById()
     .then((tasks) => {
       // console.log(tasks);
       res.render("userDashboard", { tasks }); // Render the EJS file with the users data
