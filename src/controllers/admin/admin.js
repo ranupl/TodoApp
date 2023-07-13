@@ -32,7 +32,7 @@ exports.adminUpdate = async (req, res) => {
   const admin = await AdminDB.findOne({ password });
  
   if (admin.password == password) {
-    AdminDB.updateOne({password : password}, { $set: { password: newpassword } });
+    AdminDB.updateOne({password : password}, { $set: { password: newpassword } }).then();
     if (newpassword == confirmpassword) {
       res.redirect("/adminDashboard");
     } else {
