@@ -50,11 +50,11 @@
           <tbody>
             <% for(let i=0; i<tasks.length; i++) { %>
             <tr>
-              <td scope="col"><%= i+1 %></td>
-              <td scope="col"><%= tasks[i].title %></td>
-              <td scope="col"><%= tasks[i].discription %></td>
-              <td scope="col"><%= tasks[i].priority %></td>
-              <td scope="col"><%= tasks[i].status %></td>
+              <td><%= i+1 %></td>
+              <td><%= tasks[i].title %></td>
+              <td><%= tasks[i].discription %></td>
+              <td><%= tasks[i].priority %></td>
+              <td><%= tasks[i].status %></td>
               <td>
                 <div>
                   <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>

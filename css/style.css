@@ -211,7 +211,22 @@
     height: 300px !important;
 }
 
+.about-img{
+    width: 200px;
+    height: 200px;
+    /* padding: 40px; */
+    border-radius: 50%;
+    border: 6px solid white;
+}
 
+.mg-ab-top{
+    margin-top: 50px;
+    padding: 50px;
+}
+
+.mg-btm{
+    padding-bottom: 40px;
+}
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */
 /* font-family: 'PT Sans', sans-serif; */

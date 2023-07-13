@@ -4,6 +4,9 @@ const path = require("path");
 const dotenv = require("dotenv");
 const bodyparser = require("body-parser");
 require("./db/connection");
+const userCon = require("./src/controllers/user/user");
+const todoCon = require("./src/controllers/todo/todo");
+const adminCon = require("./src/controllers/admin/admin");
 
 // env file configure
 dotenv.config({ path: "config.env" });
@@ -23,6 +26,11 @@ app.use("/images", express.static(path.resolve(__dirname, "images")));
 app.get("/", (req, res) => {
   res.render("home");
 });
+
+// about page
+app.get("/about", (req, res) => {
+  res.render("about");
+})
 
 // welcome page
 app.get("/welcome", (req, res) => {
@@ -70,8 +78,6 @@ app.get("/editAdmin", (req, res) => {
 });
 
 // all routes
-const userCon = require("./src/controllers/user/user");
-const todoCon = require("./src/controllers/todo/todo");
 app.get("/userDashboard", todoCon.getAllTasks);
 app.get("/allTodos", todoCon.getAllTasks);
 
@@ -81,7 +87,6 @@ app.get("/users", userCon.getAllUsers);
 app.get("/users/:id", userCon.getUserByID);
 app.post("/users/update/:id", userCon.updateUser);
 app.get("/users/delete/:id", userCon.deleteUser);
-// app.get("/users/todo/:id", userCon.getUserByID);
 
 // user login
 app.post("/users/login", userCon.userLogin);
@@ -93,8 +98,6 @@ app.get("/todo/:id", todoCon.getTaskById);
 app.get("/todo/edit/:id", todoCon.editTask);
 app.post("/todo/update/:id", todoCon.updateTask);
 app.get("/todo/delete/:id", todoCon.deleteTask);
-
-const adminCon = require("./src/controllers/admin/admin");
 
 // admin routes
 app.post("/admin/login", adminCon.adminLogin);

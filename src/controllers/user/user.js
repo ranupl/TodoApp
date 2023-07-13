@@ -52,7 +52,7 @@ exports.getUserByID = (req, res) => {
 
   UserDB.findById(userId)
     .then((user) => {
-      res.render("editUser", { user });
+      res.render("users", { user });
     })
     .catch((error) => {
       // Handle the error
@@ -93,20 +93,6 @@ exports.deleteUser = (req, res) => {
     });
 };
 
-// get userId for todo
-exports.getUserByID = (req, res) => {
-  const userId = req.params.id;
-
-  UserDB.findById(userId)
-    .then((user) => {
-      res.render("allTodos", { user });
-    })
-    .catch((error) => {
-      // Handle the error
-      console.error(error);
-      res.status(500).send("Error retrieving user");
-    });
-};
 
 // user login
 exports.userLogin = async (req, res) => {
@@ -127,6 +113,9 @@ exports.userLogin = async (req, res) => {
   }
   if (password == user[0].password) {
     res.redirect("/userDashboard");
+    // const uid =  user[0].id;
+    // console.log(uid);
+    // res.render("userDashboard", {uid});
   } else {
     // res.redirect("/login");
     res.status(400).json({message : "Invalid username or email"});

@@ -10,12 +10,9 @@ exports.adminLogin = async (req, res) => {
   const user = await AdminDB.find({
     $or: [{ email: text }, { username: text }],
   });
-  // console.log(user[0].password);
 
   if (!user) {
-    // res.redirect("/admin");
     res.status(400).json({message: "User not found"});
-    
     return;
   }
   if (password == user[0].password) {
