@@ -1,4 +1,6 @@
 const { AdminDB } = require("../../models/admin");
+const LocalStorage = require('node-localstorage').LocalStorage;
+const localStorage = new LocalStorage('./todoStorage');
 
 // adming login
 exports.adminLogin = async (req, res) => {
@@ -16,6 +18,10 @@ exports.adminLogin = async (req, res) => {
     return;
   }
   if (password == user[0].password) {
+    let currentUser = user[0]._doc;
+    // currentUser.role="admin"
+  
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
     res.redirect("/adminDashboard");
   } else {
     // res.redirect("/admin");

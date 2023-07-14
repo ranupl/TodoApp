@@ -1,6 +1,8 @@
 const { TodoDB } = require("../../models/todo");
+const LocalStorage = require("node-localstorage").LocalStorage;
+const localStorage = new LocalStorage("./todoStorage");
 
-// CURD for todo
+// CURD for todo (adminDashboard)
 // create task
 exports.createTask = (req, res) => {
   // validate request
@@ -8,9 +10,14 @@ exports.createTask = (req, res) => {
     res.status(400).send({ message: "Content can not be empty" });
     return;
   }
-
+  const storedId = localStorage.getItem("currentUser");
+  const parseId = JSON.parse(storedId);
+  // console.log(parseId._id);
+  const uid = parseId._id;
+  // console.log(uid);
   // new user
   const newTask = new TodoDB({
+    userid: uid,
     title: req.body.title,
     discription: req.body.discription,
     priority: req.body.priority,
@@ -22,8 +29,7 @@ exports.createTask = (req, res) => {
     .save()
     .then((data) => {
       // res.send(data);
-      // localStorage.setItem("user", data);
-      res.redirect("/userDashboard");
+      res.redirect("/adminDashboard");
     })
     .catch((err) => {
       res.status(500).send({
@@ -35,27 +41,30 @@ exports.createTask = (req, res) => {
 
 //get all tasks
 exports.getAllTasks = (req, res) => {
-  
-  TodoDB.find()
-    .then((tasks) => {
-      // console.log(tasks);
-      res.render("userDashboard", { tasks }); // Render the EJS file with the users data
-    })
-    .catch((error) => {
-      res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
-    });
-};
+  const storedId = localStorage.getItem("currentUser");
+  const parseId = JSON.parse(storedId);
+  const uid = parseId._id;
+  const userRole = parseId.role;
+  // console.log(userRole);
 
-// get task by id
-exports.getTaskById = (req, res) => {
-  TodoDB.findById()
-    .then((tasks) => {
-      // console.log(tasks);
-      res.render("userDashboard", { tasks }); // Render the EJS file with the users data
-    })
-    .catch((error) => {
-      res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
-    });
+  if (userRole == "admin") {
+    TodoDB.find()
+      .then((tasks) => {
+        console.log(tasks);
+        res.render("allTodos", { tasks }); // Render the EJS file with the users data
+      })
+      .catch((error) => {
+        res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
+      });
+  } else {
+    TodoDB.find({ userid: uid })
+      .then((tasks) => { 
+       res.render("userDashboard", { tasks }); // Render the EJS file with the users data
+      })
+      .catch((error) => {
+        res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
+      });
+  }
 };
 
 // edit task
@@ -76,18 +85,18 @@ exports.editTask = (req, res) => {
 //update tasks
 exports.updateTask = (req, res) => {
   const { id } = req.body;
-  const { title, discription, priority, status } = req.body;
+  const { userid, title, discription, priority, status } = req.body;
   // console.log(id);
   TodoDB.findByIdAndUpdate(
     id,
-    { title, discription, priority, status },
+    { userid, title, discription, priority, status },
     { new: true }
   )
     .then((updatedTask) => {
       if (!updatedTask) {
         return res.status(404).send("Task not found");
       }
-      res.redirect("/userDashboard");
+      res.redirect("/allTodos");
     })
     .catch((error) => {
       res.status(500).send("Error updating Task");
@@ -103,10 +112,25 @@ exports.deleteTask = (req, res) => {
       if (!deletedTask) {
         return res.status(404).send("Task not found");
       }
-
-      res.redirect("/userDashboard");
+      res.redirect("/allTodos");
     })
     .catch((error) => {
       res.status(500).send("Error deleting task");
+    });
+};
+
+// for userDashboard
+
+// get task by id
+exports.getTaskByUserId = (req, res) => {
+  const storedId = localStorage.getItem("currentUser");
+  const ParseId = JSON.parse(storedId);
+  const uid = ParseId[0]._id;
+  TodoDB.findOne({ userid: uid })
+    .then((tasks) => {
+      res.render("userDashboard", { tasks }); // Render the EJS file with the users data
+    })
+    .catch((error) => {
+      res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
     });
 };

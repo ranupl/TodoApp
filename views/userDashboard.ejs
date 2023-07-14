@@ -48,21 +48,24 @@
             </tr>
           </thead>
           <tbody>
-            <% for(let i=0; i<tasks.length; i++) { %>
-            <tr>
-              <td><%= i+1 %></td>
-              <td><%= tasks[i].title %></td>
-              <td><%= tasks[i].discription %></td>
-              <td><%= tasks[i].priority %></td>
-              <td><%= tasks[i].status %></td>
-              <td>
-                <div>
-                  <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
-                  <a href="/todo/delete/<%= tasks[i].id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
-                </div>
-              </td>
-            </tr>
-            <% }; %>
+            <% if(tasks.length > 0) { %>
+              <% for(let i=0; i<tasks.length; i++) {  %>
+                <tr>
+                  <td><%= i+1 %></td>
+                  <td><%= tasks[i].title %></td>
+                  <td><%= tasks[i].discription %></td>
+                  <td><%= tasks[i].priority %></td>
+                  <td><%= tasks[i].status %></td>
+                  <td>
+                    <div>
+                      <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+                      <a href="/todo/delete/<%= tasks[i].id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
+                    </div>
+                  </td>
+                </tr>
+             <% } %>
+           <% } %>
+            
           </tbody>
         </table>
       </div>

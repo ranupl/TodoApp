@@ -77,9 +77,14 @@ app.get("/editAdmin", (req, res) => {
   res.render("editAdmin");
 });
 
+// app.get("/userDashboard", (req, res) => {
+//   res.render("userDashboard");
+// })
+
 // all routes
 app.get("/userDashboard", todoCon.getAllTasks);
 app.get("/allTodos", todoCon.getAllTasks);
+// app.get("/userDashboard", todoCon.getTaskByUserId);
 
 // all about user
 app.post("/users", userCon.createUser);
@@ -94,14 +99,18 @@ app.post("/users/login", userCon.userLogin);
 // all about todo
 app.post("/todo", todoCon.createTask);
 app.get("/todo", todoCon.getAllTasks);
-app.get("/todo/:id", todoCon.getTaskById);
+// app.get("/todo/:id", todoCon.getTaskById);
+
+
 app.get("/todo/edit/:id", todoCon.editTask);
 app.post("/todo/update/:id", todoCon.updateTask);
 app.get("/todo/delete/:id", todoCon.deleteTask);
 
+
 // admin routes
 app.post("/admin/login", adminCon.adminLogin);
 app.post("/admin/update", adminCon.adminUpdate);
+
 
 
 app.listen(PORT, () => {

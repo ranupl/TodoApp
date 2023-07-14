@@ -1,4 +1,6 @@
 const { UserDB } = require("../../models/user");
+const LocalStorage = require('node-localstorage').LocalStorage;
+const localStorage = new LocalStorage('./todoStorage');
 
 // user CURD operation
 // create and save new user
@@ -24,7 +26,6 @@ exports.createUser = (req, res) => {
     .save()
     .then((data) => {
       // res.send(data);
-      // localStorage.setItem("user", data);
       res.redirect("/userDashboard");
     })
     .catch((err) => {
@@ -51,7 +52,7 @@ exports.getUserByID = (req, res) => {
   const userId = req.params.id;
   UserDB.findById(userId)
     .then((user) => {
-      res.render("users", { user }); 
+      res.render("editUser", { user });
     })
     .catch((error) => {
       // Handle the error
@@ -92,7 +93,6 @@ exports.deleteUser = (req, res) => {
     });
 };
 
-
 // user login
 exports.userLogin = async (req, res) => {
   // Process the login form submission
@@ -106,18 +106,17 @@ exports.userLogin = async (req, res) => {
   // console.log(user[0].password);
 
   if (!user) {
-    // res.redirect("/login");
-    res.status(400).json({message : "User not found"});
+    res.status(400).json({ message: "User not found" });
     return;
   }
   if (password == user[0].password) {
+    let currentUser = user[0]._doc;
+    // currentUser.role="user"
+  
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
     res.redirect("/userDashboard");
-    // const uid =  user[0].id;
-    // console.log(uid);
-    // res.render("userDashboard", {uid});
   } else {
-    // res.redirect("/login");
-    res.status(400).json({message : "Invalid username or email"});
+    res.status(400).json({ message: "Invalid username or email" });
     return;
   }
 };
