@@ -7,6 +7,8 @@ require("./db/connection");
 const userCon = require("./src/controllers/user/user");
 const todoCon = require("./src/controllers/todo/todo");
 const adminCon = require("./src/controllers/admin/admin");
+const LocalStorage = require("node-localstorage").LocalStorage;
+const localStorage = new LocalStorage("./todoStorage");
 
 // env file configure
 dotenv.config({ path: "config.env" });
@@ -30,7 +32,7 @@ app.get("/", (req, res) => {
 // about page
 app.get("/about", (req, res) => {
   res.render("about");
-})
+});
 
 // welcome page
 app.get("/welcome", (req, res) => {
@@ -72,19 +74,14 @@ app.get("/editUser", (req, res) => {
   res.render("editUser");
 });
 
-// edit admin 
+// edit admin
 app.get("/editAdmin", (req, res) => {
   res.render("editAdmin");
 });
 
-// app.get("/userDashboard", (req, res) => {
-//   res.render("userDashboard");
-// })
-
 // all routes
 app.get("/userDashboard", todoCon.getAllTasks);
 app.get("/allTodos", todoCon.getAllTasks);
-// app.get("/userDashboard", todoCon.getTaskByUserId);
 
 // all about user
 app.post("/users", userCon.createUser);
@@ -96,6 +93,12 @@ app.get("/users/delete/:id", userCon.deleteUser);
 // user login
 app.post("/users/login", userCon.userLogin);
 
+// user logout
+app.get("/logout", (req, res) => {
+  localStorage.clear();
+  res.redirect("/welcome");
+});
+
 // all about todo
 app.post("/todo", todoCon.createTask);
 app.get("/todo", todoCon.getAllTasks);
@@ -104,12 +107,9 @@ app.get("/todo/edit/:id", todoCon.editTask);
 app.post("/todo/update/:id", todoCon.updateTask);
 app.get("/todo/delete/:id", todoCon.deleteTask);
 
-
 // admin routes
 app.post("/admin/login", adminCon.adminLogin);
 app.post("/admin/update", adminCon.adminUpdate);
-
-
 
 app.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);

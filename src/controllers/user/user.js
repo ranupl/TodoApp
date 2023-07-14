@@ -119,3 +119,10 @@ exports.userLogin = async (req, res) => {
     return;
   }
 };
+
+// for logout user
+// exports.logoutUser = (req, res) => {
+//   //  const x = localStorage.clear();
+//    console.log(xy);
+//   //  res.redirect("/welcome");
+// }
