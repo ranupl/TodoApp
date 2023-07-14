@@ -12,31 +12,58 @@ exports.createTask = (req, res) => {
   }
   const storedId = localStorage.getItem("currentUser");
   const parseId = JSON.parse(storedId);
-  // console.log(parseId._id);
   const uid = parseId._id;
-  // console.log(uid);
-  // new user
-  const newTask = new TodoDB({
-    userid: uid,
-    title: req.body.title,
-    discription: req.body.discription,
-    priority: req.body.priority,
-    status: req.body.status,
-  });
+  const userRole = parseId.role;
 
-  // save user in the database
-  newTask
-    .save()
-    .then((data) => {
-      // res.send(data);
-      res.redirect("/adminDashboard");
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occured while creating a create operation",
-      });
+  if (userRole == "admin") {
+    // new user
+    const newTask = new TodoDB({
+      userid: uid,
+      title: req.body.title,
+      discription: req.body.discription,
+      priority: req.body.priority,
+      status: req.body.status,
     });
+
+    // save user in the database
+    newTask
+      .save()
+      .then((data) => {
+        // res.send(data);
+        res.redirect("/adminDashboard");
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message ||
+            "Some error occured while creating a create operation",
+        });
+      });
+  } else {
+     // new user
+     const newTask = new TodoDB({
+      userid: uid,
+      title: req.body.title,
+      discription: req.body.discription,
+      priority: req.body.priority,
+      status: req.body.status,
+    });
+
+    // save user in the database
+    newTask
+      .save()
+      .then((data) => {
+        // res.send(data);
+        res.redirect("/userDashboard");
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message ||
+            "Some error occured while creating a create operation",
+        });
+      });
+  }
 };
 
 //get all tasks
@@ -58,8 +85,8 @@ exports.getAllTasks = (req, res) => {
       });
   } else {
     TodoDB.find({ userid: uid })
-      .then((tasks) => { 
-       res.render("userDashboard", { tasks }); // Render the EJS file with the users data
+      .then((tasks) => {
+        res.render("userDashboard", { tasks }); // Render the EJS file with the users data
       })
       .catch((error) => {
         res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
