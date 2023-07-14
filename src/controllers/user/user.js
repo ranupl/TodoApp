@@ -10,7 +10,6 @@ exports.createUser = (req, res) => {
     res.status(400).send({ message: "Content can not be empty" });
     return;
   }
-
   // new user
   const newUser = new UserDB({
     firstname: req.body.firstname,
@@ -103,7 +102,6 @@ exports.userLogin = async (req, res) => {
   const user = await UserDB.find({
     $or: [{ email: text }, { username: text }],
   });
-  // console.log(user[0].password);
 
   if (!user) {
     res.status(400).json({ message: "User not found" });
@@ -111,7 +109,8 @@ exports.userLogin = async (req, res) => {
   }
   if (password == user[0].password) {
     let currentUser = user[0]._doc;
-    // currentUser.role="user"
+    currentUser.role="user"
+    // console.log(currentUser);
   
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
     res.redirect("/userDashboard");

@@ -19,7 +19,8 @@ exports.adminLogin = async (req, res) => {
   }
   if (password == user[0].password) {
     let currentUser = user[0]._doc;
-    // currentUser.role="admin"
+    currentUser.role="admin";
+    console.log(currentUser);
   
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
     res.redirect("/adminDashboard");

@@ -100,8 +100,6 @@ app.post("/users/login", userCon.userLogin);
 app.post("/todo", todoCon.createTask);
 app.get("/todo", todoCon.getAllTasks);
 // app.get("/todo/:id", todoCon.getTaskById);
-
-
 app.get("/todo/edit/:id", todoCon.editTask);
 app.post("/todo/update/:id", todoCon.updateTask);
 app.get("/todo/delete/:id", todoCon.deleteTask);

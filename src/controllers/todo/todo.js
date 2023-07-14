@@ -70,14 +70,15 @@ exports.createTask = (req, res) => {
 exports.getAllTasks = (req, res) => {
   const storedId = localStorage.getItem("currentUser");
   const parseId = JSON.parse(storedId);
+  console.log(parseId);
   const uid = parseId._id;
   const userRole = parseId.role;
-  // console.log(userRole);
+  console.log(userRole);
 
   if (userRole == "admin") {
     TodoDB.find()
       .then((tasks) => {
-        console.log(tasks);
+        // console.log(tasks);
         res.render("allTodos", { tasks }); // Render the EJS file with the users data
       })
       .catch((error) => {
@@ -149,15 +150,15 @@ exports.deleteTask = (req, res) => {
 // for userDashboard
 
 // get task by id
-exports.getTaskByUserId = (req, res) => {
-  const storedId = localStorage.getItem("currentUser");
-  const ParseId = JSON.parse(storedId);
-  const uid = ParseId[0]._id;
-  TodoDB.findOne({ userid: uid })
-    .then((tasks) => {
-      res.render("userDashboard", { tasks }); // Render the EJS file with the users data
-    })
-    .catch((error) => {
-      res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
-    });
-};
+// exports.getTaskByUserId = (req, res) => {
+//   const storedId = localStorage.getItem("currentUser");
+//   const ParseId = JSON.parse(storedId);
+//   const uid = ParseId[0]._id;
+//   TodoDB.findOne({ userid: uid })
+//     .then((tasks) => {
+//       res.render("userDashboard", { tasks }); // Render the EJS file with the users data
+//     })
+//     .catch((error) => {
+//       res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
+//     });
+// };
