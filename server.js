@@ -7,8 +7,9 @@ require("./db/connection");
 const userCon = require("./src/controllers/user/user");
 const todoCon = require("./src/controllers/todo/todo");
 const adminCon = require("./src/controllers/admin/admin");
-const LocalStorage = require("node-localstorage").LocalStorage;
-const localStorage = new LocalStorage("./todoStorage");
+// const LocalStorage = require("node-localstorage").LocalStorage;
+// const localStorage = new LocalStorage("./todoStorage");
+const cookieParser = require("cookie-parser");
 
 // env file configure
 dotenv.config({ path: "config.env" });
@@ -16,6 +17,9 @@ const PORT = process.env.PORT || 8000;
 
 // body parser
 app.use(bodyparser.urlencoded({ extended: true }));
+
+// cookie
+app.use(cookieParser());
 
 // view engine set
 app.set("view engine", "ejs");
@@ -60,9 +64,8 @@ app.get("/todo", (req, res) => {
 });
 
 // admin dashboard
-app.get("/adminDashboard", (req, res) => {
-  res.render("adminDashboard");
-});
+app.get("/adminDashboard", adminCon.adminDashboard);
+
 
 //todo update
 app.get("/updateTodo", (req, res) => {
@@ -95,14 +98,13 @@ app.post("/users/login", userCon.userLogin);
 
 // user logout
 app.get("/logout", (req, res) => {
-  localStorage.clear();
+  res.clearCookie('currentUser');
   res.redirect("/welcome");
 });
 
 // all about todo
 app.post("/todo", todoCon.createTask);
 app.get("/todo", todoCon.getAllTasks);
-// app.get("/todo/:id", todoCon.getTaskById);
 app.get("/todo/edit/:id", todoCon.editTask);
 app.post("/todo/update/:id", todoCon.updateTask);
 app.get("/todo/delete/:id", todoCon.deleteTask);

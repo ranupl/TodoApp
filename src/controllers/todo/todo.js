@@ -1,6 +1,5 @@
 const { TodoDB } = require("../../models/todo");
-const LocalStorage = require("node-localstorage").LocalStorage;
-const localStorage = new LocalStorage("./todoStorage");
+
 
 // CURD for todo (adminDashboard)
 // create task
@@ -10,15 +9,15 @@ exports.createTask = (req, res) => {
     res.status(400).send({ message: "Content can not be empty" });
     return;
   }
-  const storedId = localStorage.getItem("currentUser");
-  const parseId = JSON.parse(storedId);
-  const uid = parseId._id;
-  const userRole = parseId.role;
 
-  if (userRole == "admin") {
+  const userCookie = req.cookies.currentUser;
+  const role = userCookie[0].privilege;
+  const uname = userCookie[0].username;
+  
+  if (role == "admin") {
     // new user
     const newTask = new TodoDB({
-      userid: uid,
+      userid: uname,
       title: req.body.title,
       discription: req.body.discription,
       priority: req.body.priority,
@@ -29,7 +28,6 @@ exports.createTask = (req, res) => {
     newTask
       .save()
       .then((data) => {
-        // res.send(data);
         res.redirect("/adminDashboard");
       })
       .catch((err) => {
@@ -42,7 +40,7 @@ exports.createTask = (req, res) => {
   } else {
      // new user
      const newTask = new TodoDB({
-      userid: uid,
+      userid: uname,
       title: req.body.title,
       discription: req.body.discription,
       priority: req.body.priority,
@@ -68,14 +66,12 @@ exports.createTask = (req, res) => {
 
 //get all tasks
 exports.getAllTasks = (req, res) => {
-  const storedId = localStorage.getItem("currentUser");
-  const parseId = JSON.parse(storedId);
-  console.log(parseId);
-  const uid = parseId._id;
-  const userRole = parseId.role;
-  console.log(userRole);
+  const userCookie = req.cookies.currentUser;
+  // JSON.parse(userCookie);
+  const role = userCookie[0].privilege;
+  const uname = userCookie[0].username;
 
-  if (userRole == "admin") {
+  if (role == "admin") {
     TodoDB.find()
       .then((tasks) => {
         // console.log(tasks);
@@ -85,7 +81,7 @@ exports.getAllTasks = (req, res) => {
         res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
       });
   } else {
-    TodoDB.find({ userid: uid })
+    TodoDB.find({ userid: uname })
       .then((tasks) => {
         res.render("userDashboard", { tasks }); // Render the EJS file with the users data
       })
@@ -147,18 +143,4 @@ exports.deleteTask = (req, res) => {
     });
 };
 
-// for userDashboard
 
-// get task by id
-// exports.getTaskByUserId = (req, res) => {
-//   const storedId = localStorage.getItem("currentUser");
-//   const ParseId = JSON.parse(storedId);
-//   const uid = ParseId[0]._id;
-//   TodoDB.findOne({ userid: uid })
-//     .then((tasks) => {
-//       res.render("userDashboard", { tasks }); // Render the EJS file with the users data
-//     })
-//     .catch((error) => {
-//       res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
-//     });
-// };

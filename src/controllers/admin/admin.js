@@ -1,12 +1,28 @@
 const { AdminDB } = require("../../models/admin");
-const LocalStorage = require('node-localstorage').LocalStorage;
-const localStorage = new LocalStorage('./todoStorage');
+
+// admin dashboard
+exports.adminDashboard = async (req, res) => {
+  const userCookie = req.cookies.currentUser;
+  const id = userCookie[0]._id;
+  // console.log(id);
+
+  AdminDB.findById(id)
+  .then((user) => {
+    res.render("adminDashboard", { user });
+  })
+  .catch((error) => {
+    // Handle the error
+    console.error(error);
+    res.status(500).send("Error retrieving user");
+  });
+}
+
+
 
 // adming login
 exports.adminLogin = async (req, res) => {
   // Process the login form submission
   const { text, password } = req.body;
-  // console.log(text);
 
   // Find the user by username
   const user = await AdminDB.find({
@@ -19,12 +35,12 @@ exports.adminLogin = async (req, res) => {
   }
   if (password == user[0].password) {
     let currentUser = user[0]._doc;
-    currentUser.role="admin";
-  
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    currentUser.privilege = "admin";
+   
+    res.cookie('currentUser', user, {maxAge: 900000});
     res.redirect("/adminDashboard");
+    // res.render("/adminDashboard", {user});
   } else {
-    // res.redirect("/admin");
     res.status(400).json({ message: "Invalid username or email" });
     return;
   }

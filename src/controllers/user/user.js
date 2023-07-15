@@ -1,6 +1,4 @@
 const { UserDB } = require("../../models/user");
-const LocalStorage = require('node-localstorage').LocalStorage;
-const localStorage = new LocalStorage('./todoStorage');
 
 // user CURD operation
 // create and save new user
@@ -24,8 +22,8 @@ exports.createUser = (req, res) => {
   newUser
     .save()
     .then((data) => {
-      // res.send(data);
       res.redirect("/userDashboard");
+      // res.render("userDashboard");
     })
     .catch((err) => {
       res.status(500).send({
@@ -96,22 +94,23 @@ exports.deleteUser = (req, res) => {
 exports.userLogin = async (req, res) => {
   // Process the login form submission
   const { text, password } = req.body;
-  // console.log(text);
-
+ 
   // Find the user by username
   const user = await UserDB.find({
     $or: [{ email: text }, { username: text }],
   });
-
+ 
   if (!user) {
     res.status(400).json({ message: "User not found" });
     return;
   }
   if (password == user[0].password) {
     let currentUser = user[0]._doc;
-    currentUser.role="user"
-  
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    currentUser.privilege = "user";
+    
+    res.cookie('currentUser', user, {maxAge: 900000});
+    console.log(currentUser);
+    
     res.redirect("/userDashboard");
   } else {
     res.status(400).json({ message: "Invalid username or email" });
