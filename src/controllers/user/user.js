@@ -110,7 +110,6 @@ exports.userLogin = async (req, res) => {
   if (password == user[0].password) {
     let currentUser = user[0]._doc;
     currentUser.role="user"
-    // console.log(currentUser);
   
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
     res.redirect("/userDashboard");
@@ -120,9 +119,3 @@ exports.userLogin = async (req, res) => {
   }
 };
 
-// for logout user
-// exports.logoutUser = (req, res) => {
-//   //  const x = localStorage.clear();
-//    console.log(xy);
-//   //  res.redirect("/welcome");
-// }
