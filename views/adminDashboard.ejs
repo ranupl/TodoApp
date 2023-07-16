@@ -34,13 +34,10 @@
           <a class="nav-link" href="/about">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/admin">Login</a>
+          <a class="nav-link" href="/adminDashboard">Dashboard</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/adminDashboard">Dashboard</a>
         </li>
       </ul>
     </nav>
@@ -73,16 +70,16 @@
               <ul class="nav margin-top d-block">
                 <li class="nav-item f-size">
                   <!-- First name : Vikas -->
-                  First Name - <%= user.firstname%>
+                  First Name - <%= user[0].firstname %>
                 </li>
                 <li class="nav-item f-size">
-                  Last Name - <%= user.lastname %>
+                  Last Name - <%= user[0].lastname %>
                 </li>
                 <li class="nav-item f-size">
-                  Email - <%= user.email %>
+                  Email - <%= user[0].email %>
                 </li>
                 <li class="nav-item f-size">
-                  Username - <%= user.username %>
+                  Username - <%= user[0].username %>
                 </li>
               </ul>
             </div>
@@ -97,9 +94,11 @@
         </div>
       </div>
     </div>
-     <!-- footer -->
-     <footer>
-      <div class="text-center"><p>copywrite©2023</p></div>
+    <!-- footer -->
+    <footer class="footer bg-light text-center">
+      <div class="container">
+        <span>copywrite&copy;2023</span>
+      </div>
     </footer>
   </body>
   <script

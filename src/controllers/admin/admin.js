@@ -2,11 +2,9 @@ const { AdminDB } = require("../../models/admin");
 
 // admin dashboard
 exports.adminDashboard = async (req, res) => {
-  const userCookie = req.cookies.currentUser;
-  const id = userCookie[0]._id;
-  // console.log(id);
+  const uname = req.cookies.username;
 
-  AdminDB.findById(id)
+  AdminDB.find({username : uname})
   .then((user) => {
     res.render("adminDashboard", { user });
   })
@@ -34,12 +32,15 @@ exports.adminLogin = async (req, res) => {
     return;
   }
   if (password == user[0].password) {
-    let currentUser = user[0]._doc;
-    currentUser.privilege = "admin";
-   
-    res.cookie('currentUser', user, {maxAge: 900000});
+    user[0].privilege = 'admin';
+    const username = user[0].username;
+    const privilege = user[0].privilege;
+    const password = user[0].password;
+    res.cookie('username', username);
+    res.cookie('password', password);
+    res.cookie('privilege', privilege);
+    // res.cookie('currentUser', user, {maxAge: 900000});
     res.redirect("/adminDashboard");
-    // res.render("/adminDashboard", {user});
   } else {
     res.status(400).json({ message: "Invalid username or email" });
     return;

@@ -16,14 +16,20 @@ exports.createUser = (req, res) => {
     username: req.body.username,
     password: req.body.password,
     status: "active",
+    privilege: "user"
   });
 
   // save user in the database
   newUser
     .save()
     .then((data) => {
+      const username = data.username;
+      const privilege = data.privilege;
+      const password = data.password;
+      res.cookie('username', username);
+      res.cookie('password', password);
+      res.cookie('privilege', privilege);
       res.redirect("/userDashboard");
-      // res.render("userDashboard");
     })
     .catch((err) => {
       res.status(500).send({
@@ -90,6 +96,18 @@ exports.deleteUser = (req, res) => {
     });
 };
 
+// get all username
+exports.getAllUsername = (req, res) => {
+  UserDB.find()
+    .then((users) => {
+      res.render("todoCreate", { users }); // Render the EJS file with the users data
+    })
+    .catch((error) => {
+      res.status(500).send("Error retrieving users"); // Handle the error appropriately
+    });
+};
+
+
 // user login
 exports.userLogin = async (req, res) => {
   // Process the login form submission
@@ -102,18 +120,23 @@ exports.userLogin = async (req, res) => {
  
   if (!user) {
     res.status(400).json({ message: "User not found" });
+    // res.render("login", {error : "User not found"});
+    // res.render('login', { error: 'Username is required' });
     return;
   }
   if (password == user[0].password) {
-    let currentUser = user[0]._doc;
-    currentUser.privilege = "user";
-    
-    res.cookie('currentUser', user, {maxAge: 900000});
-    console.log(currentUser);
+    user[0].privilege = 'user';
+    const username = user[0].username;
+    const privilege = user[0].privilege;
+    const password = user[0].password;
+    res.cookie('username', username);
+    res.cookie('password', password);
+    res.cookie('privilege', privilege);
     
     res.redirect("/userDashboard");
   } else {
     res.status(400).json({ message: "Invalid username or email" });
+    // res.render("login", {massage : "Invalid username or password"});
     return;
   }
 };

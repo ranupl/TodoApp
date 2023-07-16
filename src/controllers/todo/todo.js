@@ -10,14 +10,15 @@ exports.createTask = (req, res) => {
     return;
   }
 
-  const userCookie = req.cookies.currentUser;
-  const role = userCookie[0].privilege;
-  const uname = userCookie[0].username;
+  const role = req.cookies.privilege;
+  const uname = req.cookies.username;
   
+  const userid = req.body.userid;
+
   if (role == "admin") {
     // new user
     const newTask = new TodoDB({
-      userid: uname,
+      userid: userid,
       title: req.body.title,
       discription: req.body.discription,
       priority: req.body.priority,
@@ -28,7 +29,7 @@ exports.createTask = (req, res) => {
     newTask
       .save()
       .then((data) => {
-        res.redirect("/adminDashboard");
+        res.redirect("/allTodos");
       })
       .catch((err) => {
         res.status(500).send({
@@ -66,11 +67,9 @@ exports.createTask = (req, res) => {
 
 //get all tasks
 exports.getAllTasks = (req, res) => {
-  const userCookie = req.cookies.currentUser;
-  // JSON.parse(userCookie);
-  const role = userCookie[0].privilege;
-  const uname = userCookie[0].username;
-
+  const role = req.cookies.privilege;
+  const uname = req.cookies.username;
+  console.log("uname",uname)
   if (role == "admin") {
     TodoDB.find()
       .then((tasks) => {
@@ -83,7 +82,7 @@ exports.getAllTasks = (req, res) => {
   } else {
     TodoDB.find({ userid: uname })
       .then((tasks) => {
-        res.render("userDashboard", { tasks }); // Render the EJS file with the users data
+        res.render("userDashboard", { tasks,uname }); // Render the EJS file with the users data
       })
       .catch((error) => {
         res.status(500).send("Error retrieving tasks"); // Handle the error appropriately

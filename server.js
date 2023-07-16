@@ -7,8 +7,6 @@ require("./db/connection");
 const userCon = require("./src/controllers/user/user");
 const todoCon = require("./src/controllers/todo/todo");
 const adminCon = require("./src/controllers/admin/admin");
-// const LocalStorage = require("node-localstorage").LocalStorage;
-// const localStorage = new LocalStorage("./todoStorage");
 const cookieParser = require("cookie-parser");
 
 // env file configure
@@ -81,6 +79,9 @@ app.get("/editUser", (req, res) => {
 app.get("/editAdmin", (req, res) => {
   res.render("editAdmin");
 });
+
+// todo create
+app.get("/todoCreate", userCon.getAllUsername);
 
 // all routes
 app.get("/userDashboard", todoCon.getAllTasks);
