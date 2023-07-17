@@ -1,6 +1,5 @@
 const { TodoDB } = require("../../models/todo");
 
-
 // CURD for todo (adminDashboard)
 // create task
 exports.createTask = (req, res) => {
@@ -12,7 +11,7 @@ exports.createTask = (req, res) => {
 
   const role = req.cookies.privilege;
   const uname = req.cookies.username;
-  
+
   const userid = req.body.userid;
 
   if (role == "admin") {
@@ -39,8 +38,8 @@ exports.createTask = (req, res) => {
         });
       });
   } else {
-     // new user
-     const newTask = new TodoDB({
+    // new user
+    const newTask = new TodoDB({
       userid: uname,
       title: req.body.title,
       discription: req.body.discription,
@@ -69,7 +68,9 @@ exports.createTask = (req, res) => {
 exports.getAllTasks = (req, res) => {
   const role = req.cookies.privilege;
   const uname = req.cookies.username;
-  console.log("uname",uname)
+  const lastlogin = req.cookies.lastlogin;
+  console.log(lastlogin);
+
   if (role == "admin") {
     TodoDB.find()
       .then((tasks) => {
@@ -82,7 +83,7 @@ exports.getAllTasks = (req, res) => {
   } else {
     TodoDB.find({ userid: uname })
       .then((tasks) => {
-        res.render("userDashboard", { tasks,uname }); // Render the EJS file with the users data
+        res.render("userDashboard", { tasks, uname, lastlogin }); // Render the EJS file with the users data
       })
       .catch((error) => {
         res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
@@ -141,5 +142,3 @@ exports.deleteTask = (req, res) => {
       res.status(500).send("Error deleting task");
     });
 };
-
-

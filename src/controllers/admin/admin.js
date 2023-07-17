@@ -36,10 +36,11 @@ exports.adminLogin = async (req, res) => {
     const username = user[0].username;
     const privilege = user[0].privilege;
     const password = user[0].password;
+    
     res.cookie('username', username);
     res.cookie('password', password);
     res.cookie('privilege', privilege);
-    // res.cookie('currentUser', user, {maxAge: 900000});
+   
     res.redirect("/adminDashboard");
   } else {
     res.status(400).json({ message: "Invalid username or email" });

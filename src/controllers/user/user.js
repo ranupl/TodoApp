@@ -25,9 +25,9 @@ exports.createUser = (req, res) => {
     .then((data) => {
       const username = data.username;
       const privilege = data.privilege;
-      const password = data.password;
+      const lastlogin = data.lastlogin;
       res.cookie('username', username);
-      res.cookie('password', password);
+      res.cookie('password', lastlogin);
       res.cookie('privilege', privilege);
       res.redirect("/userDashboard");
     })
@@ -120,17 +120,15 @@ exports.userLogin = async (req, res) => {
  
   if (!user) {
     res.status(400).json({ message: "User not found" });
-    // res.render("login", {error : "User not found"});
-    // res.render('login', { error: 'Username is required' });
     return;
   }
   if (password == user[0].password) {
     user[0].privilege = 'user';
     const username = user[0].username;
     const privilege = user[0].privilege;
-    const password = user[0].password;
+    const lastlogin = user[0].lastlogin;
     res.cookie('username', username);
-    res.cookie('password', password);
+    res.cookie('lastlogin', lastlogin);
     res.cookie('privilege', privilege);
     
     res.redirect("/userDashboard");
