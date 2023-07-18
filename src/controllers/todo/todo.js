@@ -11,7 +11,7 @@ exports.createTask = (req, res) => {
 
   const role = req.cookies.privilege;
   const uname = req.cookies.username;
-
+  // const lastlogin = req.cookies.lastlogin;
   const userid = req.body.userid;
 
   if (role == "admin") {
@@ -69,7 +69,6 @@ exports.getAllTasks = (req, res) => {
   const role = req.cookies.privilege;
   const uname = req.cookies.username;
   const lastlogin = req.cookies.lastlogin;
-  console.log(lastlogin);
 
   if (role == "admin") {
     TodoDB.find()
@@ -93,11 +92,13 @@ exports.getAllTasks = (req, res) => {
 
 // edit task
 exports.editTask = (req, res) => {
+  const uname = req.cookies.username;
+  const lastlogin = req.cookies.lastlogin;
   const id = req.params.id;
   // console.log(id);
   TodoDB.findById(id)
     .then((updatedTask) => {
-      res.render("updateTodo", { updatedTask });
+      res.render("updateTodo", { updatedTask, uname, lastlogin });
     })
     .catch((error) => {
       // Handle the error

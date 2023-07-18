@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Barlow&family=Caprasimo&family=PT+Sans:ital@1&display=swap"
       rel="stylesheet"
@@ -23,7 +23,7 @@
   <body>
     <nav class="navbar navbar-light bg-light">
       <a class="navbar-brand text-primary f-title" href="#">
-        <img src="../images/pngwing.com (2).png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="/pngwing.com (2).png" width="30" height="30" class="d-inline-block align-top" alt="">
         Todo
       </a>
       <ul class="nav justify-content-end">
@@ -41,6 +41,16 @@
         </li>
       </ul>
     </nav>
+     <!--second nav-->
+     <ul class="nav justify-content-end bg-primary">
+      <li class="nav-item">
+        <a class="nav-link text-white">Username - <%= uname %></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" >LastLogin - <%= lastlogin %></a>
+      </li>
+    </ul>
+    <!-- section -->
     <div class="container">
       <div class="text-center">
         <h1 class="heading text-primary">Create Todo</h1>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Barlow&family=Caprasimo&family=PT+Sans:ital@1&display=swap"
       rel="stylesheet"
@@ -23,7 +23,7 @@
 <body>
   <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand text-primary f-title" href="#">
-      <img src="../images/pngwing.com (2).png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <img src="/pngwing.com (2).png" width="30" height="30" class="d-inline-block align-top" alt="">
       Todo
     </a>
     <ul class="nav justify-content-end">
@@ -50,17 +50,22 @@
         <div class="container">
         <div class="box1">
         <div class="row">
-            <div class="col border" id="padding-none"><img src="./images/flat-lay-notebook-with-list-desk.jpg" class="sign-img"></div>
+            <div class="col border" id="padding-none"><img src="/flat-lay-notebook-with-list-desk.jpg" class="sign-img"></div>
             <div class="col padding border">
+              <% if(typeof message != undefined) { %>
+                <div class="text-danger margin-bottom bg-light text-center">
+                  <%= message %>
+              </div>
+              <% } %>
                 <form action="/users/login" method="POST">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Email / Username</label>
-                      <input type="text" class="form-control"  aria-describedby="emailHelp" value="" name="text" placeholder="Email/Username">
+                      <input type="text" class="form-control"  aria-describedby="emailHelp" value="" name="text" placeholder="Email/Username" required>
                       <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Password</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1" value="" name="password" placeholder="Password">
+                      <input type="password" class="form-control" id="exampleInputPassword1" value="" name="password" placeholder="Password" required>
                     </div>
                     <button type="submit" class="btn btn-primary mg-top">Login</button>
                   </form>

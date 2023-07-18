@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Barlow&family=Caprasimo&family=PT+Sans:ital@1&display=swap"
       rel="stylesheet"
@@ -24,7 +24,7 @@
     <nav class="navbar navbar-light bg-light">
       <a class="navbar-brand text-primary f-title" href="#">
         <img
-          src="../images/pngwing.com (2).png"
+          src="/pngwing.com (2).png"
           width="30"
           height="30"
           class="d-inline-block align-top"
@@ -110,6 +110,7 @@
                 <% for (let i = 0; i < users.length; i++) { %>
                   <option value="<%= users[i].username %>"><%= users[i].username %></user></option>
                 <% } %>
+                <option><%= adminUser %></option>
               </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>

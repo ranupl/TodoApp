@@ -8,6 +8,7 @@ const userCon = require("./src/controllers/user/user");
 const todoCon = require("./src/controllers/todo/todo");
 const adminCon = require("./src/controllers/admin/admin");
 const cookieParser = require("cookie-parser");
+const session = require("express-session");
 
 // env file configure
 dotenv.config({ path: "config.env" });
@@ -19,12 +20,22 @@ app.use(bodyparser.urlencoded({ extended: true }));
 // cookie
 app.use(cookieParser());
 
+// session
+app.use(
+  session({
+    secret: "#todo#secure",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 360000 },
+  })
+);
+
 // view engine set
 app.set("view engine", "ejs");
 
 // path resolve
-app.use("/css", express.static(path.resolve(__dirname, "css")));
-app.use("/images", express.static(path.resolve(__dirname, "images")));
+app.use(express.static(__dirname + "/css"));
+app.use(express.static(__dirname + "/images"));
 
 // home page
 app.get("/", (req, res) => {
@@ -43,27 +54,28 @@ app.get("/welcome", (req, res) => {
 
 // signup page
 app.get("/signup", (req, res) => {
-  res.render("signup");
+  res.render("signup", { message: undefined });
 });
 
 // login page
 app.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", { message: undefined });
 });
 
 // admin login page
 app.get("/admin", (req, res) => {
-  res.render("admin");
+  res.render("admin", { message: undefined });
 });
 
 // create todo page
 app.get("/todo", (req, res) => {
-  res.render("todo");
+  const uname = req.cookies.username;
+  const lastlogin = req.cookies.lastlogin;
+  res.render("todo", { uname, lastlogin });
 });
 
 // admin dashboard
 app.get("/adminDashboard", adminCon.adminDashboard);
-
 
 //todo update
 app.get("/updateTodo", (req, res) => {
@@ -99,8 +111,11 @@ app.post("/users/login", userCon.userLogin);
 
 // user logout
 app.get("/logout", (req, res) => {
-  res.clearCookie('currentUser');
-  res.redirect("/welcome");
+  // Destroy the session
+  if(req.session.destroy()){
+    res.redirect('/login');
+  }
+  
 });
 
 // all about todo

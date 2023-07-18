@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SignUp</title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Barlow&family=Caprasimo&family=PT+Sans:ital@1&display=swap"
       rel="stylesheet"
@@ -23,7 +23,7 @@
   <body>
     <nav class="navbar navbar-light bg-light">
       <a class="navbar-brand text-primary f-title" href="#">
-        <img src="../images/pngwing.com (2).png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="/pngwing.com (2).png" width="30" height="30" class="d-inline-block align-top" alt="">
         Todo
       </a>
       <ul class="nav justify-content-end">
@@ -50,7 +50,12 @@
       <div class="container">
       <div class="box1">
         <div class="row">
-          <div class="col-6 padding border">
+          <div class="col padding border">
+            <% if(typeof message != undefined) { %>
+              <div class="text-center text-danger margin-bottom bg-light ">
+                <%= message %>
+            </div>
+            <% } %>
             <form action="/users" method="POST">
               <div class="form-group">
                 <label for="exampleInputPassword1">First Name</label>
@@ -61,6 +66,7 @@
                   value=""
                   name="firstname"
                   placeholder="First Name"
+                  required
                 />
               </div>
               <div class="form-group">
@@ -72,6 +78,7 @@
                   value=""
                   name="lastname"
                   placeholder="Last Name"
+                  required
                 />
               </div>
               <div class="form-group">
@@ -84,6 +91,7 @@
                   value=""
                   name="email"
                   placeholder="Enter email"
+                  required
                 />
                 <small id="emailHelp" class="form-text text-muted"
                   >We'll never share your email with anyone else.</small
@@ -98,6 +106,7 @@
                   value=""
                   name="username"
                   placeholder="Username"
+                  required
                 />
               </div>
               <div class="form-group">
@@ -109,6 +118,7 @@
                   value=""
                   name="password"
                   placeholder="Password"
+                  required
                 />
               </div>
               <div class="form-check">
@@ -126,8 +136,8 @@
               </button>
             </form>
           </div>
-          <div class="col-6 border">
-            <img src="./images/draw2.webp" class="sign-img" />
+          <div class="col border">
+            <img src="/draw2.webp" class="sign-img" />
           </div>
         </div>
       </div>
