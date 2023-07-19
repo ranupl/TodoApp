@@ -37,14 +37,15 @@ exports.adminLogin = async (req, res) => {
       
       // session
       session = req.session;
-      req.session.loggedIn = true;
+      req.session.username = username;
+      req.session.privilege = privilege;
      
       // cookie
       res.cookie("username", username);
       res.cookie("password", password);
       res.cookie("privilege", privilege);
 
-      if(req.session.loggedIn)
+      if(req.session.username)
       {
         res.redirect("/adminDashboard");
       }

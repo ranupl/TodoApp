@@ -13,7 +13,7 @@ exports.createUser = async (req, res) => {
   if(user.length > 0)
   {
     const message = "****** Username or email already exists ******";
-    res.render("signup", { message })
+    return res.render("signup", { message })
   }
 
   if (!req.body) {
@@ -40,10 +40,24 @@ exports.createUser = async (req, res) => {
       const username = data.username;
       const privilege = data.privilege;
       const lastlogin = data.lastlogin;
+      // session
+      req.session;
+      req.session.username = username;
+      req.session.privilege = privilege;
+      // console.log(req.session);
+    
+      // cookies
       res.cookie("username", username);
-      res.cookie("password", lastlogin);
+      res.cookie("lastlogin", lastlogin);
       res.cookie("privilege", privilege);
-      res.redirect("/userDashboard");
+
+      if(req.session.username)
+      {
+        res.redirect("/userDashboard");
+      }
+      else{
+        res.redirect("/login");
+      }
     })
     .catch((err) => {
       res.status(500).send({
@@ -144,16 +158,17 @@ exports.userLogin = async (req, res) => {
       const lastlogin = user[0].lastlogin;
 
       // session
-      session=req.session;
-      req.session.loggedIn = true;
-      console.log(req.session);
+      req.session;
+      req.session.username = username;
+      req.session.privilege = privilege;
+      // console.log(req.session);
     
       // cookies
       res.cookie("username", username);
       res.cookie("lastlogin", lastlogin);
       res.cookie("privilege", privilege);
 
-      if(req.session.loggedIn)
+      if(req.session.username)
       {
         res.redirect("/userDashboard");
       }

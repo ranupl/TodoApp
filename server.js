@@ -10,6 +10,20 @@ const adminCon = require("./src/controllers/admin/admin");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
+function checkUserLogin(req, res, next) {
+  if (req.session == undefined || req.session.username == undefined ) {
+   return  res.redirect("/login");
+  }
+  next();
+}
+
+function checkAdminLogin(req, res, next) {
+  if (req.session == undefined || req.session.username == undefined) {
+    res.redirect("/admin");
+  }
+  next();
+}
+
 // env file configure
 dotenv.config({ path: "config.env" });
 const PORT = process.env.PORT || 8000;
@@ -68,14 +82,14 @@ app.get("/admin", (req, res) => {
 });
 
 // create todo page
-app.get("/todo", (req, res) => {
+app.get("/todo", checkUserLogin,(req, res) => {
   const uname = req.cookies.username;
   const lastlogin = req.cookies.lastlogin;
   res.render("todo", { uname, lastlogin });
 });
 
 // admin dashboard
-app.get("/adminDashboard", adminCon.adminDashboard);
+app.get("/adminDashboard", checkAdminLogin, adminCon.adminDashboard);
 
 //todo update
 app.get("/updateTodo", (req, res) => {
@@ -93,18 +107,18 @@ app.get("/editAdmin", (req, res) => {
 });
 
 // todo create
-app.get("/todoCreate", userCon.getAllUsername);
+app.get("/todoCreate",checkUserLogin, userCon.getAllUsername);
 
 // all routes
-app.get("/userDashboard", todoCon.getAllTasks);
-app.get("/allTodos", todoCon.getAllTasks);
+app.get("/userDashboard", checkUserLogin, todoCon.getAllTasks);
+app.get("/allTodos",checkAdminLogin, todoCon.getAllTasks);
 
 // all about user
 app.post("/users", userCon.createUser);
-app.get("/users", userCon.getAllUsers);
-app.get("/users/:id", userCon.getUserByID);
-app.post("/users/update/:id", userCon.updateUser);
-app.get("/users/delete/:id", userCon.deleteUser);
+app.get("/users",checkAdminLogin, userCon.getAllUsers);
+app.get("/users/:id",checkAdminLogin, userCon.getUserByID);
+app.post("/users/update/:id",checkAdminLogin, userCon.updateUser);
+app.get("/users/delete/:id",checkAdminLogin, userCon.deleteUser);
 
 // user login
 app.post("/users/login", userCon.userLogin);
@@ -112,22 +126,24 @@ app.post("/users/login", userCon.userLogin);
 // user logout
 app.get("/logout", (req, res) => {
   // Destroy the session
-  if(req.session.destroy()){
-    res.redirect('/login');
+  req.session.destroy();
+  if(req.cookies.privilege == "admin")
+  {
+    res.redirect("/admin");
   }
-  
+  res.redirect("/login");
 });
 
 // all about todo
-app.post("/todo", todoCon.createTask);
-app.get("/todo", todoCon.getAllTasks);
-app.get("/todo/edit/:id", todoCon.editTask);
-app.post("/todo/update/:id", todoCon.updateTask);
-app.get("/todo/delete/:id", todoCon.deleteTask);
+app.post("/todo",checkUserLogin, todoCon.createTask);
+app.get("/todo",checkUserLogin, todoCon.getAllTasks);
+app.get("/todo/edit/:id",checkUserLogin, todoCon.editTask);
+app.post("/todo/update/:id",checkUserLogin, todoCon.updateTask);
+app.get("/todo/delete/:id",checkUserLogin, todoCon.deleteTask);
 
 // admin routes
 app.post("/admin/login", adminCon.adminLogin);
-app.post("/admin/update", adminCon.adminUpdate);
+app.post("/admin/update",checkAdminLogin, adminCon.adminUpdate);
 
 app.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);
