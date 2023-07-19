@@ -9,20 +9,7 @@ const todoCon = require("./src/controllers/todo/todo");
 const adminCon = require("./src/controllers/admin/admin");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-
-function checkUserLogin(req, res, next) {
-  if (req.session == undefined || req.session.username == undefined ) {
-   return  res.redirect("/login");
-  }
-  next();
-}
-
-function checkAdminLogin(req, res, next) {
-  if (req.session == undefined || req.session.username == undefined) {
-    res.redirect("/admin");
-  }
-  next();
-}
+const { checkAdminLogin, checkUserLogin } = require("./src/utils/sessionHelper");
 
 // env file configure
 dotenv.config({ path: "config.env" });
