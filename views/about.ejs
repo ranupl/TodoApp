@@ -21,29 +21,11 @@
     />
   </head>
   <body>
-    <nav class="navbar navbar-light bg-light">
-      <a class="navbar-brand text-primary f-title" href="#">
-        <img src="/pngwing.com (2).png" width="30" height="30" class="d-inline-block align-top" alt="">
-        Todo
-      </a>
-      <ul class="nav justify-content-end">
-        <li class="nav-item">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/about">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/logout">Logout</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/adminDashboard">Dashboard</a>
-        </li>
-      </ul>
-    </nav>
+    <!-- header -->
+    <%- include('include/header_common.ejs') -%>
+    <!-- /header -->
+
+    <!-- section -->
     <div class="container">
       <div class="text-center bg-primary">
         <div class="text-center mg-ab-top">
@@ -104,6 +86,7 @@
         </div>
       </div>
     </div>
+    <!-- section -->
     <!-- footer -->
     <footer class="footer bg-light text-center">
       <div class="container">
