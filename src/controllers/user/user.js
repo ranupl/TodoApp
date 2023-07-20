@@ -1,19 +1,17 @@
 const { UserDB } = require("../../models/user");
 
-
 // user CURD operation
 // create and save new user
 exports.createUser = async (req, res) => {
   // validate request
-  const {username, email} = req.body;
+  const { username, email } = req.body;
   const user = await UserDB.find({
     $or: [{ email: email }, { username: username }],
   });
 
-  if(user.length > 0)
-  {
+  if (user.length > 0) {
     const message = "****** Username or email already exists ******";
-    return res.render("signup", { message })
+    return res.render("signup", { message });
   }
 
   if (!req.body) {
@@ -44,18 +42,11 @@ exports.createUser = async (req, res) => {
       req.session;
       req.session.username = username;
       req.session.privilege = privilege;
-      // console.log(req.session);
-    
-      // cookies
-      res.cookie("username", username);
-      res.cookie("lastlogin", lastlogin);
-      res.cookie("privilege", privilege);
+      req.session.lastlogin = lastlogin;
 
-      if(req.session.username)
-      {
+      if (req.session.username) {
         res.redirect("/userDashboard");
-      }
-      else{
+      } else {
         res.redirect("/login");
       }
     })
@@ -71,10 +62,10 @@ exports.createUser = async (req, res) => {
 exports.getAllUsers = (req, res) => {
   UserDB.find()
     .then((users) => {
-      res.render("users", { users }); // Render the EJS file with the users data
+      res.render("users", { users });
     })
     .catch((error) => {
-      res.status(500).send("Error retrieving users"); // Handle the error appropriately
+      res.status(500).send("Error retrieving users");
     });
 };
 
@@ -129,10 +120,10 @@ exports.getAllUsername = (req, res) => {
   const adminUser = req.cookies.username;
   UserDB.find()
     .then((users) => {
-      res.render("todoCreate", { users, adminUser }); // Render the EJS file with the users data
+      res.render("todoCreate", { users, adminUser });
     })
     .catch((error) => {
-      res.status(500).send("Error retrieving users"); // Handle the error appropriately
+      res.status(500).send("Error retrieving users");
     });
 };
 
@@ -155,27 +146,19 @@ exports.userLogin = async (req, res) => {
 
       const username = user[0].username;
       const privilege = user[0].privilege;
-      const lastlogin = user[0].lastlogin;
+      var lastlogin = Date.now().toLocaleString();
 
       // session
       req.session;
       req.session.username = username;
       req.session.privilege = privilege;
-      // console.log(req.session);
-    
-      // cookies
-      res.cookie("username", username);
-      res.cookie("lastlogin", lastlogin);
-      res.cookie("privilege", privilege);
+      req.session.lastlogin = lastlogin;
 
-      if(req.session.username)
-      {
+      if (req.session.username) {
         res.redirect("/userDashboard");
-      }
-      else{
+      } else {
         res.redirect("/login");
       }
-     
     } else {
       const message = "****** Invalid username or email ******";
       res.render("login", { message });

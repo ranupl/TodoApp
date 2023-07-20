@@ -2,7 +2,7 @@ const { AdminDB } = require("../../models/admin");
 
 // admin dashboard
 exports.adminDashboard = async (req, res) => {
-  const uname = req.cookies.username;
+  const uname = req.session.username;
 
   AdminDB.find({ username: uname })
     .then((user) => {
@@ -33,27 +33,17 @@ exports.adminLogin = async (req, res) => {
       user[0].privilege = "admin";
       const username = user[0].username;
       const privilege = user[0].privilege;
-      const password = user[0].password;
-      
+
       // session
       session = req.session;
       req.session.username = username;
       req.session.privilege = privilege;
-     
-      // cookie
-      res.cookie("username", username);
-      res.cookie("password", password);
-      res.cookie("privilege", privilege);
 
-      if(req.session.username)
-      {
+      if (req.session.username) {
         res.redirect("/adminDashboard");
-      }
-      else
-      {
+      } else {
         res.redirect("/admin");
       }
-      
     } else {
       const message = "****** Invalid username or email ******";
       res.render("admin", { message });
@@ -80,7 +70,6 @@ exports.adminUpdate = async (req, res) => {
     } else {
       res.send(400).json({ message: "Invalid password" });
     }
-    
   } else {
     res.render("admin", { error: "Invalid email" });
   }

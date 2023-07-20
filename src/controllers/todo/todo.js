@@ -9,9 +9,8 @@ exports.createTask = (req, res) => {
     return;
   }
 
-  const role = req.cookies.privilege;
-  const uname = req.cookies.username;
-  // const lastlogin = req.cookies.lastlogin;
+  const role = req.session.privilege;
+  const uname = req.session.username;
   const userid = req.body.userid;
 
   if (role == "admin") {
@@ -51,7 +50,6 @@ exports.createTask = (req, res) => {
     newTask
       .save()
       .then((data) => {
-        // res.send(data);
         res.redirect("/userDashboard");
       })
       .catch((err) => {
@@ -66,9 +64,12 @@ exports.createTask = (req, res) => {
 
 //get all tasks
 exports.getAllTasks = (req, res) => {
-  const role = req.cookies.privilege;
-  const uname = req.cookies.username;
-  const lastlogin = req.cookies.lastlogin;
+  // const role = req.cookies.privilege;
+  // const uname = req.cookies.username;
+  // const lastlogin = req.cookies.lastlogin;
+  const role = req.session.privilege;
+  const uname = req.session.username;
+  const lastlogin = req.session.lastlogin;
 
   if (role == "admin") {
     TodoDB.find()
@@ -92,10 +93,10 @@ exports.getAllTasks = (req, res) => {
 
 // edit task
 exports.editTask = (req, res) => {
-  const uname = req.cookies.username;
-  const lastlogin = req.cookies.lastlogin;
+  const uname = req.session.username;
+  const lastlogin = req.session.lastlogin;
   const id = req.params.id;
-  // console.log(id);
+
   TodoDB.findById(id)
     .then((updatedTask) => {
       res.render("updateTodo", { updatedTask, uname, lastlogin });
@@ -111,7 +112,7 @@ exports.editTask = (req, res) => {
 exports.updateTask = (req, res) => {
   const { id } = req.body;
   const { userid, title, discription, priority, status } = req.body;
-  // console.log(id);
+ 
   TodoDB.findByIdAndUpdate(
     id,
     { userid, title, discription, priority, status },
