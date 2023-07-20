@@ -146,7 +146,8 @@ exports.userLogin = async (req, res) => {
 
       const username = user[0].username;
       const privilege = user[0].privilege;
-      var lastlogin = Date.now().toLocaleString();
+      const currentDate = new Date();
+      var lastlogin = currentDate.toLocaleTimeString();
 
       // session
       req.session;
