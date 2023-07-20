@@ -1,34 +1,33 @@
- <!-- header -->
-    <%- include('include/header_admin.ejs') %>
-    <!-- /header -->
-    
-   
-    <!-- section -->
-    <div class="container">
-      <div class="text-center">
-        <h1 class="heading text-primary">Todo Activities</h1>
-      </div>
+<!-- header -->
+<%- include('include/header_admin.ejs') %>
+<!-- /header -->
+
+<!-- section -->
+<div class="container">
+  <div class="text-center">
+    <h1 class="heading text-primary">Todo Activities</h1>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3 border-blue">
+      <h1 class="font-fly text-center font-inherit">Dashboard</h1>
+      <ul class="nav margin-top d-block">
+        <li class="nav-item">
+          <a class="nav-link f-size" href="./users">Users</a>
+        </li>
+        <li class="nav-item f-size">
+          <a class="nav-link" href="./allTodos">Todos</a>
+        </li>
+        <li class="nav-item f-size">
+          <a class="nav-link" href="./editAdmin">Reset Password</a>
+        </li>
+      </ul>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-3 border-blue">
-          <h1 class="font-fly text-center font-inherit">Dashboard</h1>
-          <ul class="nav margin-top d-block">
-            <li class="nav-item">
-              <a class="nav-link f-size" href="./users">Users</a>
-            </li>
-            <li class="nav-item f-size">
-              <a class="nav-link" href="./allTodos">Todos</a>
-            </li>
-            <li class="nav-item f-size">
-              <a class="nav-link" href="./editAdmin">Reset Password</a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-sm-9">
-          <div class="border-blue">
-            <div class="row">
-              <div class="col">
+    <div class="col-sm-9">
+      <div class="border-blue">
+        <div class="row">
+          <div class="col">
             <div class="admin-about">
               <ul class="nav margin-top d-block">
                 <li class="nav-item f-size">
@@ -37,9 +36,7 @@
                 <li class="nav-item f-size">
                   Last Name - <%= user[0].lastname %>
                 </li>
-                <li class="nav-item f-size">
-                  Email - <%= user[0].email %>
-                </li>
+                <li class="nav-item f-size">Email - <%= user[0].email %></li>
                 <li class="nav-item f-size">
                   Username - <%= user[0].username %>
                 </li>
@@ -47,19 +44,22 @@
             </div>
             <div class="col">
               <div class="text-center">
-                <img src="/5272.jpg" id="admin-img" class="img-fluid" alt="Cinque Terre" >
+                <img
+                  src="/5272.jpg"
+                  id="admin-img"
+                  class="img-fluid"
+                  alt="Cinque Terre"
+                />
               </div>
             </div>
-            </div>
-          </div>
           </div>
         </div>
       </div>
     </div>
-   <!--</section> -->
-  
-   <!-- footer -->
-  <%- include('include/footer.ejs') -%>
-  <!-- /footer -->
+  </div>
+</div>
+<!--</section> -->
 
- 
+<!-- footer -->
+<%- include('include/footer.ejs') -%>
+<!-- /footer -->

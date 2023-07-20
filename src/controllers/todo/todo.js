@@ -1,3 +1,4 @@
+const { UserDB } = require("../../models/user");
 const { TodoDB } = require("../../models/todo");
 
 // CURD for todo (adminDashboard)
@@ -63,30 +64,29 @@ exports.createTask = (req, res) => {
 };
 
 //get all tasks
-exports.getAllTasks = (req, res) => {
-  // const role = req.cookies.privilege;
-  // const uname = req.cookies.username;
-  // const lastlogin = req.cookies.lastlogin;
+exports.getAllTasks = async(req, res) => {
   const role = req.session.privilege;
   const uname = req.session.username;
   const lastlogin = req.session.lastlogin;
-
+  
+  const adminUser = req.session.username;
+  const users = await UserDB.find().lean().exec();
+  
   if (role == "admin") {
     TodoDB.find()
       .then((tasks) => {
-        // console.log(tasks);
-        res.render("allTodos", { tasks }); // Render the EJS file with the users data
+        res.render("allTodos", { tasks, users, adminUser }); 
       })
       .catch((error) => {
-        res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
+        res.status(500).send("Error retrieving tasks"); 
       });
   } else {
     TodoDB.find({ userid: uname })
       .then((tasks) => {
-        res.render("userDashboard", { tasks, uname, lastlogin }); // Render the EJS file with the users data
+        res.render("userDashboard", { tasks, uname, lastlogin }); 
       })
       .catch((error) => {
-        res.status(500).send("Error retrieving tasks"); // Handle the error appropriately
+        res.status(500).send("Error retrieving tasks");
       });
   }
 };

@@ -117,10 +117,10 @@ exports.deleteUser = (req, res) => {
 
 // get all username
 exports.getAllUsername = (req, res) => {
-  const adminUser = req.cookies.username;
+  const adminUser = req.session.username;
   UserDB.find()
     .then((users) => {
-      res.render("todoCreate", { users, adminUser });
+      res.render("allTodos", { users, adminUser });
     })
     .catch((error) => {
       res.status(500).send("Error retrieving users");

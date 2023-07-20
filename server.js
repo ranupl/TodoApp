@@ -69,11 +69,11 @@ app.get("/admin", (req, res) => {
 });
 
 // create todo page
-app.get("/todo", checkUserLogin,(req, res) => {
-  const uname = req.cookies.username;
-  const lastlogin = req.cookies.lastlogin;
-  res.render("todo", { uname, lastlogin });
-});
+// app.get("/todo", checkUserLogin,(req, res) => {
+//   const uname = req.session.username;
+//   const lastlogin = req.session.lastlogin;
+//   res.render("todo", { uname, lastlogin });
+// });
 
 // admin dashboard
 app.get("/adminDashboard", checkAdminLogin, adminCon.adminDashboard);
@@ -94,7 +94,8 @@ app.get("/editAdmin", (req, res) => {
 });
 
 // todo create
-app.get("/todoCreate",checkUserLogin, userCon.getAllUsername);
+// app.get("/todoCreate",checkUserLogin, userCon.getAllUsername);
+// app.get("/allTodos",checkUserLogin, userCon.getAllUsername);
 
 // all routes
 app.get("/userDashboard", checkUserLogin, todoCon.getAllTasks);
