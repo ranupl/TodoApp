@@ -3,10 +3,11 @@ const { AdminDB } = require("../../models/admin");
 // admin dashboard
 exports.adminDashboard = async (req, res) => {
   const uname = req.session.username;
+  const lastlogin = req.session.lastlogin;
 
   AdminDB.find({ username: uname })
     .then((user) => {
-      res.render("adminDashboard", { user });
+      res.render("adminDashboard", { user , uname, lastlogin});
     })
     .catch((error) => {
       // Handle the error
@@ -33,11 +34,14 @@ exports.adminLogin = async (req, res) => {
       user[0].privilege = "admin";
       const username = user[0].username;
       const privilege = user[0].privilege;
+      const currentDate = new Date();
+      var lastlogin = currentDate.toLocaleTimeString();
 
       // session
       session = req.session;
       req.session.username = username;
       req.session.privilege = privilege;
+      req.session.lastlogin = lastlogin;
 
       if (req.session.username) {
         res.redirect("/adminDashboard");

@@ -75,7 +75,7 @@ exports.getAllTasks = async(req, res) => {
   if (role == "admin") {
     TodoDB.find()
       .then((tasks) => {
-        res.render("allTodos", { tasks, users, adminUser }); 
+        res.render("allTodos", { tasks, users, adminUser , uname, lastlogin}); 
       })
       .catch((error) => {
         res.status(500).send("Error retrieving tasks"); 

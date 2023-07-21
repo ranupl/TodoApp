@@ -237,12 +237,66 @@
 .f-title{
     font-family: 'Caprasimo', cursive;
 }
+
 .mg-left{
     margin-left: 20px;
 }
+
 .sign-img{
    height: 70vh;
 }
+
+/* search bar css */
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Style the search field */
+  form.example input[type=text] {
+    padding: 5px 0px 5px 12px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+    border-radius: 5px 0px 0px 5px;
+  }
+  
+  /* Style the submit button */
+  form.example button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #0b7dda;
+    color: white;
+    font-size: 7px;
+    border: 1px solid grey;
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+    border-radius: 0px 5px 5px 0px;
+  }
+  
+  form.example button:hover {
+    background: #3095e8;
+  }
+  
+  /* Clear floats */
+  form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+ .icon-size{
+    font-size: 1.7em;
+ }
+
+ #margin-width{
+      min-width: 0rem;
+      margin: 0.125rem 70px 0;
+ }
+
+
 
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */

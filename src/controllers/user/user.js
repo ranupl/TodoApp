@@ -60,9 +60,12 @@ exports.createUser = async (req, res) => {
 
 // get all users
 exports.getAllUsers = (req, res) => {
+  const uname = req.session.username;
+  const lastlogin = req.session.lastlogin;
+
   UserDB.find()
     .then((users) => {
-      res.render("users", { users });
+      res.render("users", { users , uname, lastlogin});
     })
     .catch((error) => {
       res.status(500).send("Error retrieving users");

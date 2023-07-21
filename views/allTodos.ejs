@@ -10,11 +10,26 @@
     </div>
     <div class="container">
       <div class="child-container">
-        <div class="text-left">
+        <div class="d-flex justify-content-between">
           <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary margin-bottom" data-toggle="modal" data-target="#exampleModalCenter">
   Todo Create
 </button>
+<!-- The search form -->
+<form class="example" action="">
+  <input type="text" placeholder="Search.." name="search">
+  <div class="dropdown">
+    <button type="button" class="btn btn-primary" data-toggle="dropdown">
+      <ion-icon name="caret-down-outline" class="icon-size"></ion-icon>
+    </button>
+    <div class="dropdown-menu" id="margin-width">
+      <a class="dropdown-item" href="#">10</a>
+      <a class="dropdown-item" href="#">20</a>
+      <a class="dropdown-item" href="#">50</a>
+    </div>
+  </div>
+</form>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
