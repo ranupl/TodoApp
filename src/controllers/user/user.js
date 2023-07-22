@@ -58,6 +58,7 @@ exports.createUser = async (req, res) => {
     });
 };
 
+
 // get all users
 exports.getAllUsers = (req, res) => {
   const uname = req.session.username;
@@ -85,6 +86,7 @@ exports.getUserByID = (req, res) => {
       res.status(500).send("Error retrieving user");
     });
 };
+
 
 // update user
 exports.updateUser = async (req, res) => {
@@ -157,6 +159,7 @@ exports.userLogin = async (req, res) => {
       req.session.username = username;
       req.session.privilege = privilege;
       req.session.lastlogin = lastlogin;
+      req.cookies.privilege = privilege;
 
       if (req.session.username) {
         res.redirect("/userDashboard");
@@ -169,4 +172,22 @@ exports.userLogin = async (req, res) => {
       return;
     }
   }
+};
+
+
+// search
+
+// const Data = mongoose.model('Data', dataSchema);
+
+// Search route
+exports.searching = (req, res) => {
+  const searchText = req.query.searchText;
+  const uname = req.session.username;
+  const lastlogin = req.session.lastlogin;
+
+  UserDB.find({ firstname: { $regex: searchText, $options: 'i' } })
+    .then((users) => {
+      res.render('users', { users, uname, lastlogin });
+    })
+    .catch((err) => console.error('Error searching in MongoDB:', err));
 };

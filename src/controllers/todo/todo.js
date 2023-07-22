@@ -144,3 +144,17 @@ exports.deleteTask = (req, res) => {
       res.status(500).send("Error deleting task");
     });
 };
+
+
+// Search route
+exports.searching = (req, res) => {
+  const searchText = req.query.searchText;
+  const uname = req.session.username;
+  const lastlogin = req.session.lastlogin;
+
+  TodoDB.find({ title: { $regex: searchText, $options: 'i' } })
+    .then((tasks) => {
+      res.render('userDashboard', { tasks, uname, lastlogin });
+    })
+    .catch((err) => console.error('Error searching in MongoDB:', err));
+};

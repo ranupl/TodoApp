@@ -14,8 +14,9 @@
    <!-- Button trigger modal -->
 <div class="d-flex float-right margin-bottom">
 <!-- The search form -->
-<form class="example" action="">
-<input type="text" placeholder="Search.." name="search">
+<form class="example" action="/search" method="GET">
+<input type="text" placeholder="Search by name" name="searchText">
+<!-- </form> -->
 <div class="dropdown">
 <button type="button" class="btn btn-primary" data-toggle="dropdown">
 <ion-icon name="caret-down-outline" class="icon-size"></ion-icon>
@@ -68,12 +69,21 @@
           </td>
         </tr>
         <% }); %>
+
+        <!--for search -->
+        <!-- <% if(users) { %> -->
+        <!-- <% users.forEach((result) => { %>
+          <tr>
+            <td><%= result.firstname %></td>
+             Add more table cells based on your data schema -->
+          <!-- </tr> -->
+        <!-- <% }); %> -->
+        <!-- <% } %> -->
       </tbody>
     </table>
   </div>
 </div>
 <!-- /section -->
 
-<!-- footer -->
-<%- include('include/footer.ejs') -%>
-<!-- /footer -->
+
+

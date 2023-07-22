@@ -111,16 +111,27 @@ app.get("/users/delete/:id",checkAdminLogin, userCon.deleteUser);
 // user login
 app.post("/users/login", userCon.userLogin);
 
+// for search
+app.get('/search', userCon.searching);
+app.get('/searchTask', todoCon.searching);
+
 // user logout
 app.get("/logout", (req, res) => {
   // Destroy the session
   req.session.destroy();
+  const x = req.cookies.privilege;
+  // console.log(x);
   if(req.cookies.privilege == "admin")
   {
     res.redirect("/admin");
   }
-  res.redirect("/login");
+  else{
+    res.redirect("/login");
+  }
 });
+
+// pagging
+// app.get('/items/:page', userCon.pagging);
 
 // all about todo
 app.post("/todo",checkUserLogin, todoCon.createTask);
