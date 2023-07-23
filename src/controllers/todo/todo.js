@@ -71,6 +71,43 @@ exports.getAllTasks = async(req, res) => {
   
   const adminUser = req.session.username;
   const users = await UserDB.find().lean().exec();
+
+  // pagging
+  const itemsPerPage = 4;
+  if(role == "admin"){
+  const page = parseInt(req.query.page) || 1;
+
+  try {
+    const totalItems = await TodoDB.countDocuments({});
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    const tasks = await TodoDB.find({})
+      .skip((page - 1) * itemsPerPage)
+      .limit(itemsPerPage)
+      .exec();
+
+    res.render('allTodos', { tasks, page, totalPages ,uname,users,adminUser, lastlogin });
+  } catch (err) {
+    res.status(500).send('Error retrieving items');
+  }
+}
+else{
+  const page = parseInt(req.query.page) || 1;
+
+  try {
+    const totalItems = await TodoDB.countDocuments({});
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    const tasks = await TodoDB.find({userid: uname})
+      .skip((page - 1) * itemsPerPage)
+      .limit(itemsPerPage)
+      .exec();
+
+    res.render('userDashboard', { tasks, page, totalPages ,uname, lastlogin });
+  } catch (err) {
+    res.status(500).send('Error retrieving items');
+  }
+}
   
   if (role == "admin") {
     TodoDB.find()
@@ -83,7 +120,7 @@ exports.getAllTasks = async(req, res) => {
   } else {
     TodoDB.find({ userid: uname })
       .then((tasks) => {
-        res.render("userDashboard", { tasks, uname, lastlogin }); 
+        res.render("userDashboard", { tasks, uname, lastlogin, }); 
       })
       .catch((error) => {
         res.status(500).send("Error retrieving tasks");
@@ -98,8 +135,8 @@ exports.editTask = (req, res) => {
   const id = req.params.id;
 
   TodoDB.findById(id)
-    .then((updatedTask) => {
-      res.render("updateTodo", { updatedTask, uname, lastlogin });
+    .then((tasks) => {
+      res.render("todoEditModel", { tasks, uname, lastlogin });
     })
     .catch((error) => {
       // Handle the error
@@ -147,14 +184,30 @@ exports.deleteTask = (req, res) => {
 
 
 // Search route
-exports.searching = (req, res) => {
+exports.searching = async (req, res) => {
   const searchText = req.query.searchText;
   const uname = req.session.username;
   const lastlogin = req.session.lastlogin;
+  const role = req.session.privilege;
+  const adminUser = req.session.username;
+  const users = await UserDB.find().lean().exec();
 
-  TodoDB.find({ title: { $regex: searchText, $options: 'i' } })
+  if(role == "user")
+  {
+    TodoDB.find({ title: { $regex: searchText, $options: 'i' } })
     .then((tasks) => {
       res.render('userDashboard', { tasks, uname, lastlogin });
     })
     .catch((err) => console.error('Error searching in MongoDB:', err));
+  }
+  else{
+    TodoDB.find({ userid: { $regex: searchText, $options: 'i' } })
+    .then((tasks) => {
+      res.render('allTodos', { tasks, uname, lastlogin ,users, adminUser });
+    })
+    .catch((err) => console.error('Error searching in MongoDB:', err));
+  }
+  
 };
+
+// Route for pagination

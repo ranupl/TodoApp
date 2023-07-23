@@ -60,9 +60,30 @@ exports.createUser = async (req, res) => {
 
 
 // get all users
-exports.getAllUsers = (req, res) => {
+exports.getAllUsers = async (req, res) => {
   const uname = req.session.username;
   const lastlogin = req.session.lastlogin;
+  const role = req.cookies.privilege;
+  
+ // pagging
+ const itemsPerPage = 4;
+ if(role == "admin"){
+ const page = parseInt(req.query.page) || 1;
+
+ try {
+   const totalItems = await UserDB.countDocuments({});
+   const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+   const users = await UserDB.find({})
+     .skip((page - 1) * itemsPerPage)
+     .limit(itemsPerPage)
+     .exec();
+
+   res.render('users', { users, page, totalPages ,uname, lastlogin });
+ } catch (err) {
+   res.status(500).send('Error retrieving items');
+ }
+}
 
   UserDB.find()
     .then((users) => {
@@ -159,7 +180,7 @@ exports.userLogin = async (req, res) => {
       req.session.username = username;
       req.session.privilege = privilege;
       req.session.lastlogin = lastlogin;
-      req.cookies.privilege = privilege;
+      res.cookie("privilege", privilege);
 
       if (req.session.username) {
         res.redirect("/userDashboard");
@@ -174,10 +195,6 @@ exports.userLogin = async (req, res) => {
   }
 };
 
-
-// search
-
-// const Data = mongoose.model('Data', dataSchema);
 
 // Search route
 exports.searching = (req, res) => {

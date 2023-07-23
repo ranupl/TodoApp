@@ -79,9 +79,9 @@ app.get("/admin", (req, res) => {
 app.get("/adminDashboard", checkAdminLogin, adminCon.adminDashboard);
 
 //todo update
-app.get("/updateTodo", (req, res) => {
-  res.render("updateTodo");
-});
+// app.get("/updateTodo", (req, res) => {
+//   res.render("updateTodo");
+// });
 
 // user update
 app.get("/editUser", (req, res) => {
@@ -119,8 +119,6 @@ app.get('/searchTask', todoCon.searching);
 app.get("/logout", (req, res) => {
   // Destroy the session
   req.session.destroy();
-  const x = req.cookies.privilege;
-  // console.log(x);
   if(req.cookies.privilege == "admin")
   {
     res.redirect("/admin");
@@ -132,6 +130,7 @@ app.get("/logout", (req, res) => {
 
 // pagging
 // app.get('/items/:page', userCon.pagging);
+
 
 // all about todo
 app.post("/todo",checkUserLogin, todoCon.createTask);

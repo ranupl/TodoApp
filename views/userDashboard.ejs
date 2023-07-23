@@ -16,20 +16,24 @@
       <button type="button" class="btn btn-primary margin-bottom" data-toggle="modal" data-target="#exampleModalCenter">
       Create Task
       </button>
+      <div class="d-flex">
       <!-- The search form -->
       <form class="example" action="/searchTask" method="GET">
-        <input type="text" placeholder="Search.." name="searchText">
-        <div class="dropdown">
-          <button type="button" class="btn btn-primary" data-toggle="dropdown">
-          <ion-icon name="caret-down-outline" class="icon-size"></ion-icon>
-          </button>
-        <div class="dropdown-menu" id="margin-width">
-          <a class="dropdown-item" href="#">10</a>
-          <a class="dropdown-item" href="#">20</a>
-          <a class="dropdown-item" href="#">50</a>
-        </div>
+        <input type="text" placeholder="Search By Title" name="searchText">
+     </form>
+     <form>
+    <div class="dropdown">
+      <button type="button" class="btn btn-primary" id="btn-size" data-toggle="dropdown">
+      <ion-icon name="caret-down-outline" class="icon-size"></ion-icon>
+      </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">10</a>
+      <a class="dropdown-item" href="#">20</a>
+      <a class="dropdown-item" href="#">50</a>
     </div>
+</div>
   </form>
+</div>
 </div>
 
 <!-- Modal -->
@@ -125,7 +129,20 @@
                   <td><%= tasks[i].status %></td>
                   <td>
                     <div>
-                      <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+                      <!-- <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a> -->
+<!-- Button trigger modal -->
+<!-- Modal -->
+
+<button type="button" class="btn btn-white" data-toggle="modal" data-target="#editModal">
+<a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+</button>
+
+<%- include('todoEditModel.ejs') -%>
+
+
+
+
+                      <!-- checking -->
                       <a href="/todo/delete/<%= tasks[i].id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
                     </div>
                   </td>
@@ -137,6 +154,22 @@
       </div>
     </div>
 <!-- /section -->
+
+<!-- pagging -->
+<div class="container text-center">
+<% if (totalPages > 1) { %>
+  <div>
+    <% if (page > 1) { %>
+      <a href="/todo?page=<%= page - 1 %>">Previous</a>
+    <% } %>
+
+    <% if (page < totalPages) { %>
+      <a href="/todo?page=<%= page + 1 %>">Next</a>
+    <% } %>
+  </div>
+<% } %>
+</div>
+
 
 <!-- footer -->
 <%- include('include/footer.ejs') -%>

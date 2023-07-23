@@ -254,7 +254,7 @@
   /* Style the search field */
   form.example input[type=text] {
     padding: 5px 0px 5px 12px;
-    font-size: 17px;
+    /* font-size: 17px; */
     border: 1px solid grey;
     float: left;
     width: 80%;
@@ -262,6 +262,10 @@
     border-radius: 5px 0px 0px 5px;
   }
   
+  form.example{
+    margin-right: 0px;
+  }
+
   /* Style the submit button */
   form.example button {
     float: left;
@@ -291,12 +295,13 @@
     font-size: 1.7em;
  }
 
- #margin-width{
-      min-width: 0rem;
-      margin: 0.125rem 70px 0;
- }
+.btn-height{
+    height: 36px;
+} 
 
-
+#btn-size{
+    font-size: 12px;
+}
 
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */

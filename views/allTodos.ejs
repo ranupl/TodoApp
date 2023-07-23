@@ -17,7 +17,7 @@
 </button>
 <!-- The search form -->
 <form class="example" action="/searchTask" method="GET">
-  <input type="text" placeholder="Search.." name="searchText">
+  <input type="text" placeholder="Search By userId" name="searchText">
   <div class="dropdown">
     <button type="button" class="btn btn-primary" data-toggle="dropdown">
       <ion-icon name="caret-down-outline" class="icon-size"></ion-icon>
@@ -144,6 +144,21 @@
       </div>
     </div>
 <!-- /section -->
+
+<!-- pagging -->
+<div class="container text-center">
+  <% if (totalPages > 1) { %>
+    <div>
+      <% if (page > 1) { %>
+        <a href="/todo?page=<%= page - 1 %>">Previous</a>
+      <% } %>
+  
+      <% if (page < totalPages) { %>
+        <a href="/todo?page=<%= page + 1 %>">Next</a>
+      <% } %>
+    </div>
+  <% } %>
+  </div>
 
 <!-- footer -->
 <%- include('include/footer.ejs') -%>

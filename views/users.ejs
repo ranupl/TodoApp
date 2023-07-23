@@ -8,28 +8,30 @@
     <h1 class="text-primary heading">All Users</h1>
   </div>
 </div>
+
 <!-- search -->
 <div class="container">
-  <div class="child-container">
-   <!-- Button trigger modal -->
-<div class="d-flex float-right margin-bottom">
-<!-- The search form -->
-<form class="example" action="/search" method="GET">
-<input type="text" placeholder="Search by name" name="searchText">
-<!-- </form> -->
-<div class="dropdown">
-<button type="button" class="btn btn-primary" data-toggle="dropdown">
-<ion-icon name="caret-down-outline" class="icon-size"></ion-icon>
-</button>
-<div class="dropdown-menu" id="margin-width">
-<a class="dropdown-item" href="#">10</a>
-<a class="dropdown-item" href="#">20</a>
-<a class="dropdown-item" href="#">50</a>
-</div>
-</div>
-</form>
-</div>
-</div>
+  <div class="d-flex float-right margin-bottom">
+    <form class="example" action="/search" method="GET">
+      <input type="text" placeholder="Search By Name" name="searchText" />
+      <!-- </form> -->
+      <!-- <form> -->
+      <!-- <div class="btn-group"> -->
+      <button
+        type="button"
+        class="btn btn-primary dropdown-toggle btn-height"
+        data-toggle="dropdown"
+      >
+        <!-- <ion-icon name="caret-down-outline" class="icon-size"></ion-icon> -->
+      </button>
+      <div class="dropdown-menu" id="margin-width">
+        <a class="dropdown-item" href="#">10</a>
+        <a class="dropdown-item" href="#">20</a>
+        <a class="dropdown-item" href="#">50</a>
+      </div>
+      <!-- </div> -->
+    </form>
+  </div>
 </div>
 
 <div class="container">
@@ -69,21 +71,28 @@
           </td>
         </tr>
         <% }); %>
-
-        <!--for search -->
-        <!-- <% if(users) { %> -->
-        <!-- <% users.forEach((result) => { %>
-          <tr>
-            <td><%= result.firstname %></td>
-             Add more table cells based on your data schema -->
-          <!-- </tr> -->
-        <!-- <% }); %> -->
-        <!-- <% } %> -->
       </tbody>
     </table>
   </div>
 </div>
 <!-- /section -->
 
+<!-- pagging -->
+<!-- pagging -->
+<div class="container text-center">
+  <% if (totalPages > 1) { %>
+    <div>
+      <% if (page > 1) { %>
+        <a href="/users?page=<%= page - 1 %>">Previous</a>
+      <% } %>
+  
+      <% if (page < totalPages) { %>
+        <a href="/users?page=<%= page + 1 %>">Next</a>
+      <% } %>
+    </div>
+  <% } %>
+  </div>
 
-
+<!-- footer -->
+<%- include('include/footer.ejs') -%>
+<!-- /footer -->
