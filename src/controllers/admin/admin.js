@@ -7,7 +7,7 @@ exports.adminDashboard = async (req, res) => {
 
   AdminDB.find({ username: uname })
     .then((user) => {
-      res.render("adminDashboard", { user , uname, lastlogin});
+      res.render("adminDashboard", { user, uname, lastlogin });
     })
     .catch((error) => {
       // Handle the error
@@ -51,7 +51,7 @@ exports.adminLogin = async (req, res) => {
         res.redirect("/admin");
       }
     } else {
-      const message = "****** Invalid username or email ******";
+      const message = " Invalid username or password !";
       res.render("admin", { message });
       return;
     }

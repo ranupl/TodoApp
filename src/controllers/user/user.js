@@ -1,4 +1,7 @@
 const { UserDB } = require("../../models/user");
+const itemsPerPage = 4;
+var totalPages;
+var page;
 
 // user CURD operation
 // create and save new user
@@ -10,12 +13,12 @@ exports.createUser = async (req, res) => {
   });
 
   if (user.length > 0) {
-    const message = "****** Username or email already exists ******";
+    const message = " Username or email already exists !";
     return res.render("signup", { message });
   }
 
   if (!req.body) {
-    const message = "****** Content can not be empty ******";
+    const message = " Content can not be empty !";
     res.render("signup", { message });
     return;
   }
@@ -66,13 +69,13 @@ exports.getAllUsers = async (req, res) => {
   const role = req.cookies.privilege;
   
  // pagging
- const itemsPerPage = 4;
+
  if(role == "admin"){
- const page = parseInt(req.query.page) || 1;
+ page = parseInt(req.query.page) || 1;
 
  try {
    const totalItems = await UserDB.countDocuments({});
-   const totalPages = Math.ceil(totalItems / itemsPerPage);
+   totalPages = Math.ceil(totalItems / itemsPerPage);
 
    const users = await UserDB.find({})
      .skip((page - 1) * itemsPerPage)
@@ -164,7 +167,7 @@ exports.userLogin = async (req, res) => {
   });
 
   if (user.length == 0) {
-    res.render("login", { message: "****** User not found ******" });
+    res.render("login", { message: " User not found !" });
     return;
   } else {
     if (password == user[0].password) {
@@ -188,7 +191,7 @@ exports.userLogin = async (req, res) => {
         res.redirect("/login");
       }
     } else {
-      const message = "****** Invalid username or email ******";
+      const message = " Invalid username or password ! ";
       res.render("login", { message });
       return;
     }
@@ -204,7 +207,7 @@ exports.searching = (req, res) => {
 
   UserDB.find({ firstname: { $regex: searchText, $options: 'i' } })
     .then((users) => {
-      res.render('users', { users, uname, lastlogin });
+      res.render('users', { users, uname, lastlogin, totalPages, page });
     })
     .catch((err) => console.error('Error searching in MongoDB:', err));
 };

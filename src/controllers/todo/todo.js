@@ -1,5 +1,8 @@
 const { UserDB } = require("../../models/user");
 const { TodoDB } = require("../../models/todo");
+var itemsPerPage = 4;
+var totalPages;
+var page;
 
 // CURD for todo (adminDashboard)
 // create task
@@ -73,13 +76,13 @@ exports.getAllTasks = async(req, res) => {
   const users = await UserDB.find().lean().exec();
 
   // pagging
-  const itemsPerPage = 4;
+
   if(role == "admin"){
-  const page = parseInt(req.query.page) || 1;
+  page = parseInt(req.query.page) || 1;
 
   try {
     const totalItems = await TodoDB.countDocuments({});
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    totalPages = Math.ceil(totalItems / itemsPerPage);
 
     const tasks = await TodoDB.find({})
       .skip((page - 1) * itemsPerPage)
@@ -92,11 +95,11 @@ exports.getAllTasks = async(req, res) => {
   }
 }
 else{
-  const page = parseInt(req.query.page) || 1;
+  page = parseInt(req.query.page) || 1;
 
   try {
     const totalItems = await TodoDB.countDocuments({});
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    totalPages = Math.ceil(totalItems / itemsPerPage);
 
     const tasks = await TodoDB.find({userid: uname})
       .skip((page - 1) * itemsPerPage)
@@ -109,23 +112,23 @@ else{
   }
 }
   
-  if (role == "admin") {
-    TodoDB.find()
-      .then((tasks) => {
-        res.render("allTodos", { tasks, users, adminUser , uname, lastlogin}); 
-      })
-      .catch((error) => {
-        res.status(500).send("Error retrieving tasks"); 
-      });
-  } else {
-    TodoDB.find({ userid: uname })
-      .then((tasks) => {
-        res.render("userDashboard", { tasks, uname, lastlogin, }); 
-      })
-      .catch((error) => {
-        res.status(500).send("Error retrieving tasks");
-      });
-  }
+  // if (role == "admin") {
+  //   TodoDB.find()
+  //     .then((tasks) => {
+  //       res.render("allTodos", { tasks, users, adminUser , uname, lastlogin}); 
+  //     })
+  //     .catch((error) => {
+  //       res.status(500).send("Error retrieving tasks"); 
+  //     });
+  // } else {
+  //   TodoDB.find({ userid: uname })
+  //     .then((tasks) => {
+  //       res.render("userDashboard", { tasks, uname, lastlogin, }); 
+  //     })
+  //     .catch((error) => {
+  //       res.status(500).send("Error retrieving tasks");
+  //     });
+  // }
 };
 
 // edit task
@@ -196,18 +199,18 @@ exports.searching = async (req, res) => {
   {
     TodoDB.find({ title: { $regex: searchText, $options: 'i' } })
     .then((tasks) => {
-      res.render('userDashboard', { tasks, uname, lastlogin });
+      res.render('userDashboard', { tasks, uname, lastlogin , totalPages, page});
     })
     .catch((err) => console.error('Error searching in MongoDB:', err));
   }
   else{
     TodoDB.find({ userid: { $regex: searchText, $options: 'i' } })
     .then((tasks) => {
-      res.render('allTodos', { tasks, uname, lastlogin ,users, adminUser });
+      res.render('allTodos', { tasks, uname, lastlogin ,users, adminUser, totalPages, page});
     })
     .catch((err) => console.error('Error searching in MongoDB:', err));
   }
   
 };
 
-// Route for pagination
+

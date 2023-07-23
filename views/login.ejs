@@ -6,16 +6,16 @@
     <div class="container">
         <h1 class="text-center text-primary heading">Login</h1>
         </div>
+        <div class="container text-danger text-center">
+          <% if(typeof message != undefined){ %> 
+            <p><%= message %></p>
+          <% } %>
+        </div>
         <div class="container">
         <div class="box1">
         <div class="row">
             <div class="col border" id="padding-none"><img src="/flat-lay-notebook-with-list-desk.jpg" class="sign-img"></div>
             <div class="col padding border">
-              <% if(typeof message != undefined) { %>
-                <div class="text-danger margin-bottom bg-light text-center">
-                  <%= message %>
-              </div>
-              <% } %>
                 <form action="/users/login" method="POST">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Email / Username</label>

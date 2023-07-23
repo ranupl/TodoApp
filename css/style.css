@@ -250,59 +250,28 @@
 * {
     box-sizing: border-box;
   }
-  
-  /* Style the search field */
-  form.example input[type=text] {
-    padding: 5px 0px 5px 12px;
-    /* font-size: 17px; */
-    border: 1px solid grey;
-    float: left;
-    width: 80%;
-    background: #f1f1f1;
-    border-radius: 5px 0px 0px 5px;
-  }
+
   
   form.example{
     margin-right: 0px;
   }
 
-  /* Style the submit button */
-  form.example button {
-    float: left;
-    width: 20%;
-    padding: 10px;
-    background: #0b7dda;
-    color: white;
-    font-size: 7px;
-    border: 1px solid grey;
-    border-left: none; /* Prevent double borders */
-    cursor: pointer;
-    border-radius: 0px 5px 5px 0px;
-  }
-  
-  form.example button:hover {
-    background: #3095e8;
-  }
-  
-  /* Clear floats */
-  form.example::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
-
- .icon-size{
-    font-size: 1.7em;
- }
-
-.btn-height{
-    height: 36px;
-} 
-
-#btn-size{
-    font-size: 12px;
+.has-search .form-control {
+    padding-left: 2.375rem;
+    width: 80%;
 }
 
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */
 /* font-family: 'PT Sans', sans-serif; */
