@@ -243,7 +243,8 @@
 }
 
 .sign-img{
-   height: 70vh;
+   height: 312px;
+   max-width: 100%;
 }
 
 /* search bar css */
