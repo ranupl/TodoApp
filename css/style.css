@@ -283,10 +283,10 @@
     cursor: pointer;
 }
 
-#dropdown-item{
-    width: 10px;
+.select-box{
+    padding: 5.3px;
+    cursor: pointer;
 }
-
 
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */

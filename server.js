@@ -116,6 +116,9 @@ app.post("/admin/login", adminCon.adminLogin);
 app.post("/admin/update", checkAdminLogin, adminCon.adminUpdate);
 app.get("/adminDashboard", checkAdminLogin, adminCon.adminDashboard);
 
+app.post("/limit-data", todoCon.limitedData);
+app.post("/limit-user", userCon.limitUserData);
+
 app.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);
 });

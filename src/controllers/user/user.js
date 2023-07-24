@@ -210,3 +210,22 @@ exports.searching = (req, res) => {
     })
     .catch((err) => console.error('Error searching in MongoDB:', err));
 };
+
+// limited data
+exports.limitUserData = async (req, res) => {
+  const searchText = req.query.searchText;
+  const uname = req.session.username;
+  const lastlogin = req.session.lastlogin;
+  const role = req.session.privilege;
+  const adminUser = req.session.username;
+  const users = await UserDB.find().lean().exec();
+  const limit = req.body.limit;
+
+    try {
+      const users = await UserDB.find().limit(limit);
+      res.render("users", { totalPages, page, uname, adminUser,lastlogin, users });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server Error");
+    }
+};

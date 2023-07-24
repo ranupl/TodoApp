@@ -19,16 +19,15 @@
         <button type="submit" class="search-btn"><ion-icon name="search"></ion-icon></button>
       </div>
    </form>
-   <div class="dropdown">
-    <button class="btn btn-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <ion-icon name="chevron-collapse-outline" class="text-black"></ion-icon>
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" id="dropdown-item" href="#">10</a>
-      <a class="dropdown-item" id="dropdown-item" href="#">20</a>
-      <a class="dropdown-item" id="dropdown-item" href="#">50</a>
-    </div>
-  </div>
+   <form action="/limit-user" method="post" id="limitForm">
+    <select name="limit" onchange="submitForm()" class="select-box">
+      <option value="">Set</option>
+      <option value="4">4</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="50">50</option>
+    </select>
+  </form>
   </div>
   </div>
 </div>
@@ -88,6 +87,14 @@
   </div>
   <% } %>
 </div>
+
+
+  <!-- js for select box -->
+  <script>
+    function submitForm() {
+      document.getElementById('limitForm').submit();
+    }
+  </script>
 
 <!-- footer -->
 <%- include('include/footer.ejs') -%>
