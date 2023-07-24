@@ -41,82 +41,43 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/css"));
 app.use(express.static(__dirname + "/images"));
 
-// home page
+// page routes
 app.get("/", (req, res) => {
   res.render("home");
 });
 
-// about page
 app.get("/about", (req, res) => {
   res.render("about");
 });
 
-// welcome page
 app.get("/welcome", (req, res) => {
   res.render("welcome");
 });
 
-// signup page
 app.get("/signup", (req, res) => {
   res.render("signup", { message: undefined });
 });
 
-// login page
 app.get("/login", (req, res) => {
   res.render("login", { message: undefined });
 });
 
-// admin login page
 app.get("/admin", (req, res) => {
   res.render("admin", { message: undefined });
 });
 
-// create todo page
-// app.get("/todo", checkUserLogin,(req, res) => {
-//   const uname = req.session.username;
-//   const lastlogin = req.session.lastlogin;
-//   res.render("todo", { uname, lastlogin });
-// });
+app.get("/editUser", (req, res) => {
+  res.render("editUser");
+});
 
-// admin dashboard
-app.get("/adminDashboard", checkAdminLogin, adminCon.adminDashboard);
+app.get("/editAdmin", (req, res) => {
+  res.render("editAdmin");
+});
 
 //todo update
 // app.get("/updateTodo", (req, res) => {
 //   res.render("updateTodo");
 // });
-
-// user update
-app.get("/editUser", (req, res) => {
-  res.render("editUser");
-});
-
-// edit admin
-app.get("/editAdmin", (req, res) => {
-  res.render("editAdmin");
-});
-
-// todo create
-// app.get("/todoCreate",checkUserLogin, userCon.getAllUsername);
-// app.get("/allTodos",checkUserLogin, userCon.getAllUsername);
-
-// all routes
-app.get("/userDashboard", checkUserLogin, todoCon.getAllTasks);
-app.get("/allTodos", checkAdminLogin, todoCon.getAllTasks);
-
-// all about user
-app.post("/users", userCon.createUser);
-app.get("/users", checkAdminLogin, userCon.getAllUsers);
-app.get("/users/:id", checkAdminLogin, userCon.getUserByID);
-app.post("/users/update/:id", checkAdminLogin, userCon.updateUser);
-app.get("/users/delete/:id", checkAdminLogin, userCon.deleteUser);
-
-// user login
-app.post("/users/login", userCon.userLogin);
-
-// for search
-app.get("/search", userCon.searching);
-app.get("/searchTask", todoCon.searching);
 
 // user logout
 app.get("/logout", (req, res) => {
@@ -131,19 +92,29 @@ app.get("/logout", (req, res) => {
   }
 });
 
-// pagging
-// app.get('/items/:page', userCon.pagging);
+// user routes
+app.post("/users", userCon.createUser);
+app.get("/users", checkAdminLogin, userCon.getAllUsers);
+app.get("/users/:id", checkAdminLogin, userCon.getUserByID);
+app.post("/users/update/:id", checkAdminLogin, userCon.updateUser);
+app.get("/users/delete/:id", checkAdminLogin, userCon.deleteUser);
+app.post("/users/login", userCon.userLogin);
+app.get("/search", userCon.searching);
 
-// all about todo
+// todo routes
 app.post("/todo", checkUserLogin, todoCon.createTask);
 app.get("/todo", checkUserLogin, todoCon.getAllTasks);
 app.get("/todo/edit/:id", checkUserLogin, todoCon.editTask);
 app.post("/todo/update/:id", checkUserLogin, todoCon.updateTask);
 app.get("/todo/delete/:id", checkUserLogin, todoCon.deleteTask);
+app.get("/userDashboard", checkUserLogin, todoCon.getAllTasks);
+app.get("/allTodos", checkAdminLogin, todoCon.getAllTasks);
+app.get("/searchTask", todoCon.searching);
 
 // admin routes
 app.post("/admin/login", adminCon.adminLogin);
 app.post("/admin/update", checkAdminLogin, adminCon.adminUpdate);
+app.get("/adminDashboard", checkAdminLogin, adminCon.adminDashboard);
 
 app.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);

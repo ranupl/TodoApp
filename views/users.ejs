@@ -13,12 +13,23 @@
 <div class="container">
   <div class="d-flex float-right margin-bottom">
     <form class="example" action="/search" method="GET">
-      <!-- <input type="text" placeholder="Search By Name" name="searchText" /> -->
-      <div class="form-group has-search">
-        <span class="fa fa-search form-control-feedback"></span>
-        <input type="text" class="form-control" placeholder="Search By Name" name="searchText">
+      <div class="form-group has-search d-flex">
+        <!-- <span class="fa fa-search form-control-feedback"></span> -->
+        <input type="text" class="form-control" placeholder="Search By UserId" name="searchText">
+        <button type="submit" class="search-btn"><ion-icon name="search"></ion-icon></button>
       </div>
-    </form>
+   </form>
+   <div class="dropdown">
+    <button class="btn btn-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <ion-icon name="chevron-collapse-outline" class="text-black"></ion-icon>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" id="dropdown-item" href="#">10</a>
+      <a class="dropdown-item" id="dropdown-item" href="#">20</a>
+      <a class="dropdown-item" id="dropdown-item" href="#">50</a>
+    </div>
+  </div>
+  </div>
   </div>
 </div>
 
@@ -66,20 +77,17 @@
 <!-- /section -->
 
 <!-- pagging -->
-<!-- pagging -->
 <div class="container text-center">
   <% if (totalPages > 1) { %>
-    <div>
-      <% if (page > 1) { %>
-        <a href="/users?page=<%= page - 1 %>">Previous</a>
-      <% } %>
-  
-      <% if (page < totalPages) { %>
-        <a href="/users?page=<%= page + 1 %>">Next</a>
-      <% } %>
-    </div>
-  <% } %>
+  <div>
+    <% if (page > 1) { %>
+    <a href="/users?page=<%= page - 1 %>">Previous</a>
+    <% } %> <% if (page < totalPages) { %>
+    <a href="/users?page=<%= page + 1 %>">Next</a>
+    <% } %>
   </div>
+  <% } %>
+</div>
 
 <!-- footer -->
 <%- include('include/footer.ejs') -%>

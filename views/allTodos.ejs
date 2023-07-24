@@ -18,11 +18,22 @@
 <div class="d-flex">
   <!-- The search form -->
   <form class="example" action="/searchTask" method="GET">
-    <div class="form-group has-search">
-      <span class="fa fa-search form-control-feedback"></span>
-      <input type="text" class="form-control" placeholder="Search By Title" name="searchText">
+    <div class="form-group has-search d-flex">
+      <!-- <span class="fa fa-search form-control-feedback"></span> -->
+      <input type="text" class="form-control" placeholder="Search By UserId" name="searchText">
+      <button type="submit" class="search-btn"><ion-icon name="search"></ion-icon></button>
     </div>
  </form>
+ <div class="dropdown">
+  <button class="btn btn-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <ion-icon name="chevron-collapse-outline" class="text-black"></ion-icon>
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" id="dropdown-item" href="#">10</a>
+    <a class="dropdown-item" id="dropdown-item" href="#">20</a>
+    <a class="dropdown-item" id="dropdown-item" href="#">50</a>
+  </div>
+</div>
 </div>
 </div>
 
@@ -128,7 +139,13 @@
               <td scope="col"><%= tasks[i].status %></td>
               <td>
                 <div>
-                  <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+                  <!-- <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a> -->
+<!-- <button type="button" class="btn btn-white" data-toggle="modal" data-target="#editModal"> -->
+  <a href="/todo/edit/<%= tasks[i].id %>" data-toggle="modal" data-target="#editModal"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+  <!-- </button> -->
+  
+  <%- include('todoEditModel.ejs') -%>
+
                   <a href="/todo/delete/<%= tasks[i].id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
                 </div>
               </td>

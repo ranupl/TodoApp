@@ -158,7 +158,6 @@ exports.getAllUsername = (req, res) => {
 
 // user login
 exports.userLogin = async (req, res) => {
-  // Process the login form submission
   const { text, password } = req.body;
 
   // Find the user by username

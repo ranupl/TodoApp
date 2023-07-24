@@ -75,8 +75,7 @@ exports.getAllTasks = async(req, res) => {
   const adminUser = req.session.username;
   const users = await UserDB.find().lean().exec();
 
-  // pagging
-
+  // pagging + get all tasks
   if(role == "admin"){
   page = parseInt(req.query.page) || 1;
 
@@ -111,24 +110,6 @@ else{
     res.status(500).send('Error retrieving items');
   }
 }
-  
-  // if (role == "admin") {
-  //   TodoDB.find()
-  //     .then((tasks) => {
-  //       res.render("allTodos", { tasks, users, adminUser , uname, lastlogin}); 
-  //     })
-  //     .catch((error) => {
-  //       res.status(500).send("Error retrieving tasks"); 
-  //     });
-  // } else {
-  //   TodoDB.find({ userid: uname })
-  //     .then((tasks) => {
-  //       res.render("userDashboard", { tasks, uname, lastlogin, }); 
-  //     })
-  //     .catch((error) => {
-  //       res.status(500).send("Error retrieving tasks");
-  //     });
-  // }
 };
 
 // edit task
@@ -139,6 +120,7 @@ exports.editTask = (req, res) => {
 
   TodoDB.findById(id)
     .then((tasks) => {
+      console.log(tasks);
       res.render("todoEditModel", { tasks, uname, lastlogin });
     })
     .catch((error) => {

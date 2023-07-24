@@ -10,7 +10,6 @@ exports.adminDashboard = async (req, res) => {
       res.render("adminDashboard", { user, uname, lastlogin });
     })
     .catch((error) => {
-      // Handle the error
       console.error(error);
       res.status(500).send("Error retrieving user");
     });
@@ -18,7 +17,6 @@ exports.adminDashboard = async (req, res) => {
 
 // adming login
 exports.adminLogin = async (req, res) => {
-  // Process the login form submission
   const { text, password } = req.body;
 
   // Find the user by username

@@ -253,12 +253,13 @@
 
   
   form.example{
-    margin-right: 0px;
+    margin-right: -47px;
   }
 
 .has-search .form-control {
-    padding-left: 2.375rem;
-    width: 80%;
+    /* padding-left: 2.375rem; */
+    width: 60%;
+    border-radius: 5px 0px 0px 5px;
 }
 
 .has-search .form-control-feedback {
@@ -272,6 +273,21 @@
     pointer-events: none;
     color: #aaa;
 }
+
+.search-btn{
+    padding: 0px 7px;
+    border-radius: 0px 5px 5px 0px;
+    background-color: #0d6efd;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+#dropdown-item{
+    width: 10px;
+}
+
+
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */
 /* font-family: 'PT Sans', sans-serif; */

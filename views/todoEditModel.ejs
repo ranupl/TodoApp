@@ -1,17 +1,24 @@
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="container">
-            <div class="text-center">
-              <h1 class="heading text-primary">Update Todo</h1>
-            </div>
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="container">
+          <div class="text-center">
+            <h1 class="heading text-primary">Update Todo</h1>
           </div>
-          <div class="outer-container">
-              <div class="inner-container">
+        </div>
+        <div class="outer-container">
+          <div class="inner-container">
             <div class="container">
               <form action="/todo/update/:id" method="POST">
-                <input type="hidden" name="id" value="<%= tasks.id %>">
+                <input type="hidden" name="id" value="<%= tasks.id %>" />
                 <div class="form-group">
                   <label for="exampleFormControlInput1">Title</label>
                   <input
@@ -36,7 +43,12 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleFormControlSelect1">Priority</label>
-                  <select class="form-control" id="exampleFormControlSelect1" value="<%= tasks.priority %>" name="priority">
+                  <select
+                    class="form-control"
+                    id="exampleFormControlSelect1"
+                    value="<%= tasks.priority %>"
+                    name="priority"
+                  >
                     <option>High</option>
                     <option>Medium</option>
                     <option>Low</option>
@@ -44,7 +56,12 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleFormControlSelect1">Status</label>
-                  <select class="form-control" id="exampleFormControlSelect1" value="<%= tasks.status %>" name="status">
+                  <select
+                    class="form-control"
+                    id="exampleFormControlSelect1"
+                    value="<%= tasks.status %>"
+                    name="status"
+                  >
                     <option>Pending</option>
                     <option>Progress</option>
                     <option>Done</option>
@@ -54,9 +71,8 @@
               </form>
             </div>
           </div>
-          </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
