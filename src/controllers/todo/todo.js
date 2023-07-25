@@ -240,7 +240,7 @@ exports.limitedData = async (req, res) => {
     }
   }else{
     try {
-      const tasks = await TodoDB.find().limit(limit);
+      const tasks = await TodoDB.find({username :uname }).limit(limit);
       res.render("userDashboard", { tasks, totalPages, page, uname,lastlogin});
     } catch (err) {
       console.log(err);

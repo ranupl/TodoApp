@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/ranupl/TodoApp#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "bootstrap-icons": "^1.10.5",
     "cookie-parser": "^1.4.6",

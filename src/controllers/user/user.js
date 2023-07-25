@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const { UserDB } = require("../../models/user");
 const itemsPerPage = 4;
 var totalPages;
@@ -23,13 +24,17 @@ exports.createUser = async (req, res) => {
     return;
   }
 
+  const { password } = req.body;
+  let pass = password.toString();
+  const hashedPassword = await bcrypt.hash(pass, 10);
+
   // new user
   const newUser = new UserDB({
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     email: req.body.email,
     username: req.body.username,
-    password: req.body.password,
+    password: hashedPassword,
     status: "active",
     privilege: "user",
   });
@@ -40,7 +45,8 @@ exports.createUser = async (req, res) => {
     .then((data) => {
       const username = data.username;
       const privilege = data.privilege;
-      const lastlogin = data.lastlogin;
+      const currentDate = new Date();
+      var lastlogin = currentDate.toLocaleTimeString();
       // session
       req.session;
       req.session.username = username;
@@ -61,36 +67,35 @@ exports.createUser = async (req, res) => {
     });
 };
 
-
 // get all users
 exports.getAllUsers = async (req, res) => {
   const uname = req.session.username;
   const lastlogin = req.session.lastlogin;
   const role = req.cookies.privilege;
-  
- // pagging
 
- if(role == "admin"){
- page = parseInt(req.query.page) || 1;
+  // pagging
 
- try {
-   const totalItems = await UserDB.countDocuments({});
-   totalPages = Math.ceil(totalItems / itemsPerPage);
+  if (role == "admin") {
+    page = parseInt(req.query.page) || 1;
 
-   const users = await UserDB.find({})
-     .skip((page - 1) * itemsPerPage)
-     .limit(itemsPerPage)
-     .exec();
+    try {
+      const totalItems = await UserDB.countDocuments({});
+      totalPages = Math.ceil(totalItems / itemsPerPage);
 
-   res.render('users', { users, page, totalPages ,uname, lastlogin });
- } catch (err) {
-   res.status(500).send('Error retrieving items');
- }
-}
+      const users = await UserDB.find({})
+        .skip((page - 1) * itemsPerPage)
+        .limit(itemsPerPage)
+        .exec();
+
+      res.render("users", { users, page, totalPages, uname, lastlogin });
+    } catch (err) {
+      res.status(500).send("Error retrieving items");
+    }
+  }
 
   UserDB.find()
     .then((users) => {
-      res.render("users", { users , uname, lastlogin});
+      res.render("users", { users, uname, lastlogin });
     })
     .catch((error) => {
       res.status(500).send("Error retrieving users");
@@ -110,7 +115,6 @@ exports.getUserByID = (req, res) => {
       res.status(500).send("Error retrieving user");
     });
 };
-
 
 // update user
 exports.updateUser = async (req, res) => {
@@ -165,11 +169,15 @@ exports.userLogin = async (req, res) => {
     $or: [{ email: text }, { username: text }],
   });
 
+  console.log(user[0].password);
+  const isPasswordValid = await bcrypt.compare(password, user[0].password);
+  console.log(isPasswordValid);
+
   if (user.length == 0) {
     res.render("login", { message: " User not found !" });
     return;
   } else {
-    if (password == user[0].password) {
+    if (isPasswordValid) {
       user[0].privilege = "user";
 
       const username = user[0].username;
@@ -197,18 +205,17 @@ exports.userLogin = async (req, res) => {
   }
 };
 
-
 // Search route
 exports.searching = (req, res) => {
   const searchText = req.query.searchText;
   const uname = req.session.username;
   const lastlogin = req.session.lastlogin;
 
-  UserDB.find({ firstname: { $regex: searchText, $options: 'i' } })
+  UserDB.find({ firstname: { $regex: searchText, $options: "i" } })
     .then((users) => {
-      res.render('users', { users, uname, lastlogin, totalPages, page });
+      res.render("users", { users, uname, lastlogin, totalPages, page });
     })
-    .catch((err) => console.error('Error searching in MongoDB:', err));
+    .catch((err) => console.error("Error searching in MongoDB:", err));
 };
 
 // limited data
@@ -221,11 +228,18 @@ exports.limitUserData = async (req, res) => {
   const users = await UserDB.find().lean().exec();
   const limit = req.body.limit;
 
-    try {
-      const users = await UserDB.find().limit(limit);
-      res.render("users", { totalPages, page, uname, adminUser,lastlogin, users });
-    } catch (err) {
-      console.log(err);
-      res.status(500).send("Server Error");
-    }
+  try {
+    const users = await UserDB.find().limit(limit);
+    res.render("users", {
+      totalPages,
+      page,
+      uname,
+      adminUser,
+      lastlogin,
+      users,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
 };

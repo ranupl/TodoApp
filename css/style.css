@@ -289,6 +289,19 @@
     cursor: pointer;
 }
 
+.form-control.success input{
+    border-color: green;;
+} 
+
+.form-control.error input{
+    border-color: red;
+}
+
+.form-control.error{
+    color: red;
+    font-size: 9px;
+    height: 13px;
+}
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */
 /* font-family: 'PT Sans', sans-serif; */

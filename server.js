@@ -40,6 +40,7 @@ app.set("view engine", "ejs");
 // path resolve
 app.use(express.static(__dirname + "/css"));
 app.use(express.static(__dirname + "/images"));
+app.use(express.static(__dirname + "/js"));
 
 // page routes
 app.get("/", (req, res) => {
