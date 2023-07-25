@@ -25,9 +25,10 @@
                   value=""
                   name="firstname"
                   placeholder="First Name"
-                  
                 />
+                <span id="fnameError" style="color: red;"></span>
               </div>
+
               <div class="form-group">
                 <label for="lname">Last Name</label>
                 <input
@@ -37,22 +38,21 @@
                   value=""
                   name="lastname"
                   placeholder="Last Name"
-                  
                 />
+                <span id="lnameError" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="email">Email address</label>
                 <input
-                  type="email"
+                  type="text"
                   class="form-control"
                   id="email"
                   aria-describedby="emailHelp"
                   value=""
                   name="email"
                   placeholder="Enter email"
-                  
                 />
-                <div class="error"></div>
+                <span id="emailMsg" style="color: red;"></span>
                 <small id="emailHelp" class="form-text text-muted"
                   >We'll never share your email with anyone else.</small
                 >
@@ -67,21 +67,19 @@
                   name="username"
                   placeholder="Username"  
                 />
-                <span id="msg" style="color: red;"></span><br>
+                <span id="msg" style="color: red;"></span>
               </div>
-             
-
               <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
+                <label for="password">Password</label>
                 <input
                   type="password"
                   class="form-control"
-                  id="exampleInputPassword1"
+                  id="password"
                   value=""
                   name="password"
                   placeholder="Password"
                 />
-                <span id="passMsg" style="color: red;"></span><br>
+                <span id="passMsg" style="color: red;"></span>
               </div>
               <button type="submit" class="btn btn-primary mg-top">
                 Sign Up
