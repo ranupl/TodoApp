@@ -28,12 +28,24 @@
      </form>
      <form action="/limit-data" method="post" id="limitForm">
       <select name="limit" onchange="submitForm()" class="select-box">
-        <option value="">Set</option>
-        <option value="4">4</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
+        <%
+          var options = [ "", "5", "10", "20", "50" ];
+          for ( var i = 0; i < options.length; i++ )
+          {
+              var selected = ( limit == options[ i ] ) ? "selected" : "";
+              
+              if(options[i] == "") {
+              %>
+              <option value="<%=options[ i ] %>" <%=selected %>>All</option>
+              <% } else{ %>
+                <option value="<%=options[ i ] %>" <%=selected %>><%=options[i] %></option>
+              <%
+              }
+          }
+        %>
+        
       </select>
+      </form>
 </div>
 </div>
 
@@ -138,7 +150,7 @@
 <a href="/todo/edit/<%= tasks[i].id %>" data-toggle="modal" data-target="#editModal"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
 <!-- </button> -->
 
-<%- include('todoEditModel.ejs') -%>
+<%- include('todoEditModel.ejs',{task:tasks[i]}) -%>
 
 
 

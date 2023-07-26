@@ -17,15 +17,15 @@
         <div class="outer-container">
           <div class="inner-container">
             <div class="container">
-              <form action="/todo/update/:id" method="POST">
-                <input type="hidden" name="id" value="<%= tasks.id %>" />
+              <form action="/todo/update/<%= task.id %>" method="POST">
+                <input type="hidden" name="id" value="<%= task.id %>" />
                 <div class="form-group">
                   <label for="exampleFormControlInput1">Title</label>
                   <input
                     type="text"
                     class="form-control"
                     id="exampleFormControlInput1"
-                    value="<%= tasks.title %>"
+                    value="<%= task.title %>"
                     name="title"
                     placeholder="Title"
                   />
@@ -36,7 +36,7 @@
                     type="text"
                     class="form-control"
                     id="exampleFormControlInput1"
-                    value="<%= tasks.discription %>"
+                    value="<%= task.discription %>"
                     name="discription"
                     placeholder="Discription"
                   />
@@ -46,7 +46,7 @@
                   <select
                     class="form-control"
                     id="exampleFormControlSelect1"
-                    value="<%= tasks.priority %>"
+                    value="<%= task.priority %>"
                     name="priority"
                   >
                     <option>High</option>
@@ -59,7 +59,7 @@
                   <select
                     class="form-control"
                     id="exampleFormControlSelect1"
-                    value="<%= tasks.status %>"
+                    value="<%= task.status %>"
                     name="status"
                   >
                     <option>Pending</option>

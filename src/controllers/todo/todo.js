@@ -1,7 +1,7 @@
 const { UserDB } = require("../../models/user");
 const { TodoDB } = require("../../models/todo");
-const { application } = require("express");
-var itemsPerPage = 4;
+// const { application } = require("express");
+var itemsPerPage = 5;
 var totalPages;
 var page;
 
@@ -13,7 +13,6 @@ exports.createTask = (req, res) => {
     res.status(400).send({ message: "Content can not be empty" });
     return;
   }
-
   const role = req.session.privilege;
   const uname = req.session.username;
   const userid = req.body.userid;
@@ -32,6 +31,7 @@ exports.createTask = (req, res) => {
     newTask
       .save()
       .then((data) => {
+        console.log(data);
         res.redirect("/allTodos");
       })
       .catch((err) => {
@@ -88,7 +88,7 @@ exports.getAllTasks = async (req, res) => {
         .skip((page - 1) * itemsPerPage)
         .limit(itemsPerPage)
         .exec();
-
+      
       res.render("allTodos", {
         tasks,
         page,
@@ -97,6 +97,8 @@ exports.getAllTasks = async (req, res) => {
         users,
         adminUser,
         lastlogin,
+        limit : itemsPerPage
+        
       });
     } catch (err) {
       res.status(500).send("Error retrieving items");
@@ -112,13 +114,13 @@ exports.getAllTasks = async (req, res) => {
         .skip((page - 1) * itemsPerPage)
         .limit(itemsPerPage)
         .exec();
-
       res.render("userDashboard", {
         tasks,
         page,
         totalPages,
         uname,
         lastlogin,
+        limit : itemsPerPage
       });
     } catch (err) {
       res.status(500).send("Error retrieving items");
@@ -146,7 +148,7 @@ exports.editTask = (req, res) => {
 
 //update tasks
 exports.updateTask = (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const { userid, title, discription, priority, status } = req.body;
 
   TodoDB.findByIdAndUpdate(
@@ -199,6 +201,7 @@ exports.searching = async (req, res) => {
           lastlogin,
           totalPages,
           page,
+          limit: ""
         });
       })
       .catch((err) => console.error("Error searching in MongoDB:", err));
@@ -213,6 +216,7 @@ exports.searching = async (req, res) => {
           adminUser,
           totalPages,
           page,
+          limit:""
         });
       })
       .catch((err) => console.error("Error searching in MongoDB:", err));
@@ -233,15 +237,15 @@ exports.limitedData = async (req, res) => {
   {
     try {
       const tasks = await TodoDB.find().limit(limit);
-      res.render("allTodos", { tasks, totalPages, page, uname, adminUser,lastlogin, users });
+      res.render("allTodos", { tasks, totalPages, page, uname, adminUser,lastlogin, users,limit });
     } catch (err) {
       console.log(err);
       res.status(500).send("Server Error");
     }
   }else{
     try {
-      const tasks = await TodoDB.find({username :uname }).limit(limit);
-      res.render("userDashboard", { tasks, totalPages, page, uname,lastlogin});
+      const tasks = await TodoDB.find({userid: uname }).limit(limit);
+      res.render("userDashboard", { tasks, totalPages, page, uname,lastlogin,limit});
     } catch (err) {
       console.log(err);
       res.status(500).send("Server Error");

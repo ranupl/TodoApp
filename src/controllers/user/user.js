@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const { UserDB } = require("../../models/user");
-const itemsPerPage = 4;
+const itemsPerPage = 5;
 var totalPages;
 var page;
 
@@ -107,7 +107,7 @@ exports.getUserByID = (req, res) => {
   const userId = req.params.id;
   UserDB.findById(userId)
     .then((user) => {
-      res.render("editUser", { user });
+      res.render("editUserUserModel", { user });
     })
     .catch((error) => {
       // Handle the error
@@ -153,7 +153,7 @@ exports.getAllUsername = (req, res) => {
   const adminUser = req.session.username;
   UserDB.find()
     .then((users) => {
-      res.render("allTodos", { users, adminUser });
+      res.render("allTodos", { users, adminUser,limit:"" });
     })
     .catch((error) => {
       res.status(500).send("Error retrieving users");
@@ -169,9 +169,9 @@ exports.userLogin = async (req, res) => {
     $or: [{ email: text }, { username: text }],
   });
 
-  console.log(user[0].password);
+  // console.log(user[0].password);
   const isPasswordValid = await bcrypt.compare(password, user[0].password);
-  console.log(isPasswordValid);
+  // console.log(isPasswordValid);
 
   if (user.length == 0) {
     res.render("login", { message: " User not found !" });

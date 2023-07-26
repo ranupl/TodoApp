@@ -1,6 +1,6 @@
 function validateForm() {
   var username = document.getElementById("username").value;
-  var email = document.getElementById("email").value;
+  var emailAdd = document.getElementById("emailAdd").value;
   var password = document.getElementById("password").value;
   var fname = document.getElementById("fname").value;
   var lname = document.getElementById("lname").value;
@@ -10,35 +10,39 @@ function validateForm() {
   var passMsg = document.getElementById("passMsg");
   var emailMsg = document.getElementById("emailMsg");
 
-
- // firstname validation
- if(fname.trim() == "")
- {
+  // firstname validation
+  if (fname.trim() == "") {
     fnameError.textContent = "please enter your name";
     return false;
- }
- if(fname.length < 2)
- {
-    fnameError.textContent = "name should contain two or more than two character";
+  }
+  if (fname.length < 2) {
+    fnameError.textContent =
+      "name should contain two or more than two character";
     return false;
- }
+  }
 
- // lastname validation
- if(lname.trim()=="")
- {
+  // lastname validation
+  if (lname.trim() == "") {
     lnameError.textContent = "please enter yout last name";
     return false;
- }
- if(lname.length < 2)
- {
-    lnameError.textContent = "lastname should contain two or more than two character";
+  }
+  if (lname.length < 2) {
+    lnameError.textContent =
+      "lastname should contain two or more than two character";
     return false;
- }  
-
+  }
+  
   // email validation
-
-
-   
+  let checkEmail = 
+    emailAdd.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  if (checkEmail == null) {
+    emailMsg.textContent = "invalid email address";
+    return false;
+  }else{
+    emailMsg.textContent =""
+  }
 
   // username validation
   if (username.trim() == "") {

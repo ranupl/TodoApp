@@ -1,4 +1,5 @@
 const { AdminDB } = require("../../models/admin");
+const bcrypt = require("bcrypt");
 
 // admin dashboard
 exports.adminDashboard = async (req, res) => {
@@ -23,12 +24,14 @@ exports.adminLogin = async (req, res) => {
   const user = await AdminDB.find({
     $or: [{ email: text }, { username: text }],
   });
-
+   
+  const isPasswordValid = await bcrypt.compare(password, user[0].password);
+   
   if (user.length == 0) {
     res.render("admin", { message: "****** User not found ******" });
     return;
   } else {
-    if (password == user[0].password) {
+    if (isPasswordValid) {
       user[0].privilege = "admin";
       const username = user[0].username;
       const privilege = user[0].privilege;
@@ -58,6 +61,8 @@ exports.adminLogin = async (req, res) => {
 
 // admin update
 exports.adminUpdate = async (req, res) => {
+  const uname = req.session.uname;
+  const lastlogin = req.session.lastlogin;
   const { password, newpassword, confirmpassword } = req.body;
 
   // Find the user by username

@@ -41,7 +41,7 @@
           <th scope="col">Last Name</th>
           <th scope="col">Email</th>
           <th scope="col">Username</th>
-          <th scope="col">Password</th>
+          <!-- <th scope="col">Password</th> -->
           <th scope="col">Status</th>
           <th scope="col">Action</th>
         </tr>
@@ -54,13 +54,16 @@
           <td><%= user.lastname %></td>
           <td><%= user.email %></td>
           <td><%= user.username %></td>
-          <td><%= user.password %></td>
+          <!-- <td><%= user.password %></td> -->
           <td><%= user.status %></td>
           <td>
             <div>
-              <a href="/users/<%= user.id %>"
+              <!-- <a href="/users/<%= user.id %>"
                 ><ion-icon name="pencil" class="color-pencil"></ion-icon
-              ></a>
+              ></a> -->
+<a href="/users/<%= user.id %>" data-toggle="modal" data-target="#editUserModal"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+<%- include('editUserModel.ejs',{user:user}) -%>
+
               <a href="/users/delete/<%= user.id %>"
                 ><ion-icon name="trash" class="color-trash"></ion-icon
               ></a>
