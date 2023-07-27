@@ -71,9 +71,9 @@ app.get("/editUser", (req, res) => {
   res.render("editUser");
 });
 
-app.get("/editAdmin", (req, res) => {
-  res.render("editAdmin");
-});
+// app.get("/editAdmin", (req, res) => {
+//   res.render("editAdmin");
+// });
 
 //todo update
 // app.get("/updateTodo", (req, res) => {

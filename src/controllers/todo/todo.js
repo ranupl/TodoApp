@@ -31,7 +31,7 @@ exports.createTask = (req, res) => {
     newTask
       .save()
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         res.redirect("/allTodos");
       })
       .catch((err) => {
@@ -251,5 +251,5 @@ exports.limitedData = async (req, res) => {
       res.status(500).send("Server Error");
     }
   }
-  
+
 };

@@ -63,18 +63,31 @@ exports.adminLogin = async (req, res) => {
 exports.adminUpdate = async (req, res) => {
   const uname = req.session.uname;
   const lastlogin = req.session.lastlogin;
+
   const { password, newpassword, confirmpassword } = req.body;
 
-  // Find the user by username
-  const admin = await AdminDB.findOne({ password });
+  let confimpass = confirmpassword.toString();
+  const hashconfpass = await bcrypt.hash(confimpass, 10);
 
-  if (admin.password == password) {
+  let newpass = newpassword.toString();
+  const hashnewpass = await bcrypt.hash(newpass, 10);
+
+  let pass = password.toString();
+  const hashedPassword = await bcrypt.hash(pass, 10);
+
+  // Find the user by username
+  const admin = await AdminDB.findOne({ uname });
+  console.log(admin);
+  const isPasswordValid = await bcrypt.compare(password, admin.password);
+  console.log(isPasswordValid);
+  
+  if (isPasswordValid) {
     AdminDB.updateOne(
-      { password: password },
-      { $set: { password: newpassword } }
+      { password: hashedPassword },
+      { $set: { password: hashnewpass } }
     ).then();
 
-    if (newpassword == confirmpassword) {
+    if (hashnewpass == hashconfpass) {
       res.redirect("/adminDashboard");
     } else {
       res.send(400).json({ message: "Invalid password" });

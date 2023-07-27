@@ -14,7 +14,7 @@ const todoSchema = new mongoose.Schema(
     discription: {
       type: String,
       required: true,
-      maxlength: 25,
+      maxlength: 50,
     },
     priority: {
       type: String,

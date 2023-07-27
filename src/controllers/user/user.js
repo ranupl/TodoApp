@@ -87,7 +87,7 @@ exports.getAllUsers = async (req, res) => {
         .limit(itemsPerPage)
         .exec();
 
-      res.render("users", { users, page, totalPages, uname, lastlogin });
+      res.render("users", { users, page, totalPages, uname, lastlogin , limit: itemsPerPage});
     } catch (err) {
       res.status(500).send("Error retrieving items");
     }
@@ -95,7 +95,7 @@ exports.getAllUsers = async (req, res) => {
 
   UserDB.find()
     .then((users) => {
-      res.render("users", { users, uname, lastlogin });
+      res.render("users", { users, uname, lastlogin, limit:itemsPerPage, totalPages, page });
     })
     .catch((error) => {
       res.status(500).send("Error retrieving users");
@@ -153,7 +153,7 @@ exports.getAllUsername = (req, res) => {
   const adminUser = req.session.username;
   UserDB.find()
     .then((users) => {
-      res.render("allTodos", { users, adminUser,limit:"" });
+      res.render("allTodos", { users, adminUser,limit:itemsPerPage });
     })
     .catch((error) => {
       res.status(500).send("Error retrieving users");
@@ -213,7 +213,7 @@ exports.searching = (req, res) => {
 
   UserDB.find({ firstname: { $regex: searchText, $options: "i" } })
     .then((users) => {
-      res.render("users", { users, uname, lastlogin, totalPages, page });
+      res.render("users", { users, uname, lastlogin, totalPages, page, limit: "" });
     })
     .catch((err) => console.error("Error searching in MongoDB:", err));
 };
@@ -237,6 +237,7 @@ exports.limitUserData = async (req, res) => {
       adminUser,
       lastlogin,
       users,
+      limit
     });
   } catch (err) {
     console.log(err);

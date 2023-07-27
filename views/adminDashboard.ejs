@@ -20,10 +20,14 @@
           <a class="nav-link" href="./allTodos">Todos</a>
         </li>
         <li class="nav-item f-size">
-          <a class="nav-link" href="./editAdmin">Reset Password</a>
+          <!-- <a class="nav-link" href="./editAdmin">Reset Password</a> -->
+          <a href="./editAdminModal.ejs" data-toggle="modal" data-target="#editAdminModal"
+            >Reset Password</a>
         </li>
       </ul>
     </div>
+<%- include('editAdminModal.ejs') -%>
+    
     <div class="col-sm-9">
       <div class="border-blue">
         <div class="row">
