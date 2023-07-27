@@ -205,11 +205,11 @@
     font-family: 'PT Sans', sans-serif;
 }
 
-#admin-img{
+#admin-img {
     height: 300px !important;
 }
 
-.about-img{
+.about-img {
     width: 200px;
     height: 200px;
     /* padding: 40px; */
@@ -217,48 +217,47 @@
     border: 6px solid white;
 }
 
-.mg-ab-top{
+.mg-ab-top {
     margin-top: 50px;
     padding: 50px;
 }
 
-.mg-btm{
+.mg-btm {
     padding-bottom: 40px;
 }
 
-.font-inherit{
+.font-inherit {
     font-size: inherit;
 }
 
-.f-fly{
+.f-fly {
     font-family: 'Barlow', sans-serif;
 }
 
-.f-title{
+.f-title {
     font-family: 'Caprasimo', cursive;
 }
 
-.mg-left{
+.mg-left {
     margin-left: 20px;
 }
 
-.sign-img{
-   height: 312px;
-   max-width: 100%;
+.sign-img {
+    height: 312px;
+    max-width: 100%;
 }
 
 /* search bar css */
 * {
     box-sizing: border-box;
-  }
+}
 
-  
-  form.example{
+
+form.example {
     margin-right: -47px;
-  }
+}
 
 .has-search .form-control {
-    /* padding-left: 2.375rem; */
     width: 60%;
     border-radius: 5px 0px 0px 5px;
 }
@@ -275,7 +274,7 @@
     color: #aaa;
 }
 
-.search-btn{
+.search-btn {
     padding: 0px 7px;
     border-radius: 0px 5px 5px 0px;
     background-color: #0d6efd;
@@ -284,24 +283,18 @@
     cursor: pointer;
 }
 
-.select-box{
+.select-box {
     padding: 5.3px;
     cursor: pointer;
 }
 
-.form-control.success input{
-    border-color: green;;
-} 
 
-.form-control.error input{
-    border-color: red;
-}
-
-.form-control.error{
-    color: red;
-    font-size: 9px;
-    height: 13px;
-}
 /* font-family: 'Barlow', sans-serif; */
 /* font-family: 'Caprasimo', cursive; */
 /* font-family: 'PT Sans', sans-serif; */
+
+/* forgot passwod */
+/* your CSS goes here*/
+/* body {
+    background: #eee
+} */

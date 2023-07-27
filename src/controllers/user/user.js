@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const { UserDB } = require("../../models/user");
+const { Cookie } = require("express-session");
 const itemsPerPage = 5;
 var totalPages;
 var page;
@@ -87,7 +88,14 @@ exports.getAllUsers = async (req, res) => {
         .limit(itemsPerPage)
         .exec();
 
-      res.render("users", { users, page, totalPages, uname, lastlogin , limit: itemsPerPage});
+      res.render("users", {
+        users,
+        page,
+        totalPages,
+        uname,
+        lastlogin,
+        limit: itemsPerPage,
+      });
     } catch (err) {
       res.status(500).send("Error retrieving items");
     }
@@ -95,7 +103,14 @@ exports.getAllUsers = async (req, res) => {
 
   UserDB.find()
     .then((users) => {
-      res.render("users", { users, uname, lastlogin, limit:itemsPerPage, totalPages, page });
+      res.render("users", {
+        users,
+        uname,
+        lastlogin,
+        limit: itemsPerPage,
+        totalPages,
+        page,
+      });
     })
     .catch((error) => {
       res.status(500).send("Error retrieving users");
@@ -153,7 +168,7 @@ exports.getAllUsername = (req, res) => {
   const adminUser = req.session.username;
   UserDB.find()
     .then((users) => {
-      res.render("allTodos", { users, adminUser,limit:itemsPerPage });
+      res.render("allTodos", { users, adminUser, limit: itemsPerPage });
     })
     .catch((error) => {
       res.status(500).send("Error retrieving users");
@@ -213,7 +228,14 @@ exports.searching = (req, res) => {
 
   UserDB.find({ firstname: { $regex: searchText, $options: "i" } })
     .then((users) => {
-      res.render("users", { users, uname, lastlogin, totalPages, page, limit: "" });
+      res.render("users", {
+        users,
+        uname,
+        lastlogin,
+        totalPages,
+        page,
+        limit: "",
+      });
     })
     .catch((err) => console.error("Error searching in MongoDB:", err));
 };
@@ -237,10 +259,51 @@ exports.limitUserData = async (req, res) => {
       adminUser,
       lastlogin,
       users,
-      limit
+      limit,
     });
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
   }
 };
+
+// user password reset
+exports.emailForm = async (req, res) => {
+  const email = req.body.email;
+ 
+  try {
+    const user = await UserDB.find({ email }).lean().exec();
+    if(user.length > 0)
+    {
+      var min = 1000;
+      var max = 5000;
+      const otp = Math.floor(Math.random() * (max - min + 1)) + min;
+      res.cookie("otp", otp);
+      res.render("/otpForm", {message : "Email validation successfull"});
+      res.redirect("otpForm");
+    } else  {
+      const message = "Invalid email address";
+      return res.render("passwordModel", { message });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// otp validation
+exports.otpForm = (req, res) => {
+  const userOtp = req.body.otp;
+  const mainOtp = req.cookies.otp;
+
+  if(userOtp == mainOtp)
+  {
+    const message = "Otp verified";
+    res.render("passwordModel", {message});
+  }
+  else{
+    const message = "Invalid Otp";
+    res.render("posswordModel", {message});
+  }
+
+
+}

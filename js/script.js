@@ -90,3 +90,7 @@ function validateForm() {
     passMsg.textContent = "";
   }
 }
+
+
+// login forgot password
+//your javascript goes here

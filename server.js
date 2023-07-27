@@ -80,6 +80,14 @@ app.get("/editUser", (req, res) => {
 //   res.render("updateTodo");
 // });
 
+app.get("/passwordModel", (req, res) => {
+  res.render("passwordModel", { message: undefined });
+})
+
+app.post("/emailForm", userCon.emailForm);
+app.post("/otpForm", userCon.otpForm);
+
+
 // user logout
 app.get("/logout", (req, res) => {
   // Destroy the session
