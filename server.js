@@ -80,25 +80,26 @@ app.get("/editUser", (req, res) => {
 //   res.render("updateTodo");
 // });
 
-app.get("/passwordModel", (req, res) => {
-  res.render("passwordModel", { message: undefined });
+// app.get("/passwordModel", (req, res) => {
+//   res.render("passwordModel", { message: undefined });
+// })
+app.get("/nestedModel", (req, res) => {
+  res.render("nestedModel", {message :undefined});
 })
+// app.get("/otpForm", (req, res) => {
+//   res.render("otpForm", {message : undefined});
+// })
 
 app.post("/emailForm", userCon.emailForm);
 app.post("/otpForm", userCon.otpForm);
+app.post("/passwordEdit", userCon.passwordEdit);
 
 
 // user logout
 app.get("/logout", (req, res) => {
   // Destroy the session
   req.session.destroy();
-  if (req.cookies.privilege == "admin") {
-    const message = "Require Login !";
-    res.render("admin", { message });
-  } else {
-    const message = "Require Login !";
-    res.render("login", { message });
-  }
+  res.redirect("/welcome");
 });
 
 // user routes

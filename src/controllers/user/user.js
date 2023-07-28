@@ -134,6 +134,7 @@ exports.getUserByID = (req, res) => {
 // update user
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
 
   UserDB.findByIdAndUpdate(id, req.body, { new: true })
     .then((updatedUser) => {
@@ -205,7 +206,7 @@ exports.userLogin = async (req, res) => {
       req.session.username = username;
       req.session.privilege = privilege;
       req.session.lastlogin = lastlogin;
-      res.cookie("privilege", privilege);
+      // res.cookie("privilege", privilege);
 
       if (req.session.username) {
         res.redirect("/userDashboard");
@@ -270,20 +271,19 @@ exports.limitUserData = async (req, res) => {
 // user password reset
 exports.emailForm = async (req, res) => {
   const email = req.body.email;
- 
+  res.cookie("email", email);
+
   try {
     const user = await UserDB.find({ email }).lean().exec();
-    if(user.length > 0)
-    {
+    if (user.length > 0) {
       var min = 1000;
       var max = 5000;
       const otp = Math.floor(Math.random() * (max - min + 1)) + min;
       res.cookie("otp", otp);
-      res.render("/otpForm", {message : "Email validation successfull"});
-      res.redirect("otpForm");
-    } else  {
+      res.render("login", { message: "Email validation successfull" });
+    } else {
       const message = "Invalid email address";
-      return res.render("passwordModel", { message });
+      return res.render("login", { message });
     }
   } catch (err) {
     console.log(err);
@@ -295,15 +295,48 @@ exports.otpForm = (req, res) => {
   const userOtp = req.body.otp;
   const mainOtp = req.cookies.otp;
 
-  if(userOtp == mainOtp)
-  {
+  if (userOtp == mainOtp) {
     const message = "Otp verified";
-    res.render("passwordModel", {message});
-  }
-  else{
+    res.render("login", { message });
+  } else {
     const message = "Invalid Otp";
-    res.render("posswordModel", {message});
+    res.render("login", { message });
   }
+};
 
+exports.passwordEdit = async (req, res) => {
+  const email = req.cookies.email;
+  const { password, confimPassword } = req.body;
 
-}
+  try {
+    const user = await UserDB.find({ email }).lean().then();
+
+    if (!user) {
+      const message = "User not found!";
+      return res.render("login", { message });
+    }
+
+    if (password !== confimPassword) {
+      const message = "Passwords do not match!";
+      return res.render("login", { message });
+    }
+  
+    const hashpass = await bcrypt.hash(password, 10);
+
+    const result = await UserDB.updateOne(
+      { email },
+      { $set: { password: hashpass } }
+    );
+
+    if (result.modifiedCount > 0) {
+      const message = "Password Successfully Changed";
+      res.render("login", { message });
+    } else {
+      const message = "Something went wrong while changing password !";
+      res.render("login", { message });
+      return;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
