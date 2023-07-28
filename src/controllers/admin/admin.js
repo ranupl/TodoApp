@@ -61,38 +61,40 @@ exports.adminLogin = async (req, res) => {
 
 // admin update
 exports.adminUpdate = async (req, res) => {
-  const uname = req.session.uname;
+  const uname = req.session.username;
   const lastlogin = req.session.lastlogin;
 
   const { password, newpassword, confirmpassword } = req.body;
 
-  let confimpass = confirmpassword.toString();
-  const hashconfpass = await bcrypt.hash(confimpass, 10);
+  try {
+    const user = await AdminDB.find({ username : uname }).lean().then();
 
-  let newpass = newpassword.toString();
-  const hashnewpass = await bcrypt.hash(newpass, 10);
+    if (!user) {
+      const message = "User not found!";
+      return res.redirect("adminDashboard");
+    }
 
-  let pass = password.toString();
-  const hashedPassword = await bcrypt.hash(pass, 10);
-
-  // Find the user by username
-  const admin = await AdminDB.findOne({ uname });
-  console.log(admin);
-  const isPasswordValid = await bcrypt.compare(password, admin.password);
-  console.log(isPasswordValid);
+    if (newpassword !== confirmpassword) {
+      const message = "Passwords do not match!";
+      return res.redirect("/adminDashboard");
+    }
   
-  if (isPasswordValid) {
-    AdminDB.updateOne(
-      { password: hashedPassword },
-      { $set: { password: hashnewpass } }
-    ).then();
+    const hashpass = await bcrypt.hash(newpassword, 10);
 
-    if (hashnewpass == hashconfpass) {
+    const result = await AdminDB.updateOne(
+      { username : uname },
+      { $set: { password: hashpass } }
+    );
+
+    if (result.modifiedCount > 0) {
+      const message = "Password Successfully Changed";
       res.redirect("/adminDashboard");
     } else {
-      res.send(400).json({ message: "Invalid password" });
+      const message = "Something went wrong while changing password !";
+      res.render("adminDashboard", { message, uname, lastlogin, user });
+      return;
     }
-  } else {
-    res.render("admin", { error: "Invalid email" });
+  } catch (err) {
+    console.log(err);
   }
 };

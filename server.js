@@ -71,24 +71,9 @@ app.get("/editUser", (req, res) => {
   res.render("editUser");
 });
 
-// app.get("/editAdmin", (req, res) => {
-//   res.render("editAdmin");
-// });
-
-//todo update
-// app.get("/updateTodo", (req, res) => {
-//   res.render("updateTodo");
-// });
-
-// app.get("/passwordModel", (req, res) => {
-//   res.render("passwordModel", { message: undefined });
-// })
 app.get("/nestedModel", (req, res) => {
   res.render("nestedModel", {message :undefined});
 })
-// app.get("/otpForm", (req, res) => {
-//   res.render("otpForm", {message : undefined});
-// })
 
 app.post("/emailForm", userCon.emailForm);
 app.post("/otpForm", userCon.otpForm);
