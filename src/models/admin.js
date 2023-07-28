@@ -40,8 +40,7 @@ const adminSchema = new mongoose.Schema(
       type : String
     },
     lastlogin: {
-      type : Date,
-      default : Date.now()
+      type :String
     }
   },
   { timestamps: true }

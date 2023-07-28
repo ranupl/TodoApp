@@ -29,6 +29,9 @@ exports.createUser = async (req, res) => {
   let pass = password.toString();
   const hashedPassword = await bcrypt.hash(pass, 10);
 
+  const currentDate = new Date();
+  var lastlogedin = currentDate.toLocaleTimeString();
+
   // new user
   const newUser = new UserDB({
     firstname: req.body.firstname,
@@ -38,6 +41,7 @@ exports.createUser = async (req, res) => {
     password: hashedPassword,
     status: "active",
     privilege: "user",
+    lastlogin: lastlogedin,
   });
 
   // save user in the database
@@ -46,8 +50,8 @@ exports.createUser = async (req, res) => {
     .then((data) => {
       const username = data.username;
       const privilege = data.privilege;
-      const currentDate = new Date();
-      var lastlogin = currentDate.toLocaleTimeString();
+      const lastlogin = data.lastlogin;
+
       // session
       req.session;
       req.session.username = username;
@@ -185,11 +189,9 @@ exports.userLogin = async (req, res) => {
     $or: [{ email: text }, { username: text }],
   });
 
-  // console.log(user[0].password);
   const isPasswordValid = await bcrypt.compare(password, user[0].password);
-  // console.log(isPasswordValid);
 
-  if (user.length == 0) {
+  if (!isPasswordValid) {
     res.render("login", { message: " User not found !" });
     return;
   } else {
@@ -198,15 +200,29 @@ exports.userLogin = async (req, res) => {
 
       const username = user[0].username;
       const privilege = user[0].privilege;
-      const currentDate = new Date();
-      var lastlogin = currentDate.toLocaleTimeString();
+      const lastlogin = user[0].lastlogin;
 
       // session
       req.session;
       req.session.username = username;
       req.session.privilege = privilege;
       req.session.lastlogin = lastlogin;
-      // res.cookie("privilege", privilege);
+
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleString(undefined, {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+
+      await UserDB.updateOne(
+        { email: text },
+        { $set: { lastlogin: formattedDate } }
+      );
 
       if (req.session.username) {
         res.redirect("/userDashboard");
@@ -320,7 +336,7 @@ exports.passwordEdit = async (req, res) => {
       const message = "Passwords do not match!";
       return res.render("login", { message });
     }
-  
+
     const hashpass = await bcrypt.hash(password, 10);
 
     const result = await UserDB.updateOne(

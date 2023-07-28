@@ -73,7 +73,11 @@
                 ><ion-icon name="pencil" class="color-pencil"></ion-icon
               ></a> -->
 <a href="/users/<%= user.id %>" data-toggle="modal" data-target="#editUserModal"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
-<%- include('editUserModel.ejs',{user:user}) -%>
+
+
+<% for (let i = 0; i < users.length; i++) { %>
+  <%- include('editUserModel.ejs', { user: user }) -%>
+<% } %>
 
               <a href="/users/delete/<%= user.id %>"
                 ><ion-icon name="trash" class="color-trash"></ion-icon

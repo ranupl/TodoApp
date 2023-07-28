@@ -35,7 +35,6 @@ exports.adminLogin = async (req, res) => {
       user[0].privilege = "admin";
       const username = user[0].username;
       const privilege = user[0].privilege;
-      // res.cookie("privilege", privilege);
 
       const currentDate = new Date();
       var lastlogin = currentDate.toLocaleTimeString();

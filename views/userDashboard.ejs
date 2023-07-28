@@ -150,7 +150,9 @@
 <a href="/todo/edit/<%= tasks[i].id %>" data-toggle="modal" data-target="#editModal"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
 <!-- </button> -->
 
-<%- include('todoEditModel.ejs',{task:tasks[i]}) -%>
+<% for (let i = 0; i < tasks.length; i++) { %>
+  <%- include('todoEditModel.ejs', { task: tasks[i] }) -%>
+<% } %>
 
 
 
@@ -189,6 +191,7 @@
       document.getElementById('limitForm').submit();
     }
   </script>
+
 
 <!-- footer -->
 <%- include('include/footer.ejs') -%>

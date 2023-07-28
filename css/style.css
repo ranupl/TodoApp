@@ -296,3 +296,21 @@ form.example {
 label.error {
     color: red;
 }
+
+/* dropdown hover */
+.dropdown:hover>.dropdown-menu {
+    display: block;
+    padding : 10px;
+    margin-top: 0px;
+    background-color: #dde5f0;
+}
+
+
+.dropdown>.dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+
+.margin-left {
+    margin-left: 20px;
+}
