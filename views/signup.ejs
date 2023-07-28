@@ -15,18 +15,18 @@
                 <%= message %>
             </div>
             <% } %>
-            <form action="/users" method="POST" onsubmit="return validateForm()">
+            <!-- <form action="/users" method="POST" onsubmit="return validateForm()"> -->
+              <form action="/users" method="POST" id="myform">
               <div class="form-group">
                 <label for="fname">First Name</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="fname"
+                  id="firstname"
                   value=""
                   name="firstname"
                   placeholder="First Name"
                 />
-                <span id="fnameError" style="color: red;"></span>
               </div>
 
               <div class="form-group">
@@ -34,25 +34,23 @@
                 <input
                   type="text"
                   class="form-control"
-                  id="lname"
+                  id="lastname"
                   value=""
                   name="lastname"
                   placeholder="Last Name"
                 />
-                <span id="lnameError" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="email">Email address</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="emailAdd"
+                  id="email"
                   aria-describedby="emailHelp"
                   value=""
                   name="email"
                   placeholder="Enter email"
                 />
-                <span id="emailMsg" style="color: red;"></span>
                 <small id="emailHelp" class="form-text text-muted"
                   >We'll never share your email with anyone else.</small
                 >
@@ -67,7 +65,6 @@
                   name="username"
                   placeholder="Username"  
                 />
-                <span id="msg" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
@@ -79,7 +76,6 @@
                   name="password"
                   placeholder="Password"
                 />
-                <span id="passMsg" style="color: red;"></span>
               </div>
               <button type="submit" class="btn btn-primary mg-top">
                 Sign Up

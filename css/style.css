@@ -293,8 +293,6 @@ form.example {
 /* font-family: 'Caprasimo', cursive; */
 /* font-family: 'PT Sans', sans-serif; */
 
-/* forgot passwod */
-/* your CSS goes here*/
-/* body {
-    background: #eee
-} */
+label.error {
+    color: red;
+}
