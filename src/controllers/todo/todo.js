@@ -88,7 +88,7 @@ exports.getAllTasks = async (req, res) => {
         .skip((page - 1) * itemsPerPage)
         .limit(itemsPerPage)
         .exec();
-      
+
       res.render("allTodos", {
         tasks,
         page,
@@ -97,8 +97,7 @@ exports.getAllTasks = async (req, res) => {
         users,
         adminUser,
         lastlogin,
-        limit : itemsPerPage
-        
+        limit: itemsPerPage,
       });
     } catch (err) {
       res.status(500).send("Error retrieving items");
@@ -120,7 +119,7 @@ exports.getAllTasks = async (req, res) => {
         totalPages,
         uname,
         lastlogin,
-        limit : itemsPerPage
+        limit: itemsPerPage,
       });
     } catch (err) {
       res.status(500).send("Error retrieving items");
@@ -201,7 +200,7 @@ exports.searching = async (req, res) => {
           lastlogin,
           totalPages,
           page,
-          limit: ""
+          limit: "",
         });
       })
       .catch((err) => console.error("Error searching in MongoDB:", err));
@@ -216,7 +215,7 @@ exports.searching = async (req, res) => {
           adminUser,
           totalPages,
           page,
-          limit:""
+          limit: "",
         });
       })
       .catch((err) => console.error("Error searching in MongoDB:", err));
@@ -233,23 +232,168 @@ exports.limitedData = async (req, res) => {
   const users = await UserDB.find().lean().exec();
   const limit = req.body.limit;
 
-  if(role == "admin")
-  {
+  if (role == "admin") {
     try {
       const tasks = await TodoDB.find().limit(limit);
-      res.render("allTodos", { tasks, totalPages, page, uname, adminUser,lastlogin, users,limit });
+      res.render("allTodos", {
+        tasks,
+        totalPages,
+        page,
+        uname,
+        adminUser,
+        lastlogin,
+        users,
+        limit,
+      });
     } catch (err) {
       console.log(err);
       res.status(500).send("Server Error");
     }
-  }else{
+  } else {
     try {
-      const tasks = await TodoDB.find({userid: uname }).limit(limit);
-      res.render("userDashboard", { tasks, totalPages, page, uname,lastlogin,limit});
+      const tasks = await TodoDB.find({ userid: uname }).limit(limit);
+      res.render("userDashboard", {
+        tasks,
+        totalPages,
+        page,
+        uname,
+        lastlogin,
+        limit,
+      });
     } catch (err) {
       console.log(err);
       res.status(500).send("Server Error");
     }
   }
+};
 
+// filter data by priority
+exports.filterByPriority = async (req, res) => {
+  const searchText = req.query.searchText;
+  const uname = req.session.username;
+  const lastlogin = req.session.lastlogin;
+  const role = req.session.privilege;
+  const adminUser = req.session.username;
+  const users = await UserDB.find().lean().exec();
+  const priority = req.body.priority;
+  const status = req.body.status;
+  const limit = req.body.limit || 10;
+  const skip = (req.body.page - 1) * limit || 0;
+
+  if (role == "admin") {
+    try {
+      const tasks = await TodoDB.find({ priority })
+        .limit(limit)
+        .skip(skip)
+        .lean()
+        .exec();
+      const totalCount = await TodoDB.countDocuments({ status });
+      const totalPages = Math.ceil(totalCount / limit);
+      res.render("allTodos", {
+        tasks,
+        totalPages,
+        page,
+        uname,
+        adminUser,
+        lastlogin,
+        limit,
+        users,
+        priority,
+        status,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server Error");
+    }
+  } else {
+    try {
+      const tasks = await TodoDB.find({ priority, userid: uname })
+        .limit(limit)
+        .skip(skip)
+        .lean()
+        .exec();
+      const totalCount = await TodoDB.countDocuments({ status });
+      const totalPages = Math.ceil(totalCount / limit);
+      res.render("userDashboard", {
+        tasks,
+        totalPages,
+        page,
+        uname,
+        lastlogin,
+        limit,
+        priority,
+        status,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server Error");
+    }
+  }
+};
+
+// filter data by status
+exports.filterByStatus = async (req, res) => {
+  const searchText = req.query.searchText;
+  const uname = req.session.username;
+  const lastlogin = req.session.lastlogin;
+  const role = req.session.privilege;
+  const adminUser = req.session.username;
+  const users = await UserDB.find().lean().exec();
+  // const limit = req.body.limit;
+  const priority = req.body.priority;
+  const status = req.body.status;
+
+  const limit = req.body.limit || 10;
+  const skip = (req.body.page - 1) * limit || 0;
+
+  if (role == "admin") {
+    try {
+      const tasks = await TodoDB.find({ status })
+        .limit(limit)
+        .skip(skip)
+        .lean()
+        .exec();
+      const totalCount = await TodoDB.countDocuments({ status });
+      const totalPages = Math.ceil(totalCount / limit);
+      res.render("allTodos", {
+        tasks,
+        totalPages,
+        page,
+        uname,
+        adminUser,
+        lastlogin,
+        limit,
+        users,
+        priority,
+        status,
+      });
+      return;
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server Error");
+    }
+  } else {
+    try {
+      const tasks = await TodoDB.find({ status, userid: uname })
+        .limit(limit)
+        .skip(skip)
+        .lean()
+        .exec();
+      const totalCount = await TodoDB.countDocuments({ status });
+      const totalPages = Math.ceil(totalCount / limit);
+      res.render("userDashboard", {
+        tasks,
+        totalPages,
+        page,
+        uname,
+        lastlogin,
+        limit,
+        status,
+        priority,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server Error");
+    }
+  }
 };

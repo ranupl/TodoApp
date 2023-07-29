@@ -75,10 +75,17 @@ app.get("/nestedModel", (req, res) => {
   res.render("nestedModel", {message :undefined});
 })
 
+app.get("/adminPasswordModel", (req, res) => {
+  res.render("adminPasswordModel", {message :undefined});
+})
+
 app.post("/emailForm", userCon.emailForm);
 app.post("/otpForm", userCon.otpForm);
 app.post("/passwordEdit", userCon.passwordEdit);
 
+app.post("/adminEmailForm", adminCon.adminEmailForm);
+app.post("/adminOtpForm", adminCon.adminOtpForm);
+app.post("/adminPasswordEdit", adminCon.adminPasswordEdit);
 
 // user logout
 app.get("/logout", (req, res) => {
@@ -113,6 +120,8 @@ app.get("/adminDashboard", checkAdminLogin, adminCon.adminDashboard);
 
 app.post("/limit-data", todoCon.limitedData);
 app.post("/limit-user", userCon.limitUserData);
+app.post("/filter-priority", todoCon.filterByPriority);
+app.post("/filter-status", todoCon.filterByStatus);
 
 app.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);

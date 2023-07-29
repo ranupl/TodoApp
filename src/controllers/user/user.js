@@ -182,6 +182,7 @@ exports.getAllUsername = (req, res) => {
 
 // user login
 exports.userLogin = async (req, res) => {
+  var isPasswordValid;
   const { text, password } = req.body;
 
   // Find the user by username
@@ -189,15 +190,17 @@ exports.userLogin = async (req, res) => {
     $or: [{ email: text }, { username: text }],
   });
 
-  const isPasswordValid = await bcrypt.compare(password, user[0].password);
-
-  if (!isPasswordValid) {
+  if(user.length == 0)
+  {
     res.render("login", { message: " User not found !" });
     return;
-  } else {
+  }
+
+  if(user.length > 0)
+  {
+    isPasswordValid = await bcrypt.compare(password, user[0].password);
     if (isPasswordValid) {
       user[0].privilege = "user";
-
       const username = user[0].username;
       const privilege = user[0].privilege;
       const lastlogin = user[0].lastlogin;
@@ -284,7 +287,7 @@ exports.limitUserData = async (req, res) => {
   }
 };
 
-// user password reset
+// user password reset by email varification
 exports.emailForm = async (req, res) => {
   const email = req.body.email;
   res.cookie("email", email);
@@ -296,7 +299,7 @@ exports.emailForm = async (req, res) => {
       var max = 5000;
       const otp = Math.floor(Math.random() * (max - min + 1)) + min;
       res.cookie("otp", otp);
-      res.render("login", { message: "Email validation successfull" });
+      return;
     } else {
       const message = "Invalid email address";
       return res.render("login", { message });
@@ -313,14 +316,15 @@ exports.otpForm = (req, res) => {
 
   if (userOtp == mainOtp) {
     const message = "Otp verified";
-    res.render("login", { message });
+    return;
   } else {
     const message = "Invalid Otp";
     res.render("login", { message });
   }
 };
 
-exports.passwordEdit = async (req, res) => {
+// user passwordEdit
+exports.passwordEdit = async (req, res, next) => {
   const email = req.cookies.email;
   const { password, confimPassword } = req.body;
 
@@ -345,8 +349,8 @@ exports.passwordEdit = async (req, res) => {
     );
 
     if (result.modifiedCount > 0) {
-      const message = "Password Successfully Changed";
-      res.render("login", { message });
+      // const message = "Password Successfully Changed";
+      return;
     } else {
       const message = "Something went wrong while changing password !";
       res.render("login", { message });
@@ -356,3 +360,4 @@ exports.passwordEdit = async (req, res) => {
     console.log(err);
   }
 };
+

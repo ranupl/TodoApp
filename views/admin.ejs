@@ -26,6 +26,9 @@
                       <label for="exampleInputPassword1">Password</label>
                       <input type="password" class="form-control" id="exampleInputPassword1" value="" name="password" placeholder="Password">
                     </div>
+                    <a class="text-primary float-right"  href="" data-toggle="modal" data-target="#adminEmailForm">
+                      Forgot password?
+                    </a>
                     <button type="submit" class="btn btn-primary mg-top">Login</button>
                   </form>
             </div>
@@ -34,6 +37,9 @@
   </div>
 </div>
 <!-- section -->
+
+<!-- model -->
+<%- include('adminPasswordModel.ejs') -%>
 
 <!-- footer -->
 <%- include('include/footer.ejs') -%>

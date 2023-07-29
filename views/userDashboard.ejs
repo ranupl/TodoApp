@@ -12,11 +12,66 @@
 <div class="container">
   <div class="child-container">
       <div class="d-flex justify-content-between">
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary margin-bottom" data-toggle="modal" data-target="#exampleModalCenter">
-      Create Task
-      </button>
-      
+        <div class="d-flex">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary margin-bottom" data-toggle="modal" data-target="#exampleModalCenter">
+          Create Task
+          </button>
+         <!-- hover dropdown -->
+<div class="dropdown margin-left">
+  <button
+    class="btn btn-primary dropdown-toggle"
+    type="button"
+    id="dropdownMenuButton"
+    data-mdb-toggle="dropdown"
+    aria-expanded="false"
+  >
+    Filter
+  </button>
+  
+  <form  action="/filter-priority" method="POST" class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="filterPriority">
+      <label for="">Priority</label>
+      <select name="priority" onchange="submitFilterPriority()" class="select-box">
+        <%
+          var options = [ "", "High", "Medium", "Low" ];
+          for ( var i = 0; i < options.length; i++ )
+          {
+              var selected = ( "priority" == options[ i ] ) ? "selected" : "";
+               
+              if(options[i] == "") {
+              %>
+              <option value="<%=options[ i ] %>" <%=selected %>>All</option>
+              <% } else{ %>
+                <option value="<%=options[ i ] %>" <%=selected %>><%=options[i] %></option>
+              <%
+              }
+          }
+        %>
+      </select>
+    </form>
+  <form  action="/filter-status" method="POST" class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="filterStatus">
+      <label for="">Status</label>
+      <select name="status" onchange="submitFilterStatus()" class="select-box">
+        <%
+          var options = [ "", "Pending", "Progess", "Done" ];
+          for ( var i = 0; i < options.length; i++ )
+          {
+              <!-- var selected = ( "priority" == options[ i ] ) ? "selected" : ""; -->
+               
+              if(options[i] == "") {
+              %>
+              <option value="<%=options[ i ] %>" <%=selected %>>All</option>
+              <% } else{ %>
+                <option value="<%=options[ i ] %>" <%=selected %>><%=options[i] %></option>
+              <%
+              }
+          }
+        %>
+      </select>
+ </form>
+</div>
+</div>
+<!-- hover dropdown --> 
       <div class="d-flex">
       <!-- The search form -->
       <form class="example" action="/searchTask" method="GET">
@@ -189,6 +244,14 @@
   <script>
     function submitForm() {
       document.getElementById('limitForm').submit();
+    }
+
+    function submitFilterPriority(){
+      document.getElementById('filterPriority').submit();
+    }
+
+    function submitFilterStatus(){
+      document.getElementById('filterStatus').submit();
     }
   </script>
 
