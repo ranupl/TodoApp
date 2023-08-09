@@ -36,12 +36,12 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    privilege:{
-      type : String
+    privilege: {
+      type: String,
     },
     lastlogin: {
-      type :String
-    }
+      type: String,
+    },
   },
   { timestamps: true }
 );

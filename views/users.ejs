@@ -14,84 +14,81 @@
   <div class="d-flex float-right margin-bottom">
     <form class="example" action="/search" method="GET">
       <div class="form-group has-search d-flex">
-        <input type="text" class="form-control" placeholder="Search By UserId" name="searchText">
-        <button type="submit" class="search-btn"><ion-icon name="search"></ion-icon></button>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search By UserId"
+          name="searchText"
+        />
+        <button type="submit" class="search-btn">
+          <ion-icon name="search"></ion-icon>
+        </button>
       </div>
-   </form>
-   
-  <form action="/limit-user" method="post" id="limitForm">
-    <select name="limit" onchange="submitForm()" class="select-box">
-      <%
-        var options = [ "", "5", "10", "20", "50" ];
-        for ( var i = 0; i < options.length; i++ )
-        {
-            var selected = ( limit == options[ i ] ) ? "selected" : "";
-            
-            if(options[i] == "") {
-            %>
-            <option value="<%=options[ i ] %>" <%=selected %>>All</option>
-            <% } else{ %>
-              <option value="<%=options[ i ] %>" <%=selected %>><%=options[i] %></option>
-            <%
-            }
-        }
-      %>
-      
-    </select>
     </form>
-  <!-- 88888888888 -->
-  </div>
+
+    <form action="/limit-user" method="post" id="limitForm">
+      <select name="limit" onchange="submitForm()" class="select-box">
+        <% var options = [ "", "5", "10", "20", "50" ]; for ( var i = 0; i <
+        options.length; i++ ) { var selected = ( limit == options[ i ] ) ?
+        "selected" : ""; if(options[i] == "") { %>
+        <option value="<%=options[ i ] %>" <%="selected" %>>All</option>
+        <% } else{ %>
+        <option value="<%=options[ i ] %>" <%="selected" %>
+          ><%=options[i] %>
+        </option>
+        <% } } %>
+      </select>
+    </form>
   </div>
 </div>
 
 <div class="container">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Id</th>
-          <th scope="col">First Name</th>
-          <th scope="col">Last Name</th>
-          <th scope="col">Email</th>
-          <th scope="col">Username</th>
-          <!-- <th scope="col">Password</th> -->
-          <th scope="col">Status</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% users.forEach(function(user) { %>
-        <tr>
-          <td><%= user._id %></td>
-          <td><%= user.firstname %></td>
-          <td><%= user.lastname %></td>
-          <td><%= user.email %></td>
-          <td><%= user.username %></td>
-          <!-- <td><%= user.password %></td> -->
-          <td><%= user.status %></td>
-          <td>
-            <div>
-              <!-- <a href="/users/<%= user.id %>"
-                ><ion-icon name="pencil" class="color-pencil"></ion-icon
-              ></a> -->
-<a href="/users/<%= user.id %>" data-toggle="modal" data-target="#editUserModal"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
-
-
-<% for (let i = 0; i < users.length; i++) { %>
-  <%- include('editUserModel.ejs', { user: user }) -%>
-<% } %>
-
-              <a href="/users/delete/<%= user.id %>"
-                ><ion-icon name="trash" class="color-trash"></ion-icon
-              ></a>
-            </div>
-          </td>
-        </tr>
-        <% }); %>
-      </tbody>
-    </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Username</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(function(user) { %>
+      <tr>
+        <td><%= user._id %></td>
+        <td><%= user.firstname %></td>
+        <td><%= user.lastname %></td>
+        <td><%= user.email %></td>
+        <td><%= user.username %></td>
+        <td><%= user.status %></td>
+        <td>
+          <div>
+            <a
+              href="/users/<%= user.id %>"
+              data-toggle="modal"
+              data-target="#editUserModal"
+              ><ion-icon name="pencil" class="color-pencil"></ion-icon
+            ></a>
+            <a href="/users/delete/<%= user.id %>"
+              ><ion-icon name="trash" class="color-trash"></ion-icon
+            ></a>
+          </div>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
 </div>
-
 <!-- /section -->
+
+<!-- ejs file -->
+<% for (let i = 0; i < users.length; i++) { %> 
+  <%- include('editUserModel.ejs', { user: users }) -%>
+   <% } %>
+<!-- /ejs file -->
 
 <!-- pagging -->
 <div class="container text-center">
@@ -106,13 +103,12 @@
   <% } %>
 </div>
 
-
-  <!-- js for select box -->
-  <script>
-    function submitForm() {
-      document.getElementById('limitForm').submit();
-    }
-  </script>
+<!-- js for select box -->
+<script>
+  function submitForm() {
+    document.getElementById("limitForm").submit();
+  }
+</script>
 
 <!-- footer -->
 <%- include('include/footer.ejs') -%>

@@ -22,18 +22,18 @@ $.validator.addMethod("hasUpperCaseLetter", function(value, element) {
       rules: {
         firstname: {
           required: true,
-          minlength: 2, // Minimum 2 characters for first name
-          maxlength: 50 // Maximum 50 characters for first name
+          minlength: 2, 
+          maxlength: 50 
         },
         lastname: {
           required: true,
-          minlength: 2, // Minimum 2 characters for last name
-          maxlength: 50 // Maximum 50 characters for last name
+          minlength: 2, 
+          maxlength: 50 
         },
         username: {
           required: true,
-          minlength: 4, // Minimum 4 characters for username
-          maxlength: 20, // Maximum 20 characters for username
+          minlength: 4, 
+          maxlength: 20, 
           pattern: /^[a-z0-9]+$/
         },
         email: {
@@ -42,7 +42,23 @@ $.validator.addMethod("hasUpperCaseLetter", function(value, element) {
         },
         password: {
           required: true,
-          minlength: 6, // Minimum 6 characters for password
+          minlength: 6, 
+          hasSpecialCharacter: true,
+          hasNumericValue:true,
+          hasLowerCaseLetter: true,
+          hasUpperCaseLetter:true
+        },
+        newpassword: {
+          required: true,
+          minlength: 6, 
+          hasSpecialCharacter: true,
+          hasNumericValue:true,
+          hasLowerCaseLetter: true,
+          hasUpperCaseLetter:true
+        },
+        confirmpassword: {
+          required: true,
+          minlength: 6, 
           hasSpecialCharacter: true,
           hasNumericValue:true,
           hasLowerCaseLetter: true,
@@ -77,13 +93,30 @@ $.validator.addMethod("hasUpperCaseLetter", function(value, element) {
           hasNumericValue: 'Contain atleat one numeric value',
           hasLowerCaseLetter: 'Contain atleat one lowercase character',
           hasUpperCaseLetter: 'Contain atleat one uppercase character'
+        },
+        newpassword: {
+          required: 'Please enter a password.',
+          minlength: 'Password must be at least 6 characters long.',
+          hasSpecialCharacter: 'Contain atleat one special character',
+          hasNumericValue: 'Contain atleat one numeric value',
+          hasLowerCaseLetter: 'Contain atleat one lowercase character',
+          hasUpperCaseLetter: 'Contain atleat one uppercase character'
+        },
+        confirmpassword: {
+          required: 'Please enter a password.',
+          minlength: 'Password must be at least 6 characters long.',
+          hasSpecialCharacter: 'Contain atleat one special character',
+          hasNumericValue: 'Contain atleat one numeric value',
+          hasLowerCaseLetter: 'Contain atleat one lowercase character',
+          hasUpperCaseLetter: 'Contain atleat one uppercase character'
         }
       },
       submitHandler: function (form) {
-        // Form submission logic goes here
         alert('Form submitted successfully!');
-        // Uncomment the line below to submit the form to the server
         form.submit();
       }
     });
   });
+
+
+  

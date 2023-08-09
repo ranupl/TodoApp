@@ -1,14 +1,13 @@
 const { UserDB } = require("../../models/user");
 const { TodoDB } = require("../../models/todo");
-// const { application } = require("express");
+
 var itemsPerPage = 5;
 var totalPages;
 var page;
 
-// CURD for todo (adminDashboard)
+// CURD
 // create task
 exports.createTask = (req, res) => {
-  // validate request
   if (!req.body) {
     res.status(400).send({ message: "Content can not be empty" });
     return;
@@ -31,7 +30,6 @@ exports.createTask = (req, res) => {
     newTask
       .save()
       .then((data) => {
-        // console.log(data);
         res.redirect("/allTodos");
       })
       .catch((err) => {
@@ -42,7 +40,6 @@ exports.createTask = (req, res) => {
         });
       });
   } else {
-    // new user
     const newTask = new TodoDB({
       userid: uname,
       title: req.body.title,
@@ -51,7 +48,6 @@ exports.createTask = (req, res) => {
       status: req.body.status,
     });
 
-    // save user in the database
     newTask
       .save()
       .then((data) => {
@@ -67,13 +63,13 @@ exports.createTask = (req, res) => {
   }
 };
 
-//get all tasks
+// get all tasks
 exports.getAllTasks = async (req, res) => {
   const role = req.session.privilege;
   const uname = req.session.username;
   const lastlogin = req.session.lastlogin;
-
   const adminUser = req.session.username;
+
   const users = await UserDB.find().lean().exec();
 
   // pagging + get all tasks
@@ -113,6 +109,7 @@ exports.getAllTasks = async (req, res) => {
         .skip((page - 1) * itemsPerPage)
         .limit(itemsPerPage)
         .exec();
+
       res.render("userDashboard", {
         tasks,
         page,
@@ -128,18 +125,16 @@ exports.getAllTasks = async (req, res) => {
 };
 
 // edit task
-exports.editTask = (req, res) => {
+exports.editTask = async (req, res) => {
   const uname = req.session.username;
   const lastlogin = req.session.lastlogin;
   const id = req.params.id;
-
+  
   TodoDB.findById(id)
     .then((tasks) => {
-      console.log(tasks);
       res.render("todoEditModel", { tasks, uname, lastlogin });
     })
     .catch((error) => {
-      // Handle the error
       console.error(error);
       res.redirect("/");
     });
@@ -149,7 +144,8 @@ exports.editTask = (req, res) => {
 exports.updateTask = (req, res) => {
   const { id } = req.params;
   const { userid, title, discription, priority, status } = req.body;
-
+  const privilege = req.session.privilege;
+ 
   TodoDB.findByIdAndUpdate(
     id,
     { userid, title, discription, priority, status },
@@ -159,7 +155,11 @@ exports.updateTask = (req, res) => {
       if (!updatedTask) {
         return res.status(404).send("Task not found");
       }
-      res.redirect("/allTodos");
+      if(privilege == "admin"){
+        res.redirect("/adminDashboard");
+      }else{
+        res.redirect("/userDashboard");
+      }
     })
     .catch((error) => {
       res.status(500).send("Error updating Task");
@@ -189,6 +189,7 @@ exports.searching = async (req, res) => {
   const lastlogin = req.session.lastlogin;
   const role = req.session.privilege;
   const adminUser = req.session.username;
+
   const users = await UserDB.find().lean().exec();
 
   if (role == "user") {
@@ -287,8 +288,10 @@ exports.filterByPriority = async (req, res) => {
         .skip(skip)
         .lean()
         .exec();
+
       const totalCount = await TodoDB.countDocuments({ status });
       const totalPages = Math.ceil(totalCount / limit);
+
       res.render("allTodos", {
         tasks,
         totalPages,
@@ -312,8 +315,10 @@ exports.filterByPriority = async (req, res) => {
         .skip(skip)
         .lean()
         .exec();
+
       const totalCount = await TodoDB.countDocuments({ status });
       const totalPages = Math.ceil(totalCount / limit);
+
       res.render("userDashboard", {
         tasks,
         totalPages,
@@ -338,10 +343,10 @@ exports.filterByStatus = async (req, res) => {
   const lastlogin = req.session.lastlogin;
   const role = req.session.privilege;
   const adminUser = req.session.username;
-  const users = await UserDB.find().lean().exec();
-  // const limit = req.body.limit;
   const priority = req.body.priority;
   const status = req.body.status;
+
+  const users = await UserDB.find().lean().exec();
 
   const limit = req.body.limit || 10;
   const skip = (req.body.page - 1) * limit || 0;
@@ -353,8 +358,10 @@ exports.filterByStatus = async (req, res) => {
         .skip(skip)
         .lean()
         .exec();
+
       const totalCount = await TodoDB.countDocuments({ status });
       const totalPages = Math.ceil(totalCount / limit);
+
       res.render("allTodos", {
         tasks,
         totalPages,
@@ -379,8 +386,10 @@ exports.filterByStatus = async (req, res) => {
         .skip(skip)
         .lean()
         .exec();
+
       const totalCount = await TodoDB.countDocuments({ status });
       const totalPages = Math.ceil(totalCount / limit);
+      
       res.render("userDashboard", {
         tasks,
         totalPages,

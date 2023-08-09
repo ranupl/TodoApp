@@ -1,78 +1,72 @@
-<div
-  class="modal fade"
-  id="editModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalCenterTitle"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="container">
-          <div class="text-center">
-            <h1 class="heading text-primary">Update Todo</h1>
-          </div>
+<!-- header -->
+<%- include('include/header_user.ejs') %>
+<!-- /header -->
+
+<div class="container">
+  <div class="text-center">
+    <h1 class="heading text-primary">Update Todo</h1>
+  </div>
+</div>
+<div class="outer-container">
+  <div class="inner-container">
+    <div class="container">
+      <form action="/todo/update/<%= tasks.id %>" method="POST" id="myform">
+        <input type="hidden" name="id" value="<%= tasks.id %>" />
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleFormControlInput1"
+            value="<%= tasks.title %>"
+            name="title"
+            placeholder="Title"
+          />
         </div>
-        <div class="outer-container">
-          <div class="inner-container">
-            <div class="container">
-              <form action="/todo/update/<%= task.id %>" method="POST">
-                <input type="hidden" name="id" value="<%= task.id %>" />
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Title</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="exampleFormControlInput1"
-                    value="<%= task.title %>"
-                    name="title"
-                    placeholder="Title"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Discription</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="exampleFormControlInput1"
-                    value="<%= task.discription %>"
-                    name="discription"
-                    placeholder="Discription"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlSelect1">Priority</label>
-                  <select
-                    class="form-control"
-                    id="exampleFormControlSelect1"
-                    value="<%= task.priority %>"
-                    name="priority"
-                  >
-                    <option>High</option>
-                    <option>Medium</option>
-                    <option>Low</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlSelect1">Status</label>
-                  <select
-                    class="form-control"
-                    id="exampleFormControlSelect1"
-                    value="<%= task.status %>"
-                    name="status"
-                  >
-                    <option>Pending</option>
-                    <option>Progress</option>
-                    <option>Done</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </form>
-            </div>
-          </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Discription</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleFormControlInput1"
+            value="<%= tasks.discription %>"
+            name="discription"
+            placeholder="Discription"
+          />
         </div>
-      </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Priority</label>
+          <select
+            class="form-control"
+            id="exampleFormControlSelect1"
+            value="<%= tasks.priority %>"
+            name="priority"
+          >
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Status</label>
+          <select
+            class="form-control"
+            id="exampleFormControlSelect1"
+            value="<%= tasks.status %>"
+            name="status"
+          >
+            <option>Pending</option>
+            <option>Progress</option>
+            <option>Done</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
     </div>
   </div>
 </div>
+
+<!-- footer -->
+<%- include('include/footer.ejs') -%>
+<!-- /footer -->
+  

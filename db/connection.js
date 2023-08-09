@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const databaseURL = "mongodb://localhost:27017/todoApp";
 
 mongoose

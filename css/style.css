@@ -71,7 +71,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 60px;
+    padding: 0px 60px;
 }
 
 .border-mg {
@@ -212,7 +212,6 @@
 .about-img {
     width: 200px;
     height: 200px;
-    /* padding: 40px; */
     border-radius: 50%;
     border: 6px solid white;
 }
@@ -246,12 +245,6 @@
     height: 336px;
     max-width: 100%;
 }
-
-/* search bar css */
-* {
-    box-sizing: border-box;
-}
-
 
 form.example {
     margin-right: -47px;
@@ -288,29 +281,47 @@ form.example {
     cursor: pointer;
 }
 
-
-/* font-family: 'Barlow', sans-serif; */
-/* font-family: 'Caprasimo', cursive; */
-/* font-family: 'PT Sans', sans-serif; */
-
 label.error {
     color: red;
 }
 
-/* dropdown hover */
 .dropdown:hover>.dropdown-menu {
     display: block;
-    padding : 10px;
+    padding: 10px;
     margin-top: 0px;
     background-color: #dde5f0;
-} 
-
+}
 
 .dropdown>.dropdown-toggle:active {
-    /* Without this, clicking will make it sticky */
-     pointer-events: none; 
-} 
+    pointer-events: none;
+}
 
 .margin-left {
     margin-left: 20px;
+}
+
+.input-width .form-control{
+    width: 100%;
+    padding: 5px, 0px;
+}
+
+#form{
+    padding: 0px 50px;
+}
+
+.password-modal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-modal .modal{
+    width: 40%;
+    /* height: 30vh; */
+    top: 212px;
+    left: 395px;
+} 
+
+.bg-form{
+    background-color: #ceddf5;
 }

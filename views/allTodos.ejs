@@ -3,84 +3,81 @@
 <!-- /header -->
 
 <!-- section -->
-    <div class="container">
-      <div class="text-center">
-        <h1 class="text-primary heading">Todo Activities</h1>
+<div class="container">
+  <div class="text-center">
+    <h1 class="text-primary heading">Todo Activities</h1>
+  </div>
+</div>
+
+<div class="container">
+  <div class="child-container">
+    <div class="d-flex justify-content-between">
+      <div class="d-flex">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary margin-bottom" data-toggle="modal" data-target="#todoModel">
+        Todo Create
+      </button>
+      <!-- hover dropdown -->
+      <div class="dropdown margin-left">
+        <button
+          class="btn btn-primary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-mdb-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Filter
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <form  action="/filter-priority" method="POST" id="filterPriority">
+            <label for="">Priority</label>
+            <select name="priority" onchange="submitFilterPriority()" class="select-box">
+              <%
+                var options = [ "", "High", "Medium", "Low" ];
+                for ( var i = 0; i < options.length; i++ )
+                { 
+                    if(options[i] === "") {
+                    %>
+                    <option value="<%=options[ i ] %>" <%=selected %>>All</option>
+                    <% } else{ %>
+                      <option value="<%=options[ i ] %>" <%=selected %>><%=options[i] %></option>
+                    <%
+                    }
+                }
+              %>
+          </select>
+        </form>
+        <form  action="/filter-status" method="POST"  id="filterStatus">
+            <label for="">Status</label>
+            <select name="status" onchange="submitFilterStatus()" class="select-box">
+              <%
+                var options = [ "", "Pending", "Progess", "Done" ];
+                for ( var i = 0; i < options.length; i++ )
+                {
+                    if(options[i] == "") {
+                    %>
+                    <option value="<%=options[ i ] %>" <%=selected %>>All</option>
+                    <% } else{ %>
+                      <option value="<%=options[ i ] %>" <%=selected %>><%=options[i] %></option>
+                    <%
+                    }
+                }
+              %>
+            </select>
+          </form>
+        </div>
+        </div>
       </div>
-    </div>
-    <div class="container">
-      <div class="child-container">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex">
-          <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary margin-bottom" data-toggle="modal" data-target="#exampleModalCenter">
-  Todo Create
-</button>
-<!-- hover dropdown -->
-<div class="dropdown margin-left">
-  <button
-    class="btn btn-primary dropdown-toggle"
-    type="button"
-    id="dropdownMenuButton"
-    data-mdb-toggle="dropdown"
-    aria-expanded="false"
-  >
-    Filter
-  </button>
-  
-  <form  action="/filter-priority" method="POST" class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="filterPriority">
-      <label for="">Priority</label>
-      <select name="priority" onchange="submitFilterPriority()" class="select-box">
-        <%
-          var options = [ "", "High", "Medium", "Low" ];
-          for ( var i = 0; i < options.length; i++ )
-          {
-              var selected = ( "priority" == options[ i ] ) ? "selected" : "";
-               
-              if(options[i] == "") {
-              %>
-              <option value="<%=options[ i ] %>" <%=selected %>>All</option>
-              <% } else{ %>
-                <option value="<%=options[ i ] %>" <%=selected %>><%=options[i] %></option>
-              <%
-              }
-          }
-        %>
-      </select>
-    </form>
-  <form  action="/filter-status" method="POST" class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="filterStatus">
-      <label for="">Status</label>
-      <select name="status" onchange="submitFilterStatus()" class="select-box">
-        <%
-          var options = [ "", "Pending", "Progess", "Done" ];
-          for ( var i = 0; i < options.length; i++ )
-          {
-              <!-- var selected = ( "priority" == options[ i ] ) ? "selected" : ""; -->
-               
-              if(options[i] == "") {
-              %>
-              <option value="<%=options[ i ] %>" <%=selected %>>All</option>
-              <% } else{ %>
-                <option value="<%=options[ i ] %>" <%=selected %>><%=options[i] %></option>
-              <%
-              }
-          }
-        %>
-      </select>
- </form>
-</div>
-</div>
-<!-- hover dropdown -->
+<!-- /hover dropdown -->
+
 <div class="d-flex">
-  <!-- The search form -->
   <form class="example" action="/searchTask" method="GET">
     <div class="form-group has-search d-flex">
-      <!-- <span class="fa fa-search form-control-feedback"></span> -->
       <input type="text" class="form-control" placeholder="Search By UserId" name="searchText">
       <button type="submit" class="search-btn"><ion-icon name="search"></ion-icon></button>
     </div>
- </form>
- <form action="/limit-data" method="post" id="limitForm">
+  </form>
+  <form action="/limit-data" method="post" id="limitForm">
   <select name="limit" onchange="submitForm()" class="select-box">
     <%
       var options = [ "", "5", "10", "20", "50" ];
@@ -97,13 +94,63 @@
           }
       }
     %>
-  </select>
-  </form>
+    </select>
+    </form>
+  </div>
 </div>
-</div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">S.No.</th>
+              <th scope="col">userId</th>
+              <th scope="col">Title</th>
+              <th scope="col">Discription</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Status</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(let i=0; i<tasks.length; i++) { %>
+            <tr>
+              <td scope="col"><%= i+1 %></td>
+              <td scope="col"><%= tasks[i].userid %></td>
+              <td scope="col"><%= tasks[i].title %></td>
+              <td scope="col"><%= tasks[i].discription %></td>
+              <td scope="col"><%= tasks[i].priority %></td>
+              <td scope="col"><%= tasks[i].status %></td>
+              <td>
+                <div> 
+                 <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
+                 <a href="/todo/delete/<%= tasks[i].id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
+                </div>
+              </td>
+            </tr>
+            <% }; %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<!-- /section -->
+
+<!-- pagging -->
+<div class="container text-center">
+  <% if (totalPages > 1) { %>
+    <div>
+      <% if (page > 1) { %>
+        <a href="/todo?page=<%= page - 1 %>">Previous</a>
+      <% } %>
+  
+      <% if (page < totalPages) { %>
+        <a href="/todo?page=<%= page + 1 %>">Next</a>
+      <% } %>
+    </div>
+  <% } %>
+  </div>
+<!--/pagging  -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="todoModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="container">
@@ -181,80 +228,22 @@
   </div>
 </div>
 </div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">S.No.</th>
-              <th scope="col">userId</th>
-              <th scope="col">Title</th>
-              <th scope="col">Discription</th>
-              <th scope="col">Priority</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% for(let i=0; i<tasks.length; i++) { %>
-            <tr>
-              <td scope="col"><%= i+1 %></td>
-              <td scope="col"><%= tasks[i].userid %></td>
-              <td scope="col"><%= tasks[i].title %></td>
-              <td scope="col"><%= tasks[i].discription %></td>
-              <td scope="col"><%= tasks[i].priority %></td>
-              <td scope="col"><%= tasks[i].status %></td>
-              <td>
-                <div>
-                  <!-- <a href="/todo/edit/<%= tasks[i].id %>"><ion-icon name="pencil" class="color-pencil"></ion-icon></a> -->
-<!-- <button type="button" class="btn btn-white" data-toggle="modal" data-target="#editModal"> -->
-  <a href="/todo/edit/<%= tasks[i].id %>" data-toggle="modal" data-target="#editModal"><ion-icon name="pencil" class="color-pencil"></ion-icon></a>
-  <!-- </button> -->
-  
-  <% for (let i = 0; i < tasks.length; i++) { %>
-    <%- include('todoEditModel.ejs', { task: tasks[i] }) -%>
-  <% } %>
+<!-- /model -->
 
+<!-- js for select box -->
+<script>
+  function submitForm() {
+    document.getElementById('limitForm').submit();
+  }
 
-                  <a href="/todo/delete/<%= tasks[i].id %>"><ion-icon name="trash" class="color-trash"></ion-icon></a>
-                </div>
-              </td>
-            </tr>
-            <% }; %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-<!-- /section -->
+  function submitFilterPriority(){
+    document.getElementById('filterPriority').submit();
+  }
 
-<!-- pagging -->
-<div class="container text-center">
-  <% if (totalPages > 1) { %>
-    <div>
-      <% if (page > 1) { %>
-        <a href="/todo?page=<%= page - 1 %>">Previous</a>
-      <% } %>
-  
-      <% if (page < totalPages) { %>
-        <a href="/todo?page=<%= page + 1 %>">Next</a>
-      <% } %>
-    </div>
-  <% } %>
-  </div>
-
-  <!-- js for select box -->
-  <script>
-    function submitForm() {
-      document.getElementById('limitForm').submit();
-    }
-
-    function submitFilterPriority(){
-      document.getElementById('filterPriority').submit();
-    }
-
-    function submitFilterStatus(){
-      document.getElementById('filterStatus').submit();
-    }
-  </script>
-
+  function submitFilterStatus(){
+    document.getElementById('filterStatus').submit();
+  }
+</script>
 
 <!-- footer -->
 <%- include('include/footer.ejs') -%>

@@ -19,23 +19,21 @@ exports.adminDashboard = async (req, res) => {
 // adming login
 exports.adminLogin = async (req, res) => {
   var isPasswordValid;
-  const { text, password } = req.body;
+  const { unameEmail, password } = req.body;
 
-  // Find the user by username
   const user = await AdminDB.find({
-    $or: [{ email: text }, { username: text }],
+    $or: [{ email: unameEmail }, { username: unameEmail }],
   });
-  
-  if(user.length == 0)
-  {
+  const userData = user[0];
+
+  if (userData == undefined) {
     res.render("admin", { message: "User not found " });
     return;
   }
-   
-  if(user.length > 0)
-  {
+ 
+  if (userData != undefined) {
     isPasswordValid = await bcrypt.compare(password, user[0].password);
-
+   
     if (isPasswordValid) {
       user[0].privilege = "admin";
       const username = user[0].username;
@@ -52,8 +50,10 @@ exports.adminLogin = async (req, res) => {
 
       if (req.session.username) {
         res.redirect("/adminDashboard");
+        return;
       } else {
         res.redirect("/admin");
+        return;
       }
     } else {
       const message = " Invalid username or password !";
@@ -71,7 +71,7 @@ exports.adminUpdate = async (req, res) => {
   const { password, newpassword, confirmpassword } = req.body;
 
   try {
-    const user = await AdminDB.find({ username : uname }).lean().then();
+    const user = await AdminDB.find({ username: uname }).lean().then();
 
     if (!user) {
       const message = "User not found!";
@@ -82,11 +82,11 @@ exports.adminUpdate = async (req, res) => {
       const message = "Passwords do not match!";
       return res.redirect("/adminDashboard");
     }
-  
+
     const hashpass = await bcrypt.hash(newpassword, 10);
 
     const result = await AdminDB.updateOne(
-      { username : uname },
+      { username: uname },
       { $set: { password: hashpass } }
     );
 
@@ -107,18 +107,22 @@ exports.adminUpdate = async (req, res) => {
 exports.adminEmailForm = async (req, res) => {
   const email = req.body.email;
   res.cookie("email", email);
+  console.log(email);
 
   try {
     const user = await AdminDB.find({ email }).lean().exec();
-    if (user.length > 0) {
+    // const userData = user[0];
+    console.log(user);
+    if (userData != undefined) {
       var min = 1000;
       var max = 5000;
       const otp = Math.floor(Math.random() * (max - min + 1)) + min;
-      res.cookie("otp", otp);
-      res.render("login", {message : "email validation successfull"});
+      res.cookie("otp", otp, { maxAge: 300000 , httpOnly: true});
+      res.redirect("/login");
     } else {
       const message = "Invalid email address";
-      return res.render("admin", { message });
+      res.render("admin", { message });
+      console.log("invalid email");
     }
   } catch (err) {
     console.log(err);
@@ -132,14 +136,14 @@ exports.adminOtpForm = (req, res) => {
 
   if (userOtp == mainOtp) {
     const message = "Otp verified";
-    return res.status(200);
+    return;
   } else {
     const message = "Invalid Otp";
     res.render("admin", { message });
   }
 };
 
-// user passwordEdit
+// user change password
 exports.adminPasswordEdit = async (req, res, next) => {
   const email = req.cookies.email;
   const { password, confimPassword } = req.body;
@@ -166,7 +170,7 @@ exports.adminPasswordEdit = async (req, res, next) => {
 
     if (result.modifiedCount > 0) {
       const message = "Password Successfully Changed";
-       return res.status(200);
+      return;
     } else {
       const message = "Something went wrong while changing password !";
       res.render("admin", { message });
@@ -176,4 +180,3 @@ exports.adminPasswordEdit = async (req, res, next) => {
     console.log(err);
   }
 };
-

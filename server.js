@@ -3,12 +3,12 @@ const app = express();
 const path = require("path");
 const dotenv = require("dotenv");
 const bodyparser = require("body-parser");
-require("./db/connection");
 const userCon = require("./src/controllers/user/user");
 const todoCon = require("./src/controllers/todo/todo");
 const adminCon = require("./src/controllers/admin/admin");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+require("./db/connection");
 const {
   checkAdminLogin,
   checkUserLogin,
@@ -20,6 +20,7 @@ const PORT = process.env.PORT || 8000;
 
 // body parser
 app.use(bodyparser.urlencoded({ extended: true }));
+app.use(express.json());
 
 // cookie
 app.use(cookieParser());
@@ -89,7 +90,6 @@ app.post("/adminPasswordEdit", adminCon.adminPasswordEdit);
 
 // user logout
 app.get("/logout", (req, res) => {
-  // Destroy the session
   req.session.destroy();
   res.redirect("/welcome");
 });

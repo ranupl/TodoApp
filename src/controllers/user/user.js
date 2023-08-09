@@ -8,8 +8,8 @@ var page;
 // user CURD operation
 // create and save new user
 exports.createUser = async (req, res) => {
-  // validate request
   const { username, email } = req.body;
+
   const user = await UserDB.find({
     $or: [{ email: email }, { username: username }],
   });
@@ -78,8 +78,7 @@ exports.getAllUsers = async (req, res) => {
   const lastlogin = req.session.lastlogin;
   const role = req.cookies.privilege;
 
-  // pagging
-
+  // pagging + getAllusers
   if (role == "admin") {
     page = parseInt(req.query.page) || 1;
 
@@ -126,10 +125,9 @@ exports.getUserByID = (req, res) => {
   const userId = req.params.id;
   UserDB.findById(userId)
     .then((user) => {
-      res.render("editUserUserModel", { user });
+      res.render("editUserModel", { user });
     })
     .catch((error) => {
-      // Handle the error
       console.error(error);
       res.status(500).send("Error retrieving user");
     });
@@ -183,22 +181,20 @@ exports.getAllUsername = (req, res) => {
 // user login
 exports.userLogin = async (req, res) => {
   var isPasswordValid;
-  const { text, password } = req.body;
+  const { unameEmail, password } = req.body;
 
-  // Find the user by username
   const user = await UserDB.find({
-    $or: [{ email: text }, { username: text }],
+    $or: [{ email: unameEmail }, { username: unameEmail }],
   });
 
-  if(user.length == 0)
-  {
+  if (user.length == 0) {
     res.render("login", { message: " User not found !" });
     return;
   }
 
-  if(user.length > 0)
-  {
+  if (user.length > 0) {
     isPasswordValid = await bcrypt.compare(password, user[0].password);
+
     if (isPasswordValid) {
       user[0].privilege = "user";
       const username = user[0].username;
@@ -221,16 +217,22 @@ exports.userLogin = async (req, res) => {
         minute: "2-digit",
         second: "2-digit",
       });
+      // console.log("this is new formatted date : ", formattedDate);
 
-      await UserDB.updateOne(
-        { email: text },
-        { $set: { lastlogin: formattedDate } }
-      );
-
-      if (req.session.username) {
-        res.redirect("/userDashboard");
-      } else {
-        res.redirect("/login");
+      try {
+        await UserDB.updateOne(
+          { email: unameEmail },
+          { $set: { lastlogin: formattedDate } },
+      // Set the write concern to "majority"
+        );
+        if (req.session.username) {
+          res.redirect("/userDashboard");
+        } else {
+          res.redirect("/login");
+        }
+      } catch (error) {
+        // Error occurred during update
+        console.error("Error during update:", error);
       }
     } else {
       const message = " Invalid username or password ! ";
@@ -260,7 +262,7 @@ exports.searching = (req, res) => {
     .catch((err) => console.error("Error searching in MongoDB:", err));
 };
 
-// limited data
+// limit data
 exports.limitUserData = async (req, res) => {
   const searchText = req.query.searchText;
   const uname = req.session.username;
@@ -290,22 +292,19 @@ exports.limitUserData = async (req, res) => {
 // user password reset by email varification
 exports.emailForm = async (req, res) => {
   const email = req.body.email;
-  res.cookie("email", email);
-
-  try {
-    const user = await UserDB.find({ email }).lean().exec();
-    if (user.length > 0) {
-      var min = 1000;
-      var max = 5000;
-      const otp = Math.floor(Math.random() * (max - min + 1)) + min;
-      res.cookie("otp", otp);
-      return;
-    } else {
-      const message = "Invalid email address";
-      return res.render("login", { message });
-    }
-  } catch (err) {
-    console.log(err);
+  const user = await UserDB.find({ email }).lean().exec();
+  const userData = user[0];
+  
+  if (userData != undefined) {
+    var min = 1000;
+    var max = 5000;
+    const otp = Math.floor(Math.random() * (max - min + 1)) + min;
+    res.cookie("otp", otp);
+    res.redirect("/login");
+  } else {
+    const message = "Invalid email address";
+    res.render("login", { message });
+    // console.log("aukdfhk");
   }
 };
 
@@ -316,7 +315,7 @@ exports.otpForm = (req, res) => {
 
   if (userOtp == mainOtp) {
     const message = "Otp verified";
-    return;
+    res.redirect("/login");
   } else {
     const message = "Invalid Otp";
     res.render("login", { message });
@@ -334,6 +333,7 @@ exports.passwordEdit = async (req, res, next) => {
     if (!user) {
       const message = "User not found!";
       return res.render("login", { message });
+      // res.redirect("/login");
     }
 
     if (password !== confimPassword) {
@@ -349,7 +349,6 @@ exports.passwordEdit = async (req, res, next) => {
     );
 
     if (result.modifiedCount > 0) {
-      // const message = "Password Successfully Changed";
       return;
     } else {
       const message = "Something went wrong while changing password !";
@@ -360,4 +359,3 @@ exports.passwordEdit = async (req, res, next) => {
     console.log(err);
   }
 };
-
