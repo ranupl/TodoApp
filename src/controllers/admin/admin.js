@@ -18,22 +18,20 @@ exports.adminDashboard = async (req, res) => {
 
 // adming login
 exports.adminLogin = async (req, res) => {
-  var isPasswordValid;
   const { unameEmail, password } = req.body;
-
+  
   const user = await AdminDB.find({
     $or: [{ email: unameEmail }, { username: unameEmail }],
   });
+ 
   const userData = user[0];
 
   if (userData == undefined) {
     res.render("admin", { message: "User not found " });
     return;
   }
- 
-  if (userData != undefined) {
-    isPasswordValid = await bcrypt.compare(password, user[0].password);
-   
+  const isPasswordValid = await bcrypt.compare(password, userData.password);
+
     if (isPasswordValid) {
       user[0].privilege = "admin";
       const username = user[0].username;
@@ -60,7 +58,6 @@ exports.adminLogin = async (req, res) => {
       res.render("admin", { message });
       return;
     }
-  }
 };
 
 // admin update
@@ -103,64 +100,58 @@ exports.adminUpdate = async (req, res) => {
   }
 };
 
+
 // user password reset by email varification
 exports.adminEmailForm = async (req, res) => {
-  const email = req.body.email;
-  res.cookie("email", email);
-  console.log(email);
+  const {email} = req.body;
+  const user = await AdminDB.find({ email }).lean().exec();
+  const userData = user[0];
+  
+  if (userData != undefined) {
+    let min = 1000;
+    let max = 5000;
+    const otp = Math.floor(Math.random() * (max - min + 1)) + min;
+    let html = `<pre>Otp ${otp}</pre>`;
+    await  mailSend("Forgot password otp",email,`Hello ${userData.name}`,html);
+    await AdminDB.updateOne(
+      { email },
+      { $set: { otp: `${otp}` } }
+    );
+    // res.cookie("otp", otp);
+    res.status(200).json({status:200,status:"success",message:"Otp sent on mail."});
 
-  try {
-    const user = await AdminDB.find({ email }).lean().exec();
-    // const userData = user[0];
-    console.log(user);
-    if (userData != undefined) {
-      var min = 1000;
-      var max = 5000;
-      const otp = Math.floor(Math.random() * (max - min + 1)) + min;
-      res.cookie("otp", otp, { maxAge: 300000 , httpOnly: true});
-      res.redirect("/login");
-    } else {
-      const message = "Invalid email address";
-      res.render("admin", { message });
-      console.log("invalid email");
-    }
-  } catch (err) {
-    console.log(err);
+  } else {
+    const message = "Invalid email address";
+    res.status(200).json({status:200,status:"failed",message:message});
+    // console.log("aukdfhk");
   }
 };
 
 // otp validation
-exports.adminOtpForm = (req, res) => {
-  const userOtp = req.body.otp;
-  const mainOtp = req.cookies.otp;
+exports.adminOtpForm = async (req, res) => {
+  const {otp,email} = req.body;
+  const user = await AdminDB.find({ email }).lean().exec();
+  const userData = user[0];
 
-  if (userOtp == mainOtp) {
-    const message = "Otp verified";
-    return;
+  if (otp == userData.otp) {
+    res.status(200).json({status:200,status:"success",message:"Otp Verified successfully"});
   } else {
-    const message = "Invalid Otp";
-    res.render("admin", { message });
+    res.status(200).json({status:200,status:"failed",message:"Invalid Otp"});
   }
 };
 
-// user change password
+// user passwordEdit
 exports.adminPasswordEdit = async (req, res, next) => {
-  const email = req.cookies.email;
-  const { password, confimPassword } = req.body;
-
+  const { password, confirmPassword,email } = req.body;
   try {
+    if (password !== confirmPassword) {
+      return  res.status(200).json({status:200,status:"failed",message:"password and confirmation password not matched"});
+    }
     const user = await AdminDB.find({ email }).lean().then();
 
     if (!user) {
-      const message = "User not found!";
-      return res.render("admin", { message });
+      return  res.status(200).json({status:200,status:"failed",message:"User not found!"});
     }
-
-    if (password !== confimPassword) {
-      const message = "Passwords do not match!";
-      return res.render("admin", { message });
-    }
-
     const hashpass = await bcrypt.hash(password, 10);
 
     const result = await AdminDB.updateOne(
@@ -169,12 +160,10 @@ exports.adminPasswordEdit = async (req, res, next) => {
     );
 
     if (result.modifiedCount > 0) {
-      const message = "Password Successfully Changed";
-      return;
+      return  res.status(200).json({status:200,status:"success",message:"Password updated succesfully"});
     } else {
       const message = "Something went wrong while changing password !";
-      res.render("admin", { message });
-      return;
+      return  res.status(200).json({status:200,status:"failed",message:message});
     }
   } catch (err) {
     console.log(err);

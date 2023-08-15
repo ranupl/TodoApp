@@ -6,6 +6,8 @@ const bodyparser = require("body-parser");
 const userCon = require("./src/controllers/user/user");
 const todoCon = require("./src/controllers/todo/todo");
 const adminCon = require("./src/controllers/admin/admin");
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 require("./db/connection");
@@ -13,6 +15,7 @@ const {
   checkAdminLogin,
   checkUserLogin,
 } = require("./src/utils/sessionHelper");
+const { UserDB } = require("./src/models/user");
 
 // env file configure
 dotenv.config({ path: "config.env" });
@@ -31,7 +34,7 @@ app.use(
     secret: "#todo#secure",
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 360000 },
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
   })
 );
 
@@ -42,6 +45,80 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/css"));
 app.use(express.static(__dirname + "/images"));
 app.use(express.static(__dirname + "/js"));
+
+// Set up Google OAuth 2.0 Strategy
+passport.use(new GoogleStrategy({
+  clientID: '393862054267-bcvnu9ejdqkdir06ffd3df9rdoj78i3b.apps.googleusercontent.com',
+  clientSecret: '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',
+  callbackURL: 'http://localhost:8000/auth/google/callback',
+},
+  (accessToken, refreshToken, profile, done) => {
+    // You can store user information in a database or use it as needed 
+    profile.userEmail = profile.emails[0].value;
+    return done(null, profile);
+  }));
+
+// Serialize and deserialize user
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser(async (id, done) => {
+  done(null, user);
+});
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+// Google OAuth callback
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  async (req, res) => {
+    const email = req.user.userEmail;
+    const user = await UserDB.find({email}).lean().exec();
+    console.log(user)
+    if(user.length === 0)
+    {
+      const currentDate = new Date();
+      var lastlogedin = currentDate.toLocaleTimeString();
+
+      const newUser = new UserDB({
+        firstname: req.user?._json?.given_name,
+        lastname: req.user?._json?.family_name,
+        email: email,
+        username: req.user._json ?  req.user._json.name.replace(" ","") : req.user?._json?.given_name,
+        password: "googlesignin",
+        status: "active",
+        privilege: "user",
+        lastlogin: lastlogedin,
+      });
+      newUser.save()
+      .then((data) => {
+        // session
+        req.session;
+        req.session.username = data.username;
+        req.session.privilege = data.privilege;
+        req.session.lastlogin = data.lastlogin;
+        res.redirect("/userDashboard"); 
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occured while creating a create operation",
+        });
+      });
+    }
+    else{
+        // session
+        req.session;
+        req.session.username = user[0].username;
+        req.session.privilege = user[0].privilege;
+        req.session.lastlogin = user[0].lastlogin;
+      res.redirect("/userDashboard");
+    }
+  }
+);
 
 // page routes
 app.get("/", (req, res) => {
@@ -73,11 +150,11 @@ app.get("/editUser", (req, res) => {
 });
 
 app.get("/nestedModel", (req, res) => {
-  res.render("nestedModel", {message :undefined});
+  res.render("nestedModel", { message: undefined });
 })
 
 app.get("/adminPasswordModel", (req, res) => {
-  res.render("adminPasswordModel", {message :undefined});
+  res.render("adminPasswordModel", { message: undefined });
 })
 
 app.post("/emailForm", userCon.emailForm);
