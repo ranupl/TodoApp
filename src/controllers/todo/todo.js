@@ -69,6 +69,8 @@ exports.getAllTasks = async (req, res) => {
   const uname = req.session.username;
   const lastlogin = req.session.lastlogin;
   const adminUser = req.session.username;
+  // const userEmail = req.session.userEmail;
+  // console.log(userEmail);
 
   const users = await UserDB.find().lean().exec();
 
@@ -105,7 +107,7 @@ exports.getAllTasks = async (req, res) => {
       const totalItems = await TodoDB.countDocuments({});
       totalPages = Math.ceil(totalItems / itemsPerPage);
 
-      const tasks = await TodoDB.find({ userid: uname })
+      const tasks = await TodoDB.find({userid: uname})
         .skip((page - 1) * itemsPerPage)
         .limit(itemsPerPage)
         .exec();

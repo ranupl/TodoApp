@@ -40,6 +40,9 @@ const userSchema = new mongoose.Schema(
     lastlogin: {
       type: String,
     },
+    otp: {
+      type: String,
+    }
   },
   { timestamps: true }
 );

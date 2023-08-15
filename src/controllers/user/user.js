@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const { UserDB } = require("../../models/user");
 const { Cookie } = require("express-session");
+const { mailSend } = require("../../utils/mail");
+
 const itemsPerPage = 5;
 var totalPages;
 var page;
@@ -193,6 +195,7 @@ exports.userLogin = async (req, res) => {
   }
 
   if (user.length > 0) {
+    
     isPasswordValid = await bcrypt.compare(password, user[0].password);
 
     if (isPasswordValid) {
@@ -217,13 +220,11 @@ exports.userLogin = async (req, res) => {
         minute: "2-digit",
         second: "2-digit",
       });
-      // console.log("this is new formatted date : ", formattedDate);
-
+      
       try {
         await UserDB.updateOne(
           { email: unameEmail },
           { $set: { lastlogin: formattedDate } },
-      // Set the write concern to "majority"
         );
         if (req.session.username) {
           res.redirect("/userDashboard");
@@ -291,56 +292,56 @@ exports.limitUserData = async (req, res) => {
 
 // user password reset by email varification
 exports.emailForm = async (req, res) => {
-  const email = req.body.email;
+  const {email} = req.body;
   const user = await UserDB.find({ email }).lean().exec();
   const userData = user[0];
   
   if (userData != undefined) {
-    var min = 1000;
-    var max = 5000;
+    let min = 1000;
+    let max = 5000;
     const otp = Math.floor(Math.random() * (max - min + 1)) + min;
-    res.cookie("otp", otp);
-    res.redirect("/login");
+    let html = `<pre>Otp ${otp}</pre>`;
+    await  mailSend("Forgot password otp",email,`Hello ${userData.name}`,html);
+    await UserDB.updateOne(
+      { email },
+      { $set: { otp: `${otp}` } }
+    );
+    // res.cookie("otp", otp);
+    res.status(200).json({status:200,status:"success",message:"Otp sent on mail."});
+
   } else {
     const message = "Invalid email address";
-    res.render("login", { message });
+    res.status(200).json({status:200,status:"failed",message:message});
     // console.log("aukdfhk");
   }
 };
 
 // otp validation
-exports.otpForm = (req, res) => {
-  const userOtp = req.body.otp;
-  const mainOtp = req.cookies.otp;
+exports.otpForm = async (req, res) => {
+  const {otp,email} = req.body;
+  const user = await UserDB.find({ email }).lean().exec();
+  const userData = user[0];
 
-  if (userOtp == mainOtp) {
-    const message = "Otp verified";
-    res.redirect("/login");
+  if (otp == userData.otp) {
+    res.status(200).json({status:200,status:"success",message:"Otp Verified successfully"});
   } else {
-    const message = "Invalid Otp";
-    res.render("login", { message });
+    res.status(200).json({status:200,status:"failed",message:"Invalid Otp"});
   }
 };
 
 // user passwordEdit
 exports.passwordEdit = async (req, res, next) => {
-  const email = req.cookies.email;
-  const { password, confimPassword } = req.body;
+  const { password, confirmPassword,email } = req.body;
 
   try {
+    if (password !== confirmPassword) {
+      return  res.status(200).json({status:200,status:"failed",message:"password and confirmation password not matched"});
+    }
     const user = await UserDB.find({ email }).lean().then();
 
     if (!user) {
-      const message = "User not found!";
-      return res.render("login", { message });
-      // res.redirect("/login");
+      return  res.status(200).json({status:200,status:"failed",message:"User not found!"});
     }
-
-    if (password !== confimPassword) {
-      const message = "Passwords do not match!";
-      return res.render("login", { message });
-    }
-
     const hashpass = await bcrypt.hash(password, 10);
 
     const result = await UserDB.updateOne(
@@ -349,11 +350,10 @@ exports.passwordEdit = async (req, res, next) => {
     );
 
     if (result.modifiedCount > 0) {
-      return;
+      return  res.status(200).json({status:200,status:"success",message:"Password updated succesfully"});
     } else {
       const message = "Something went wrong while changing password !";
-      res.render("login", { message });
-      return;
+      return  res.status(200).json({status:200,status:"failed",message:message});
     }
   } catch (err) {
     console.log(err);
