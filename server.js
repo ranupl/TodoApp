@@ -17,7 +17,7 @@ const {
 const { UserDB } = require("./src/models/user");
 
 // env file configure
-dotenv.config({ path: "./config/.env" });
+dotenv.config();
 const PORT = process.env.PORT || 8000;
 require("./db/connection");
 
