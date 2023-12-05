@@ -11,7 +11,7 @@ var page;
 // create and save new user
 exports.createUser = async (req, res) => {
   const { username, email } = req.body;
-
+  
   const user = await UserDB.find({
     $or: [{ email: email }, { username: username }],
   });
@@ -306,13 +306,10 @@ exports.emailForm = async (req, res) => {
       { email },
       { $set: { otp: `${otp}` } }
     );
-    // res.cookie("otp", otp);
     res.status(200).json({status:200,status:"success",message:"Otp sent on mail."});
-
   } else {
     const message = "Invalid email address";
     res.status(200).json({status:200,status:"failed",message:message});
-    // console.log("aukdfhk");
   }
 };
 
